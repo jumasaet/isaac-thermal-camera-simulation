@@ -80,6 +80,7 @@ class ThermalField:
         on_tick: Callable[[float, NDArray[np.float64]], None] | None = None,
         conduction: Any = None,
         film_kg_m2: Any = None,
+        pinned_k: Any = None,
     ) -> None:
         if tick_s <= 0.0:
             raise ValueError("tick_s must be positive")
@@ -94,7 +95,11 @@ class ThermalField:
         self.keep_ticks = keep_ticks
         self.on_tick = on_tick
         self._solver = FacetSolver(
-            properties, initial_k, conduction=conduction, film_kg_m2=film_kg_m2
+            properties,
+            initial_k,
+            conduction=conduction,
+            film_kg_m2=film_kg_m2,
+            pinned_k=pinned_k,
         )
         self._ticks: collections.deque[_Tick] = collections.deque(maxlen=keep_ticks)
         self._produced = 0
@@ -207,6 +212,11 @@ class ThermalField:
     def conduction(self) -> Any:
         """The operator linking the facets, or ``None`` for independent columns (TC.1)."""
         return self._solver.conduction
+
+    @property
+    def pinned_k(self) -> NDArray[np.float64] | None:
+        """Prescribed kelvin per facet, NaN where free, or ``None`` (ADR 0123)."""
+        return self._solver.pinned_k
 
     def state_hash(self) -> str:
         """SHA-256 over every tick produced so far: what a query must not change.

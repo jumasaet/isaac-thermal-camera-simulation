@@ -46,6 +46,7 @@ __all__ = [
     "SiteSpec",
     "BackSpec",
     "WaterSpec",
+    "PrescribedSpec",
     "CabinPanelSpec",
     "CabinSpec",
     "TargetSpec",
@@ -54,7 +55,8 @@ __all__ = [
     "load_scene_config",
 ]
 
-SCENE_SCHEMA_VERSION = 15  # v15: an exhaust target's `plume:` (PH.6); v14 a
+SCENE_SCHEMA_VERSION = 16  # v16: a surface's `prescribed:` (ADR 0123);
+# v15: an exhaust target's `plume:` (PH.6); v14 a
 # surface's `mesh:` (ADR 0110, WM.7); v13 its
 # speed schedule (ADR 0109, PT.9); v12 its
 # `water:` (ADR 0108, PH.3); v11
@@ -555,6 +557,35 @@ class WaterSpec(_Frozen):
         return self
 
 
+class PrescribedSpec(_Frozen):
+    """A temperature held fixed on part of a patched surface, whatever the weather (ADR 0123).
+
+    docs/physics-model.md §6.6 ("scripted, not predicted") on the cells of a §6.1 field. The
+    cells whose centre lies inside ``region_m`` -- ``[u0, u1, v0, v1]`` in the patch's own (u, v)
+    metres, or the whole patch when absent -- sit at ``temperature_k`` at every tick, through the
+    spin-up and after t₀. They are a Dirichlet boundary inside the solve, not a paint-over: the
+    cells around them conduct heat to and from them (PT.11), so a hot spot carries the halo its
+    neighbours would really have. Only the temperature is fixed; the emissivity is still the
+    material's (ADR 0043), so the camera reads it exactly as it reads a solved cell.
+
+    The point is ground truth: a steam line, a hot bearing, a failed insulation panel at a
+    temperature the dataset chooses, with its position and size known to the cell.
+    """
+
+    temperature_k: float = Field(gt=0.0)
+    region_m: tuple[float, float, float, float] | None = None
+
+    @model_validator(mode="after")
+    def _region(self) -> PrescribedSpec:
+        if self.region_m is not None:
+            u0, u1, v0, v1 = self.region_m
+            if not (u1 > u0 and v1 > v0):
+                raise ValueError(
+                    "prescribed region_m must be [u0, u1, v0, v1] with u1 > u0, v1 > v0"
+                )
+        return self
+
+
 class BackSpec(_Frozen):
     """The deep boundary under a layered surface (§6.4's R₂d and T_deep, ADR 0036)."""
 
@@ -657,6 +688,46 @@ class SurfaceSpec(_Frozen):
     #: Needs ``layers`` ≥ 2 -- a single layer with a deep boundary is `LumpedTwoNodeSolver`'s
     #: substrate-less case, which `layered_field` refuses.
     back: BackSpec | None = None
+    #: Temperatures held fixed on the whole patch or on regions of it (ADR 0123). Empty is a
+    #: surface solved everywhere, exactly as before. Needs a patch; one entry without a region
+    #: prescribes the whole surface and must then be the only entry.
+    prescribed: list[PrescribedSpec] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def _prescribed_is_one_authority_per_cell(self) -> SurfaceSpec:
+        """A cell is held by at most one entry, on a surface whose cells are single nodes."""
+        if not self.prescribed:
+            return self
+        if self.patch is None:
+            raise ValueError(
+                f"surface {self.name!r}: `prescribed:` needs a `patch:` -- it holds cells, and a "
+                "per-prim or mesh surface has none for it to hold (ADR 0123)"
+            )
+        if self.layers > 1:
+            raise ValueError(
+                f"surface {self.name!r}: `prescribed:` on a layered surface is not supported -- "
+                "it holds the cell's one node (ADR 0123)"
+            )
+        if self.water is not None:
+            raise ValueError(
+                f"surface {self.name!r}: `prescribed:` beside `water:` is two authorities on a "
+                "cell's temperature; author the puddle or the fixed temperature"
+            )
+        whole = [p for p in self.prescribed if p.region_m is None]
+        if whole and len(self.prescribed) > 1:
+            raise ValueError(
+                f"surface {self.name!r}: a `prescribed:` entry without region_m holds the whole "
+                "surface, so no other entry can hold part of it"
+            )
+        regions = [p.region_m for p in self.prescribed if p.region_m is not None]
+        for i, a in enumerate(regions):
+            for b in regions[i + 1 :]:
+                if a[0] < b[1] and b[0] < a[1] and a[2] < b[3] and b[2] < a[3]:
+                    raise ValueError(
+                        f"surface {self.name!r}: prescribed regions {list(a)} and {list(b)} "
+                        "overlap -- a cell in both would have two temperatures"
+                    )
+        return self
 
     @model_validator(mode="after")
     def _film_needs_a_patch(self) -> SurfaceSpec:
@@ -958,6 +1029,11 @@ class ThermalSceneSpec(_Frozen):
                 raise ValueError(
                     f"cabin {self.cabin.name!r}: panel {panel.surface!r} must be a single-layer "
                     "surface without a film (the cabin joins the panel's one node)"
+                )
+            if surface.prescribed:
+                raise ValueError(
+                    f"cabin {self.cabin.name!r}: panel {panel.surface!r} carries `prescribed:`, "
+                    "which the coupled cabin solve does not hold (ADR 0123)"
                 )
         if any(n.name == self.cabin.name for n in self.nodes):
             raise ValueError(f"cabin {self.cabin.name!r} shares its name with a network node")

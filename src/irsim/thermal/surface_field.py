@@ -230,6 +230,7 @@ class PlanarThermalField:
         on_tick: Callable[[float, NDArray[np.float64]], None] | None = None,
         conduction: Any = None,
         film_kg_m2: Any = None,
+        pinned_k: Any = None,
     ) -> None:
         if properties.n_facets != patch.n_cells:
             raise ValueError(
@@ -254,6 +255,7 @@ class PlanarThermalField:
             on_tick=on_tick,
             conduction=conduction,
             film_kg_m2=film_kg_m2,
+            pinned_k=pinned_k,
         )
 
     # -- delegation --------------------------------------------------------------------------
@@ -294,6 +296,14 @@ class PlanarThermalField:
     def evaporated_kg_m2(self) -> NDArray[np.float64]:
         """Water each cell's film has given up since t₀, kg m⁻² (PH.2)."""
         return self.field.evaporated_kg_m2
+
+    @property
+    def pinned_k(self) -> NDArray[np.float64] | None:
+        """``(n_cells,)`` prescribed kelvin, NaN where solved, or ``None`` (ADR 0123).
+
+        The ground truth a dataset keys on: reshape to ``patch.shape`` for the anomaly mask.
+        """
+        return self.field.pinned_k
 
     # -- the query ---------------------------------------------------------------------------
 

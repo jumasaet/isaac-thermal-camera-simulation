@@ -24,7 +24,12 @@ operator the step is the midpoint rule it always was, bit for bit. Either way th
 now guarded: §6.4's bound ``2C/(h + 4εσT³)`` is checked every step on the forcing's actual ``h``
 and raises with the numbers -- it never was before, and ``tick_s`` up to 3600 s parsed.
 
-docs/physics-model.md §6.4, §15 T1; ADR 0036, ADR 0037, ADR 0094
+**Pinned facets** (ADR 0123). ``pinned_k`` holds chosen facets at a prescribed temperature --
+§6.6's "scripted, not predicted", per cell. A pinned facet skips the balance and is a Dirichlet
+row in the implicit conduction step, so its neighbours exchange heat with exactly that value.
+Without ``pinned_k`` nothing here changes, bit for bit.
+
+docs/physics-model.md §6.4, §6.6, §15 T1; ADR 0036, ADR 0037, ADR 0094, ADR 0123
 """
 
 from __future__ import annotations
@@ -194,6 +199,7 @@ class FacetSolver:
         conduction: Any = None,
         guard: bool = True,
         film_kg_m2: Any = None,
+        pinned_k: Any = None,
     ) -> None:
         self.properties = properties
         state = _f64(initial_k, "initial temperature")
@@ -203,6 +209,23 @@ class FacetSolver:
             raise ValueError(
                 f"initial temperature has shape {state.shape}, expected ({properties.n_facets},)"
             )
+        # ADR 0123: `(N,)` kelvin with NaN on every free facet. Held as a mask and the values, and
+        # applied to the initial state too, so a pinned facet is at its temperature from t0 on.
+        self._pinned: tuple[NDArray[np.bool_], NDArray[np.float64]] | None = None
+        if pinned_k is not None:
+            pinned = _f64(pinned_k, "pinned temperature")
+            if pinned.shape != (properties.n_facets,):
+                raise ValueError(
+                    f"pinned_k has shape {pinned.shape}, expected ({properties.n_facets},)"
+                )
+            held = np.isfinite(pinned)
+            if np.any(np.isinf(pinned)) or np.any(pinned[held] <= 0.0):
+                raise ValueError(
+                    "a pinned temperature must be finite, positive kelvin (NaN = free)"
+                )
+            if held.any():
+                self._pinned = (held, np.where(held, pinned, 0.0))
+                state = self._pin(state)
         if np.any(state <= 0.0):
             raise ValueError("temperatures must be positive (kelvin)")
         if conduction is not None and conduction.n_facets != properties.n_facets:
@@ -233,6 +256,21 @@ class FacetSolver:
     @property
     def temperatures_k(self) -> NDArray[np.float64]:
         return np.asarray(self._state.copy())
+
+    @property
+    def pinned_k(self) -> NDArray[np.float64] | None:
+        """``(N,)`` prescribed kelvin with NaN on free facets, or ``None`` (ADR 0123)."""
+        if self._pinned is None:
+            return None
+        held, values = self._pinned
+        return np.asarray(np.where(held, values, np.nan))
+
+    def _pin(self, state: NDArray[np.float64]) -> NDArray[np.float64]:
+        """``state`` with every pinned facet set to its prescribed temperature."""
+        if self._pinned is None:
+            return state
+        held, values = self._pinned
+        return np.asarray(np.where(held, values, state))
 
     @property
     def film_kg_m2(self) -> NDArray[np.float64] | None:
@@ -289,6 +327,10 @@ class FacetSolver:
         bound = explicit_bound_s(
             self.properties.heat_capacity_j_m2_k, h, self.properties.emissivity, self._state
         )
+        if self._pinned is not None:
+            # A pinned facet is never stepped, so it has no explicit bound to break -- and an
+            # 800 K hot spot on thin metal would otherwise refuse a tick its free cells take.
+            bound = np.where(self._pinned[0], np.inf, bound)
         worst = int(np.argmin(bound))
         if dt_s > bound[worst]:
             raise ValueError(
@@ -306,8 +348,10 @@ class FacetSolver:
             self._check_explicit_bound(forcing, dt_s)
         capacity = self.properties.heat_capacity_j_m2_k
         wet = self._wetness(forcing)
-        half = self._state + 0.5 * dt_s * self.net_flux(self._state, forcing, wet) / capacity
-        explicit = self._state + dt_s * self.net_flux(half, forcing, wet) / capacity
+        half = self._pin(
+            self._state + 0.5 * dt_s * self.net_flux(self._state, forcing, wet) / capacity
+        )
+        explicit = self._pin(self._state + dt_s * self.net_flux(half, forcing, wet) / capacity)
         if self._film is not None:
             # The film: rain in, evaporation (at the midpoint temperature) out, never below zero.
             from irsim.thermal.latent import evaporation_kg_m2_s
@@ -327,8 +371,11 @@ class FacetSolver:
         # IMEX: the surface balance above is the explicit half; conduction is backward Euler on
         # a matrix that depends only on the tick, factorised once and reused (ADR 0094).
         if self._factor is None or self._factor[0] != float(dt_s):
-            self._factor = (float(dt_s), self.conduction.factorise(capacity, float(dt_s)))
-        self._state = np.asarray(self._factor[1].solve(explicit), dtype=np.float64)
+            fixed = None if self._pinned is None else self._pinned[0]
+            self._factor = (float(dt_s), self.conduction.factorise(capacity, float(dt_s), fixed))
+        # The Dirichlet rows already return the prescribed value; `_pin` makes it exact to the bit
+        # rather than to the LU's rounding.
+        self._state = self._pin(np.asarray(self._factor[1].solve(explicit), dtype=np.float64))
         return self.temperatures_k
 
     def as_float32(self) -> NDArray[np.float32]:
@@ -376,14 +423,26 @@ class SpinUpCache:
 
 
 def spin_up_key(
-    properties: FacetProperties, weather_hash: str, t0_s: float, hours: float, dt_s: float
+    properties: FacetProperties,
+    weather_hash: str,
+    t0_s: float,
+    hours: float,
+    dt_s: float,
+    pinned_k: Any = None,
 ) -> str:
-    """SHA-256 over the material content, the weather hash, t₀, the span and the step."""
+    """SHA-256 over the material content, the weather hash, t₀, the span and the step.
+
+    Pinned facets (ADR 0123) change the answer, so they join the key -- and only when present,
+    so every key computed before them is unchanged.
+    """
     h = hashlib.sha256()
     h.update(properties.content_hash().encode())
     h.update(weather_hash.encode())
     for value in (t0_s, hours, dt_s):
         h.update(np.float64(value).tobytes())
+    if pinned_k is not None:
+        h.update(b"pinned")
+        h.update(np.ascontiguousarray(pinned_k, dtype=np.float64).tobytes())
     return h.hexdigest()
 
 
@@ -397,6 +456,7 @@ def spin_up(
     initial_k: Any = None,
     cache: SpinUpCache | None = None,
     conduction: Any = None,
+    pinned_k: Any = None,
 ) -> SpinUpResult:
     """Integrate the facets through ``hours`` of weather *ending* at ``t0_s``.
 
@@ -404,10 +464,13 @@ def spin_up(
     t₀ -- not a state at some earlier time that the caller then has to advance. Starting a scene
     at the air temperature instead is wrong by several kelvin on a sunlit surface and stays wrong
     for hours, which is exactly the part of a diurnal cycle a thermal camera is most interesting in.
+
+    ``pinned_k`` holds its facets through the whole run (ADR 0123): a hot spot that has been
+    there for days has already warmed its neighbours by t₀.
     """
     if hours <= 0.0 or dt_s <= 0.0:
         raise ValueError("hours and dt_s must be positive")
-    key = spin_up_key(properties, weather_hash, t0_s, hours, dt_s)
+    key = spin_up_key(properties, weather_hash, t0_s, hours, dt_s, pinned_k)
     if cache is not None:
         cached = cache.get(key)
         if cached is not None:
@@ -418,6 +481,7 @@ def spin_up(
         properties,
         forcing_at(start).arrays(properties.n_facets)[0] if initial_k is None else initial_k,
         conduction=conduction,
+        pinned_k=pinned_k,
     )
     steps = int(round(hours * 3600.0 / dt_s))
     for i in range(steps):

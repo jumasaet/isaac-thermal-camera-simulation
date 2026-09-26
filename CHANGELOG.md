@@ -10,6 +10,21 @@ repeated `Added` / `Changed` / `Fixed` headings was a single merge hotspot for t
 working in one tree; two commits already exist whose whole subject is restoring lost entries.
 `tests/unit/test_changelog_structure.py` fails on a repeated heading inside a dated section.
 
+### 2026-09-26
+
+#### Added
+- **Prescribed surface temperatures: anomaly ground truth from YAML** (ADR 0123). A patched
+  surface's `prescribed:` list of `{temperature_k, region_m?}` holds the whole patch, or the cells
+  whose centre is in `[u0, u1, v0, v1]`, at a fixed kelvin value at every tick, whatever the
+  weather. It is a **Dirichlet cell inside the solve**: identity rows in the implicit conduction
+  step, so the neighbours carry a real halo, and held through the spin-up, so the halo is there at
+  t₀. Emissivity stays the material's. `PlanarThermalField.pinned_k` is the GT mask. Held to
+  exactly 340.0 K (float32) under a clear noon and an overcast night; free cells bit-identical
+  without conduction (`tests/unit/test_prescribed_surface.py`, 13 cases).
+
+#### Changed
+- Scene schema **v16** (`prescribed:`); the committed v15 scenes are bumped. v4-v15 still load.
+
 ### 2026-09-22
 
 #### Added

@@ -21,6 +21,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 import numpy as np
+from numpy.typing import NDArray
 
 from irsim.atmosphere.layered import LayeredAtmosphere
 from irsim.atmosphere.library import load_atmosphere_preset
@@ -942,6 +943,16 @@ def _build_thermal_field(
     def wrap(inner: Any) -> Any:
         return wrap_into_weather(weather, inner)
 
+    # ADR 0123: a surface prescribed *whole* is held in the per-prim solve too, so the value the
+    # render bridge carries for the prim (and every pixel outside its patch) is the prescribed
+    # one. A surface prescribed on a region keeps its solved per-prim value: that is the rest of it.
+    whole = [
+        s.prescribed[0].temperature_k
+        if len(s.prescribed) == 1 and s.prescribed[0].region_m is None
+        else np.nan
+        for s in block.surfaces
+    ]
+    pinned = np.asarray(whole, dtype=np.float64) if np.isfinite(whole).any() else None
     spun = spin_up(
         properties,
         wrap(forcing),
@@ -949,8 +960,11 @@ def _build_thermal_field(
         t0_s,
         hours=block.spin_up_hours,
         dt_s=60.0,
+        pinned_k=pinned,
     )
-    field = ThermalField(properties, forcing, t0_s, spun.temperatures_k, block.tick_s)
+    field = ThermalField(
+        properties, forcing, t0_s, spun.temperatures_k, block.tick_s, pinned_k=pinned
+    )
     return _ThermalBuild(
         field=field,
         names=tuple(s.name for s in block.surfaces),
@@ -1183,10 +1197,14 @@ def _build_surface_fields(
                 s.name, patch, cells, forcing, np.full(n, float(build.spun_k[i])), conduction
             )
             continue
-        if casters:
+        # ADR 0123: the prescribed cells, NaN where the balance solves. The schema has already
+        # refused them on a layered surface, beside water and on a cabin panel.
+        pinned = _pinned_for(patch, s)
+        if casters or pinned is not None:
             # The shadow is part of the surface's history, not a term switched on at t0: a cell
             # under an overhang has been under it all morning. So the field is spun up on its
-            # own per-cell forcing, through the same wrap the per-prim spin-up uses.
+            # own per-cell forcing, through the same wrap the per-prim spin-up uses. A prescribed
+            # hot spot is the same kind of history -- its halo is there at t0.
             spun = spin_up(
                 cells,
                 build.wrap(forcing),
@@ -1195,6 +1213,7 @@ def _build_surface_fields(
                 hours=spec.thermal.spin_up_hours,
                 dt_s=60.0,
                 conduction=conduction,
+                pinned_k=pinned,
             ).temperatures_k
         else:
             spun = np.full(n, float(build.spun_k[i]))
@@ -1207,6 +1226,7 @@ def _build_surface_fields(
             spec.thermal.tick_s,
             film_kg_m2=film,
             conduction=conduction,
+            pinned_k=pinned,
         )
     if cabin_spec is not None:
         out.update(_build_cabin(spec, build, cabin_spec, panels))
@@ -1322,6 +1342,33 @@ def _puddle(
         ),
     )
     return wet, np.where(inside, float(water.depth_mm), 0.0)  # 1 mm of water is 1 kg m^-2
+
+
+def _pinned_for(patch: PlanarPatch, surface: Any) -> NDArray[np.float64] | None:
+    """``(n_cells,)`` prescribed kelvin, NaN where solved, from a `prescribed:` list (ADR 0123).
+
+    A cell is held when its **centre** lies in the region -- the rule `water:` and `film:` use,
+    so the three agree on which cells a region means. A region that holds no cell centre raises:
+    an anomaly smaller than a cell would otherwise vanish from the ground truth with no error.
+    ``None`` for a surface that prescribes nothing, which keeps its field bit-identical.
+    """
+    if not surface.prescribed:
+        return None
+    pinned = np.full(patch.n_cells, np.nan)
+    uv = patch.local_coords(patch.cell_centres())
+    for entry in surface.prescribed:
+        inside = np.ones(patch.n_cells, dtype=bool)
+        if entry.region_m is not None:
+            u0, u1, v0, v1 = entry.region_m
+            inside = (uv[:, 0] >= u0) & (uv[:, 0] <= u1) & (uv[:, 1] >= v0) & (uv[:, 1] <= v1)
+        if not inside.any():
+            raise ValueError(
+                f"surface {surface.name!r}: prescribed region {list(entry.region_m or ())} holds "
+                f"no cell centre (cells are {patch.du_m} x {patch.dv_m} m); widen it or refine "
+                "the patch"
+            )
+        pinned[inside] = float(entry.temperature_k)
+    return pinned
 
 
 def _film_for(patch: PlanarPatch, film: Any) -> Any:

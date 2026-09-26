@@ -123,17 +123,30 @@ class ConductionOperator:
         t = np.asarray(temperatures_k, dtype=np.float64)
         return np.asarray(-(self.laplacian @ t))
 
-    def implicit_matrix(self, heat_capacity_j_m2_k: Any, dt_s: float) -> Any:
-        """``I + dt · diag(1/(C A)) · L`` for backward Euler on the conduction term (CSC)."""
+    def implicit_matrix(self, heat_capacity_j_m2_k: Any, dt_s: float, fixed: Any = None) -> Any:
+        """``I + dt · diag(1/(C A)) · L`` for backward Euler on the conduction term (CSC).
+
+        ``fixed`` marks Dirichlet facets -- a prescribed temperature (ADR 0123). Their rows become
+        identity rows, so the solve returns the right-hand side for them and every free neighbour
+        is coupled to that value *inside* the implicit step, rather than to one the step has
+        already pulled towards the neighbour and that would then have to be overwritten.
+        """
         c = np.asarray(heat_capacity_j_m2_k, dtype=np.float64).reshape(-1)
         if c.shape[0] != self.n_facets:
             raise ValueError(f"{c.shape[0]} capacities for {self.n_facets} facets")
         inv = sp.diags(1.0 / (c * self.area_m2))
-        return (sp.identity(self.n_facets, format="csc") + dt_s * (inv @ self.laplacian)).tocsc()
+        matrix = sp.identity(self.n_facets, format="csc") + dt_s * (inv @ self.laplacian)
+        if fixed is not None:
+            held = np.asarray(fixed, dtype=bool).reshape(-1)
+            if held.shape[0] != self.n_facets:
+                raise ValueError(f"{held.shape[0]} fixed flags for {self.n_facets} facets")
+            free = sp.diags((~held).astype(np.float64))
+            matrix = free @ matrix + sp.diags(held.astype(np.float64))
+        return matrix.tocsc()
 
-    def factorise(self, heat_capacity_j_m2_k: Any, dt_s: float) -> Any:
+    def factorise(self, heat_capacity_j_m2_k: Any, dt_s: float, fixed: Any = None) -> Any:
         """A prefactored solve for one tick size; call once, back-substitute every tick."""
-        return spla.splu(self.implicit_matrix(heat_capacity_j_m2_k, dt_s))
+        return spla.splu(self.implicit_matrix(heat_capacity_j_m2_k, dt_s, fixed))
 
 
 def lateral_operator(patch: Any, conductivity_w_mk: float, thickness_m: float) -> Any:
