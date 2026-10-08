@@ -1,6 +1,11 @@
 """SkyModel (MS.2): overcast limit to 1e-9, coldest at zenith and the horizon toward T_air, the
 tilt LUT against scipy quad, the elevation LUT within 0.5 K of the layered model, the cos^q form
-measured (not authored), broadband delegation, and the object-only constructor."""
+measured (not authored), broadband delegation, and the object-only constructor.
+
+Also the one place the model skips work: under an opaque overcast the tilt blend does not build
+the clear-sky LUT whose weight is exactly zero. That is asserted on the bytes of the result, and
+the long path is asserted to still run one ulp short of total cover and under a total cover that
+is not opaque."""
 
 from __future__ import annotations
 
@@ -35,12 +40,18 @@ def lwir(tmp_path_factory: pytest.TempPathFactory):  # type: ignore[no-untyped-d
     return r, BandLUT.build(r)
 
 
-def _sky(lwir, cloud: float = 0.0, preset: str = "us_standard_clear", rh: float = 0.3) -> SkyModel:  # type: ignore[no-untyped-def]
+def _sky(  # type: ignore[no-untyped-def]
+    lwir,
+    cloud: float = 0.0,
+    preset: str = "us_standard_clear",
+    rh: float = 0.3,
+    env: str = "clear_dry",
+) -> SkyModel:
     r, lut = lwir
     atm = LayeredAtmosphere(
         load_atmosphere_preset(preset), _weather(cloud, rh), {"lwir": lut}, {"lwir": r}
     )
-    return SkyModel(atm, load_environment_preset("clear_dry"), "lwir", lut)
+    return SkyModel(atm, load_environment_preset(env), "lwir", lut)
 
 
 @pytest.mark.slow  # GT.1: over a second on its own
@@ -63,6 +74,98 @@ def test_overcast_limit_and_cloud_blend(lwir) -> None:  # type: ignore[no-untype
     el = math.radians(30.0)
     expect = 0.5 * float(clear.radiance(0.0, el)) + 0.5 * lb_air
     assert float(half.radiance(0.0, el)) == pytest.approx(expect, rel=1e-12)
+
+
+TILTS_RAD = np.radians([[0.0, 30.0, 90.0], [135.0, 179.5, 180.0]])
+
+
+def _count_clear_lut_calls(monkeypatch: pytest.MonkeyPatch) -> list[float]:
+    """Every time a SkyModel asks for the clear-sky LUT, by the time it asked for."""
+    calls: list[float] = []
+    inner = SkyModel._clear_lut
+
+    def counted(self: SkyModel, t_s: float):  # type: ignore[no-untyped-def]
+        calls.append(float(t_s))
+        return inner(self, t_s)
+
+    monkeypatch.setattr(SkyModel, "_clear_lut", counted)
+    return calls
+
+
+@pytest.mark.slow  # GT.1: over a second on its own
+def test_opaque_overcast_skips_the_clear_sky_bit_for_bit(lwir, monkeypatch) -> None:  # type: ignore[no-untyped-def]
+    """c ε = 1: the clear term's weight is exactly 0.0, so ``effective_radiance`` never builds the
+    clear-sky LUT -- and returns what the long path returns **bit for bit**, not within a
+    tolerance: it is the same number with ``0.0 * L_clear,eff`` not added to it.
+
+    RH = 0.3 puts the base aloft, so L_B(T_base) is not L_B(T_air): a short path that returned
+    the wrong cloud radiance, or the right one in the wrong shape or dtype, fails the comparison.
+    """
+    _, lut = lwir
+    sky = _sky(lwir, cloud=1.0)
+    calls = _count_clear_lut_calls(monkeypatch)
+
+    short = sky.effective_radiance(0.0, TILTS_RAD)
+    short_scalar = sky.effective_radiance(0.0, 0.0)
+    short_view = sky.effective_radiance_from_sky_view(0.0, np.array([0.0, 0.25, 1.0]))
+    assert calls == [], "the clear-sky LUT was built for a term whose weight is exactly zero"
+
+    c, l_cloud = sky._cloud(0.0)
+    assert c == 1.0
+
+    def long_path(tilt_rad: object) -> np.ndarray:
+        return np.asarray(
+            (1.0 - c) * sky.effective_clear_radiance(0.0, tilt_rad) + c * l_cloud, dtype=np.float64
+        )
+
+    for got, tilt in (
+        (short, TILTS_RAD),
+        (short_scalar, 0.0),
+        (short_view, np.arccos(2.0 * np.array([0.0, 0.25, 1.0]) - 1.0)),
+    ):
+        want = long_path(tilt)
+        assert got.dtype == want.dtype == np.float64
+        assert got.shape == want.shape
+        assert got.tobytes() == want.tobytes()
+    assert calls, "the reference never ran the long path, so the comparison proved nothing"
+
+    assert np.all(short < float(lut.lookup(np.float64(T_AIR))[()])), "the base is aloft, not T_air"
+    # what the long path did with a bad tilt, the short one still does
+    with pytest.raises(ValueError, match="tilt"):
+        sky.effective_radiance(0.0, math.radians(190.0))
+    assert np.isnan(sky.effective_radiance(0.0, np.nan))
+
+
+@pytest.mark.slow  # GT.1: over a second on its own
+@pytest.mark.parametrize(
+    ("cloud", "env", "clear_sky_shows"),
+    [
+        # one ulp short of total cover: the weight is 1.1e-16, which is small and not zero
+        (float(np.nextafter(1.0, 0.0)), "clear_dry", False),
+        # total cover by a cloud that is not opaque (eps = 1 - exp(-0.79 x 12)): the clear sky
+        # still leaks through, so "cloud_fraction == 1" alone must not take the short path
+        (1.0, "scattered_cumulus", True),
+        (0.5, "clear_dry", True),
+    ],
+)
+def test_any_clear_weight_above_zero_still_integrates_the_clear_sky(  # type: ignore[no-untyped-def]
+    lwir, monkeypatch, cloud: float, env: str, clear_sky_shows: bool
+) -> None:
+    sky = _sky(lwir, cloud=cloud, env=env)
+    calls = _count_clear_lut_calls(monkeypatch)
+    got = sky.effective_radiance(0.0, TILTS_RAD)
+    assert calls == [0.0], "the clear term has weight > 0 and was not evaluated"
+
+    c, l_cloud = sky._cloud(0.0)
+    assert 1.0 - c > 0.0
+    want = np.asarray(
+        (1.0 - c) * sky.effective_clear_radiance(0.0, TILTS_RAD) + c * l_cloud, dtype=np.float64
+    )
+    assert got.tobytes() == want.tobytes()
+    if clear_sky_shows:
+        # the clear LWIR sky is colder than the cloud base at every tilt, so any of it in the
+        # blend pulls the result below the cloud's own radiance
+        assert np.all(got < l_cloud)
 
 
 def test_coldest_at_zenith_and_horizon_toward_t_air(lwir) -> None:  # type: ignore[no-untyped-def]

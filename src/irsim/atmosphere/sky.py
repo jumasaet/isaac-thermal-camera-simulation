@@ -660,19 +660,38 @@ class SkyModel:
             out[i] = float(np.sum(weights * kernel * radiance)) / norm if norm > 0.0 else clear[-1]
         return out
 
-    def effective_clear_radiance(self, t_s: float, tilt_rad: Any) -> NDArray[np.float64]:
-        self._clear_lut(t_s)
-        tilt = self._cache[float(t_s)][1]
+    @staticmethod
+    def _tilt_degrees(tilt_rad: Any) -> NDArray[np.float64]:
         deg = np.degrees(np.asarray(tilt_rad, dtype=np.float64))
         if np.any(deg < 0.0) or np.any(deg > 180.0 + 1e-9):
             raise ValueError("tilt must lie in [0, 180] degrees (0 = facing up)")
+        return np.asarray(deg, dtype=np.float64)
+
+    def effective_clear_radiance(self, t_s: float, tilt_rad: Any) -> NDArray[np.float64]:
+        deg = self._tilt_degrees(tilt_rad)
+        self._clear_lut(t_s)
+        tilt = self._cache[float(t_s)][1]
         return np.asarray(np.interp(deg, TILT_GRID_DEG, tilt), dtype=np.float64)
 
     def effective_radiance(self, t_s: float, tilt_rad: Any) -> NDArray[np.float64]:
-        """L_sky,eff(β) with the cloud blend; c = 1 gives L_B(T_air) at every tilt."""
+        """L_sky,eff(β) = (1 − c ε) L_clear,eff(β) + c ε L_B(T_base); c ε = 1 gives L_B(T_base)
+        at every tilt.
+
+        When the clear weight ``1 − c ε`` is exactly zero the clear term is not evaluated. It is
+        the whole cost of this call (181 column integrals and the tilt quadrature, per time step)
+        and its product with 0.0 is +0.0 for any finite radiance, so adding it changes no bit of
+        the result. The test is ``== 0.0`` and not a tolerance on purpose: at 1 − c ε = 1e-16 the
+        term is small but not null, and the long path below still runs.
+        """
         c, l_cloud = self._cloud(t_s)
+        clear_weight = 1.0 - c
+        if clear_weight == 0.0:
+            deg = self._tilt_degrees(tilt_rad)
+            # A NaN tilt reads NaN on the long path (through the interpolation); keep that.
+            return np.asarray(np.where(np.isnan(deg), np.nan, c * l_cloud), dtype=np.float64)
         return np.asarray(
-            (1.0 - c) * self.effective_clear_radiance(t_s, tilt_rad) + c * l_cloud, dtype=np.float64
+            clear_weight * self.effective_clear_radiance(t_s, tilt_rad) + c * l_cloud,
+            dtype=np.float64,
         )
 
     def effective_radiance_from_sky_view(

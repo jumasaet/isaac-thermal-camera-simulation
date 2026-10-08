@@ -303,6 +303,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   controls it has no port of (it had silently dropped `linear_percent`).
 
 ### Changed
+- **An opaque overcast no longer builds the clear-sky LUT it then multiplies by zero.**
+  `SkyModel.effective_radiance` is `(1 − cε) L_clear,eff + cε L_B(T_base)`; when `1 − cε` is
+  exactly `0.0` (total cover by a `tau: 0` cloud) the clear term — 181 column integrals and the
+  tilt quadrature, rebuilt on every frame because the cache key is `t_s` — is not evaluated. The
+  result is **bit-identical**: asserted on the bytes in `tests/unit/test_sky_model.py`, and checked
+  once against the previous `sky.py` on a 640×512 `environment_radiance` plane for six
+  cloud/preset combinations. The test is `== 0.0`, not a tolerance, and it is on `1 − cε`, not on
+  the cloud fraction: one ulp short of total cover, or total cover by `scattered_cumulus`
+  (ε = 0.99992), still takes the long path, and two tests fail if it does not. Measured in Isaac
+  on the inspection bench at 640×512 (30 frames after 10, RTX 3090): the frame goes from
+  1286 ± 48 ms to 568 ± 25 ms, `environment_radiance` from 722 ms to 5 ms. A scene with any clear
+  sky in the blend is unchanged and still pays ~0.7 s per frame for it. `SkyModel.radiance` (the
+  image path) is deliberately untouched: there the clear column is not multiplied by zero.
 - **The NIR camera has a visible-camera display, not the Boson's** (SC.26, S54):
   `example_nir_si_1280.yaml` goes from plateau + DDE to `linear` with gamma 2.2. The
   `nir_frame_display8` golden was regenerated deliberately; `dn16` and `radiance` are bit-identical.
