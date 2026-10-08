@@ -5,7 +5,11 @@ measured (not authored), broadband delegation, and the object-only constructor.
 Also the one place the model skips work: under an opaque overcast the tilt blend does not build
 the clear-sky LUT whose weight is exactly zero. That is asserted on the bytes of the result, and
 the long path is asserted to still run one ulp short of total cover and under a total cover that
-is not opaque."""
+is not opaque.
+
+And the clear-sky LUT itself: it is built from the layered model as one elevation grid, and its
+bytes are held against the 181 per-angle ``sky_radiance`` calls that used to build it; its cache
+is bounded, oldest time first, and a time that was evicted rebuilds to the same bytes."""
 
 from __future__ import annotations
 
@@ -16,7 +20,12 @@ import pytest
 from scipy.integrate import quad
 
 from irsim.atmosphere import LayeredAtmosphere, load_atmosphere_preset
-from irsim.atmosphere.sky import ELEVATION_GRID_DEG, SkyModel, azimuth_kernel
+from irsim.atmosphere.sky import (
+    ELEVATION_FLOOR_RAD,
+    ELEVATION_GRID_DEG,
+    SkyModel,
+    azimuth_kernel,
+)
 from irsim.config.environment import load_environment_preset
 from irsim.radiometry.lut import BandLUT
 from irsim.radiometry.spectral_response import load_spectral_response
@@ -166,6 +175,71 @@ def test_any_clear_weight_above_zero_still_integrates_the_clear_sky(  # type: ig
         # the clear LWIR sky is colder than the cloud base at every tilt, so any of it in the
         # blend pulls the result below the cloud's own radiance
         assert np.all(got < l_cloud)
+
+
+@pytest.mark.slow  # GT.1: the reference is 181 scalar column integrals, half a second of them
+def test_the_clear_sky_lut_is_181_per_angle_columns_bit_for_bit(lwir) -> None:  # type: ignore[no-untyped-def]
+    """The whole elevation LUT against the expression that used to build it, on its bytes.
+
+    The grid path is the same integral with the angle-independent work done once, so it must
+    return the same doubles at all 181 elevations -- including the horizon node, which is held at
+    ``ELEVATION_FLOOR_RAD`` rather than evaluated at zero.
+    """
+    sky = _sky(lwir)
+    want = np.array(
+        [
+            sky.atmosphere.sky_radiance(
+                "lwir", 0.0, max(math.radians(d), ELEVATION_FLOOR_RAD), sky.quantity
+            )
+            for d in ELEVATION_GRID_DEG
+        ]
+    )
+    got = sky._clear_lut(0.0)
+    assert got.dtype == want.dtype == np.float64
+    assert got.shape == want.shape == ELEVATION_GRID_DEG.shape
+    assert got.tobytes() == want.tobytes(), np.max(np.abs(got - want))
+    assert np.all(np.diff(want) < 0.0), "the reference is the real sky: brightest at the horizon"
+
+
+def test_the_clear_sky_cache_is_bounded_oldest_first(lwir, monkeypatch) -> None:  # type: ignore[no-untyped-def]
+    """One entry per time used to mean one entry per rendered frame, for ever.
+
+    The layered model is stood in for by a cheap function of time, because what is under test is
+    which entries survive, and the real column integral would make a full cache cost a minute.
+    """
+    built: list[float] = []
+
+    def grid(self, band, t_s, elevations_rad, quantity="lb"):  # type: ignore[no-untyped-def]
+        built.append(float(t_s))
+        return np.linspace(30.0, 10.0, len(elevations_rad)) + float(t_s)
+
+    monkeypatch.setattr(LayeredAtmosphere, "sky_radiance_grid", grid)
+    monkeypatch.setattr(SkyModel, "_CLEAR_CACHE_MAX", 3)
+    sky = _sky(lwir)
+    first = {t: sky._clear_lut(t).copy() for t in (0.0, 1.0, 2.0)}
+    tilt_0 = sky.effective_clear_radiance(0.0, TILTS_RAD)
+    assert built == [0.0, 1.0, 2.0] and list(sky._cache) == [0.0, 1.0, 2.0]
+
+    sky._clear_lut(3.0)
+    sky._clear_lut(4.0)
+    assert list(sky._cache) == [2.0, 3.0, 4.0], "the two oldest times go, in the order built"
+    # a time still held is not rebuilt; one that was evicted is, to the same bytes
+    assert sky._clear_lut(2.0).tobytes() == first[2.0].tobytes()
+    assert built == [0.0, 1.0, 2.0, 3.0, 4.0]
+    assert sky._clear_lut(0.0).tobytes() == first[0.0].tobytes()
+    assert built[-1] == 0.0 and list(sky._cache) == [3.0, 4.0, 0.0]
+    # the tilt LUT rides in the same entry: asked for at a new time with the cache full, and
+    # again for a time that had been dropped
+    assert sky.effective_clear_radiance(5.0, TILTS_RAD).shape == TILTS_RAD.shape
+    assert sky.effective_clear_radiance(0.0, TILTS_RAD).tobytes() == tilt_0.tobytes()
+    assert len(sky._cache) == 3
+
+    # the shipped bound is wide enough that a caller sweeping a day at any sane cadence is never
+    # evicted mid-sweep, and tight enough to be a bound: under a megabyte of LUT rows
+    monkeypatch.undo()
+    entry_bytes = sum(a.nbytes for a in sky._cache[0.0])
+    assert SkyModel._CLEAR_CACHE_MAX >= 96
+    assert SkyModel._CLEAR_CACHE_MAX * entry_bytes < 1_000_000
 
 
 def test_coldest_at_zenith_and_horizon_toward_t_air(lwir) -> None:  # type: ignore[no-untyped-def]

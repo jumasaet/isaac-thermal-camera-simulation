@@ -1,6 +1,11 @@
 """Layered slant-path atmosphere (MS.1): horizontal identity with M8.1, isothermal invariance at
 every elevation, the exact exponential sum of M8.7's piecewise spectra, the fitter, the 200 m
-anchor for every preset, the R13 sky anchors, convergence along the ray, and stage-2 wiring."""
+anchor for every preset, the R13 sky anchors, convergence along the ray, and stage-2 wiring.
+
+Also the elevation grid: ``sky_radiance_grid`` and ``ExponentialSum.column_radiance`` answer many
+angles in one pass, and are held to the per-angle ``sky_radiance`` / ``path_radiance`` they replace
+**by their bytes**, not by a tolerance -- they are the same integral with the repeated work taken
+out, so anything short of the same doubles is a bug."""
 
 from __future__ import annotations
 
@@ -215,6 +220,85 @@ def test_target_converges_along_the_ray_and_excess_is_monotone(
     dl = float(lut.lookup(np.float64(300.0), "dlb_dt")[()])
     assert abs(seen[-1] - limit) / dl * 1e3 < 5.0, "within 5 mK of the limit at 200 km"
     assert excess[-1] > 0.0 and excess[0] / (lt - sky) == pytest.approx(1.0, abs=0.05)
+
+
+# The sky model's own horizon floor and grid ends, angles between grid nodes, and two rays that
+# do not rise at all (they take the closed form, which the grid hands to the scalar method).
+GRID_ELEVATIONS_DEG = (0.05, 0.5, 1.0, 7.3, 30.0, 45.0, 89.5, 90.0, 0.0, -5.0)
+
+
+def _bytes_equal(got: np.ndarray, want: np.ndarray) -> None:
+    assert got.dtype == want.dtype == np.float64
+    assert got.shape == want.shape
+    assert got.tobytes() == want.tobytes(), np.max(np.abs(got - want))
+
+
+@pytest.mark.parametrize(
+    ("band", "edges_um", "preset", "weather"),
+    [
+        ("lwir", (7.5, 13.5), "us_standard_clear", FIT["us_standard_clear"]),
+        # humid: the water classes carry the column, on their own scale height
+        ("lwir", (7.5, 13.5), "tropical", FIT["tropical"]),
+        # 50 m visibility: the aerosol dominates and every class saturates at u_max
+        ("lwir", (7.5, 13.5), "fog_dense_50m", FIT["fog_dense_50m"]),
+        # another band: other classes, an opaque one among them
+        ("mwir", (3.0, 5.0), "haze", FIT["haze"]),
+    ],
+)
+def test_the_elevation_grid_is_the_per_angle_sky_bit_for_bit(
+    tmp_path: pathlib.Path,
+    request: pytest.FixtureRequest,
+    band: str,
+    edges_um: tuple[float, float],
+    preset: str,
+    weather: tuple[float, float, float],
+) -> None:
+    """``sky_radiance_grid`` is ``[sky_radiance(θ) for θ in grid]``: the same doubles.
+
+    The grid builds the range samples once, each scale height's column once per ray and one
+    exponential sum per time step; the per-angle call rebuilds all three for every angle. None of
+    that is arithmetic, so the comparison is on bytes. A tolerance here would let a shared column
+    be reused across two scale heights and still pass.
+    """
+    r = _tophat(tmp_path, *edges_um)
+    lut = request.getfixturevalue(f"tophat_{band}_lut")  # the session's, built on these edges
+    atm = LayeredAtmosphere(
+        load_atmosphere_preset(preset), _weather(*weather), {band: lut}, {band: r}
+    )
+    elevations = [math.radians(d) for d in GRID_ELEVATIONS_DEG]
+    for quantity in ("lb", "lb_q"):
+        want = np.array([atm.sky_radiance(band, 0.0, el, quantity) for el in elevations])
+        _bytes_equal(atm.sky_radiance_grid(band, 0.0, elevations, quantity), want)
+        # the reference is not a row of equal numbers the grid could match by accident
+        assert np.all(want > 0.0) and np.unique(want).size >= len(elevations) - 2
+
+
+def test_column_radiance_and_ray_optical_depths_are_the_scalar_methods_bit_for_bit() -> None:
+    """The two pieces under the grid, on a sum built to reach every branch: two classes on one
+    scale height (the shared column), a class with zero extinction (``_scaled``'s zero branch),
+    and -- with the aerosol off -- a class with no optical depth at all, which is skipped."""
+    lb = lambda h: 40.0 + 1.5e-3 * np.minimum(h, 11000.0)  # noqa: E731 - elementwise, any shape
+    s = np.concatenate([[0.0], np.logspace(-3, 5.4, 4001)])
+    elevations = [math.radians(d) for d in GRID_ELEVATIONS_DEG]
+    for gamma_aerosol in (5e-5, 0.0):
+        es = ExponentialSum(
+            weights=np.array([0.5, 0.3, 0.2]),
+            gamma_0=np.array([1e-4, 0.0, 3e-3]),
+            scale_heights_m=np.array([2000.0, 8000.0, 2000.0]),
+            gamma_aerosol=gamma_aerosol,
+            aerosol_scale_height_m=1200.0,
+        )
+        for el in elevations:
+            _bytes_equal(es._ray_optical_depths(s, el), es.optical_depths(s, el))
+        want = np.array([es.path_radiance(math.inf, el, lb) for el in elevations])
+        _bytes_equal(es.column_radiance(elevations, lb), want)
+        assert np.unique(want).size >= len(elevations) - 2
+        # a non-default quadrature goes through the same way, and so does the empty range
+        want = np.array([es.path_radiance(math.inf, el, lb, 501, 12.0, 20e3) for el in elevations])
+        _bytes_equal(es.column_radiance(elevations, lb, 501, 12.0, 20e3), want)
+        want = np.array([es.path_radiance(math.inf, el, lb, s_max_m=0.0) for el in elevations])
+        _bytes_equal(es.column_radiance(elevations, lb, s_max_m=0.0), want)
+    assert es.column_radiance([], lb).shape == (0,)
 
 
 def _config(lut: BandLUT, atmosphere: Any) -> PipelineConfig:

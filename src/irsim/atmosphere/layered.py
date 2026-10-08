@@ -31,7 +31,7 @@ from __future__ import annotations
 
 import math
 import warnings
-from collections.abc import Callable, Mapping
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
 from typing import Any, Literal
 
@@ -387,6 +387,41 @@ class ExponentialSum:
             out[k] = _scaled(float(self.gamma_0[k]), np.asarray(col, dtype=np.float64)) + aer
         return out
 
+    def _ray_optical_depths(
+        self, distance_m: NDArray[np.float64], elevation_rad: float
+    ) -> NDArray[np.float64]:
+        """:meth:`optical_depths` along **one** ray, bit for bit, without its repeated work.
+
+        ``optical_depths`` broadcasts the elevation to the shape of the distances before it builds
+        each column, which is what lets one call answer a frame of per-pixel rays (AT.1). On a
+        single ray sampled at 20 001 ranges that same broadcast evaluates one sine 20 001 times
+        per column, and it builds a column per class although the classes only have two scale
+        heights between them. Here the elevation stays a scalar and each distinct scale height's
+        column is built once.
+
+        A ray from the ground only (``observer_height_m = 0``, AT.28's default): that is the only
+        ray :meth:`column_radiance` traces, and at zero height :func:`column_length` is the
+        expression it was before AT.28. Nothing is approximated: the same :func:`column_length`
+        and the same ``_scaled`` run in the same order on the same values, so the result is the
+        same doubles.
+        ``tests/unit/test_layered_atmosphere.py`` compares the bytes.
+        """
+        d = np.asarray(distance_m, dtype=np.float64)
+        columns: dict[float, NDArray[np.float64]] = {}
+
+        def column(scale_height_m: float) -> NDArray[np.float64]:
+            if scale_height_m not in columns:
+                columns[scale_height_m] = np.asarray(
+                    column_length(d, elevation_rad, scale_height_m), dtype=np.float64
+                )
+            return columns[scale_height_m]
+
+        aer = _scaled(self.gamma_aerosol, column(float(self.aerosol_scale_height_m)))
+        out = np.empty((self.n_terms, *d.shape))
+        for k in range(self.n_terms):
+            out[k] = _scaled(float(self.gamma_0[k]), column(float(self.scale_heights_m[k]))) + aer
+        return out
+
     def transmittance(
         self, distance_m: Any, elevation_rad: Any = 0.0, observer_height_m: float = 0.0
     ) -> NDArray[np.float64]:
@@ -562,6 +597,67 @@ class ExponentialSum:
             distance_m, elevation_rad, lb_of_height, n_steps, u_max, s_max_m, observer_height_m
         )
         return float(np.dot(self.weights, per_class))
+
+    def column_radiance(
+        self,
+        elevations_rad: Sequence[float],
+        lb_of_height: Callable[[NDArray[np.float64]], NDArray[np.float64]],
+        n_steps: int = 4000,
+        u_max: float = 40.0,
+        s_max_m: float = 300e3,
+    ) -> NDArray[np.float64]:
+        """The whole column's emission at many elevations:
+        ``[path_radiance(inf, θ, lb_of_height) for θ in elevations_rad]``, **bit for bit**.
+
+        An elevation grid is what a sky model asks for (181 angles per time step), and asking for
+        it one :meth:`path_radiance` at a time repeats everything that does not depend on the
+        angle. This does the same integral, class by class in its own optical-depth coordinate
+        (docs/physics-model.md §7.1, §5.3 a), and only takes the repeats out:
+
+        * the range grid ``s_dense`` is the same 20 001 points for every upward ray to infinity,
+          so it is built once instead of once per angle (a 20 000-point ``logspace`` each time);
+        * the optical depths along each ray come from :meth:`_ray_optical_depths`, which does not
+          re-evaluate one sine per range sample nor one column per class;
+        * the classes of one ray share a single ``lb_of_height`` lookup, so that callable must be
+          elementwise over an array of any shape (the layered model's own is).
+
+        The arithmetic is :meth:`path_radiance_per_class`'s, in its order, on its values; that
+        method is left alone as the reference this one is tested against, bytewise. A ray that
+        does not rise has a closed form there and is handed to it unchanged.
+        """
+        elevations = [float(el) for el in elevations_rad]
+        if s_max_m <= 0.0:
+            return np.array(
+                [
+                    self.path_radiance(math.inf, el, lb_of_height, n_steps, u_max, s_max_m)
+                    for el in elevations
+                ]
+            )
+        out = np.empty(len(elevations))
+        s_dense = np.concatenate([[0.0], np.logspace(-3, math.log10(s_max_m), 20000)])
+        n = n_steps if n_steps % 2 == 0 else n_steps + 1
+        for i, el in enumerate(elevations):
+            st = math.sin(el)
+            if st <= 0.0:
+                out[i] = self.path_radiance(math.inf, el, lb_of_height, n_steps, u_max, s_max_m)
+                continue
+            od_dense = self._ray_optical_depths(s_dense, el)  # (K, n)
+            per_class = np.zeros(self.n_terms)
+            live: list[tuple[int, NDArray[np.float64]]] = []
+            heights = []
+            for k in range(self.n_terms):
+                od_end = float(od_dense[k, -1])
+                if od_end <= 0.0:
+                    continue
+                u = np.linspace(0.0, min(od_end, u_max), n + 1)
+                live.append((k, u))
+                heights.append(np.interp(u, od_dense[k], s_dense) * st)
+            if live:
+                lb = lb_of_height(np.stack(heights))
+                for row, (k, u) in enumerate(live):
+                    per_class[k] = float(simpson(lb[row] * np.exp(-u), float(u[1] - u[0])))
+            out[i] = float(np.dot(self.weights, per_class))
+        return out
 
 
 def fit_exponential_sum(
@@ -1110,6 +1206,20 @@ class LayeredAtmosphere:
     ) -> float:
         """L_sky,B(θ) = L_path,B(∞, θ): the column's own emission (space adds nothing)."""
         return self.path_radiance(band, t_s, math.inf, elevation_rad, quantity)
+
+    def sky_radiance_grid(
+        self, band: str, t_s: float, elevations_rad: Sequence[float], quantity: Quantity = "lb"
+    ) -> NDArray[np.float64]:
+        """:meth:`sky_radiance` at many elevations and one time, bit for bit, in one pass.
+
+        One exponential sum for the time step rather than one per angle (each is a weather
+        sample and an anchor solve), then :meth:`ExponentialSum.column_radiance`. What a sky
+        model's elevation LUT should call; a single angle should still call :meth:`sky_radiance`.
+
+        docs/physics-model.md §5.3(a), §7.1
+        """
+        es = self.exponential_sum(band, t_s)
+        return es.column_radiance(elevations_rad, self._lb_of_height(band, t_s, quantity))
 
     def apparent_sky_temperature_k(self, band: str, t_s: float, elevation_rad: float) -> float:
         lut = self._luts[band]

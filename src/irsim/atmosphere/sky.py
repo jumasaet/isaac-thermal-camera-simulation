@@ -78,6 +78,8 @@ __all__ = ["SkyModel", "CosQFit", "azimuth_kernel", "ELEVATION_GRID_DEG", "TILT_
 ELEVATION_GRID_DEG = np.arange(0.0, 90.0 + 1e-9, 0.5)
 TILT_GRID_DEG = np.arange(0.0, 180.0 + 1e-9, 1.0)
 ELEVATION_FLOOR_RAD = math.radians(0.05)  # the flat-earth horizon integral needs θ > 0
+#: The elevation grid as the layered model is asked for it: radians, the horizon held at the floor.
+_CLEAR_ELEVATIONS_RAD = tuple(max(math.radians(d), ELEVATION_FLOOR_RAD) for d in ELEVATION_GRID_DEG)
 
 
 def azimuth_kernel(a: NDArray[np.float64], b: NDArray[np.float64]) -> NDArray[np.float64]:
@@ -151,6 +153,7 @@ class SkyModel:
                 f"{quantity!r}; the two differ by ~1e19 and a mismatch renders a plausible sky "
                 "with the wrong brightness"
             )
+        #: time -> (clear-sky radiance on the elevation grid, its tilt LUT); see `_clear_lut`.
         self._cache: dict[float, tuple[NDArray[np.float64], NDArray[np.float64]]] = {}
         #: (tau to the cloud base, L beyond it) on the elevation grid; see `_cloud_path`.
         self._path_cache: dict[
@@ -262,25 +265,40 @@ class SkyModel:
             albedo = cloud_reflectance(column_optical_depth, mu0)
         return albedo * e_band / math.pi
 
+    #: How many time steps of the clear-sky LUT to keep. The key is the time itself and a camera's
+    #: clock advances every frame, so an unbounded dict grew by one entry per rendered frame for
+    #: as long as the process lived. An entry is two short float64 rows (181 elevations and 181
+    #: tilts, under 3 kB), so the bound can afford to be far wider than any set of times a caller
+    #: returns to -- a 48 h weather file revisited every half hour is 96 -- and still cap the
+    #: whole cache below a megabyte.
+    _CLEAR_CACHE_MAX = 256
+
     # -- clear-sky elevation LUT ----------------------------------------------------------
     def _clear_lut(self, t_s: float) -> NDArray[np.float64]:
-        """L_clear(θ) on the elevation grid (the layered column emission), cached per time."""
+        """L_clear(θ) on the elevation grid (the layered column emission), cached per time.
+
+        The 181 column integrals go to the layered model as one grid
+        (:meth:`LayeredAtmosphere.sky_radiance_grid`) rather than as 181 calls. Same integrals,
+        same doubles -- ``tests/unit/test_sky_model.py`` holds the bytes against the per-angle
+        ``sky_radiance`` -- at roughly a third of the time, which matters because a clear scene
+        rebuilds this on every frame.
+
+        docs/physics-model.md §5.3(a), §7.1
+        """
         key = float(t_s)
         if key not in self._cache:
-            values = np.array(
-                [
-                    self._atm.sky_radiance(
-                        self._band, key, max(math.radians(d), ELEVATION_FLOOR_RAD), self._q
-                    )
-                    for d in ELEVATION_GRID_DEG
-                ]
-            )
+            values = self._atm.sky_radiance_grid(self._band, key, _CLEAR_ELEVATIONS_RAD, self._q)
             if self._skylight is not None:
                 # Isotropic, so it is a constant added at every elevation, and it flows into the
                 # tilt LUT below and into every consumer of `clear_radiance` -- the sky background
                 # *and* the reflected environment term -- from this one place.
                 values = values + float(self._skylight.radiance(self.weather.at(key).dhi_w_m2)[()])
             tilt = self._tilt_lut(values)
+            # Oldest first, as the layered model's slant tables do and for the same reason: a
+            # render moves forward through the day, so the time least likely to be asked for
+            # again is the earliest one built.
+            if len(self._cache) >= self._CLEAR_CACHE_MAX:
+                self._cache.pop(next(iter(self._cache)))
             self._cache[key] = (values, tilt)
         return self._cache[key][0]
 

@@ -303,6 +303,26 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   controls it has no port of (it had silently dropped `linear_percent`).
 
 ### Changed
+- **The clear-sky LUT asks the layered model for its 181 elevations as one grid, and its cache is
+  bounded.** `SkyModel._clear_lut` called `LayeredAtmosphere.sky_radiance` once per angle, and each
+  call rebuilt what does not depend on the angle: the exponential sum for the time step (a weather
+  sample and an anchor solve), the 20 001-point range grid (a `logspace`), and — inside
+  `optical_depths` — one sine per range sample per column and one column per class although the
+  classes share two scale heights. The new `LayeredAtmosphere.sky_radiance_grid` /
+  `ExponentialSum.column_radiance` do the same integral with those repeats taken out, and nothing
+  else: the result is **bit-identical**, asserted on the bytes against the per-angle calls for
+  four presets, two bands and both LUT quantities (`tests/unit/test_layered_atmosphere.py`) and
+  for the whole 181-node LUT (`tests/unit/test_sky_model.py`); eight mutations of the new code
+  each fail a test. The per-angle methods are untouched and remain the reference. This is hoisting
+  and de-duplication rather than array vectorisation: pushing all 181 rays through one
+  `optical_depths` call was measured too and saves 17 %, against 66 % for this. Measured in Isaac
+  on the inspection bench at 640×512 (30 frames after 10, RTX 3090, iso and clear interleaved in
+  one sitting): the clear frame goes from 1145 / 1124 ms to 716 / 725 ms and the LUT rebuild from
+  626 / 632 ms to 230 / 234 ms, while the isothermal control, which never builds the LUT, reads
+  557 / 552 ms before and 551 / 554 ms after. Of the 232 ms left, 32 ms is the tilt quadrature,
+  which this step does not touch. The cache was a dict keyed on `t_s` that grew by one entry per
+  rendered frame for the life of the process; it now holds 256 time steps (under 3 kB each) and
+  drops the oldest first, as the layered model's slant tables already do.
 - **An opaque overcast no longer builds the clear-sky LUT it then multiplies by zero.**
   `SkyModel.effective_radiance` is `(1 − cε) L_clear,eff + cε L_B(T_base)`; when `1 − cε` is
   exactly `0.0` (total cover by a `tau: 0` cloud) the clear term — 181 column integrals and the
