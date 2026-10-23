@@ -614,10 +614,20 @@ FULL_FIDELITY = FidelitySpec()
 
 
 class OutputsSpec(_Frozen):
+    """§12.2 ``outputs``: which planes a frame carries. ``false`` yields ``None``, never zeros."""
+
     radiance_linear: bool
     apparent_temperature: bool
     dn_16: bool
     display_8: bool
+    #: The scene's apparent temperature **before the camera**: L_B⁻¹ of the stage 1+2 radiance
+    #: (emission, reflection, atmosphere and the stage-2 overlays), box-averaged in radiance to the
+    #: native grid, with no PSF, cos⁴, housing, noise, calibration or ISP in it (§3.3).
+    #: ``apparent_temperature`` is the camera's reading and carries all of those; this is the
+    #: reference a real camera's radiometric frame is compared against. Optional and off by
+    #: default, which is the camera every configuration written before it describes, so no schema
+    #: bump (SC.32 rule).
+    scene_apparent_temperature: bool = False
 
 
 class GeometricCalibrationSpec(_Frozen):

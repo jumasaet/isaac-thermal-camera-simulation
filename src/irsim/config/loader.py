@@ -296,6 +296,11 @@ def _dump_with_file_hashes(
     calibration = sensor.get("calibration")
     if calibration is None or all(v is None for v in calibration.values()):
         sensor.pop("calibration", None)
+    # Same rule for the optional scene apparent-temperature plane: off is every camera written
+    # before it existed, so off is not recorded and no golden goes stale.
+    outputs_block = sensor.get("outputs", {})
+    if outputs_block.get("scene_apparent_temperature") is False:
+        outputs_block.pop("scene_apparent_temperature", None)
     # `SC.19`, same rule: no late defects is the pre-v12 camera (every defect on the map).
     noise = sensor.get("noise", {})
     if noise.get("bad_pixel_late_fraction") == 0.0:

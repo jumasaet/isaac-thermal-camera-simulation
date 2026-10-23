@@ -3,16 +3,18 @@
 docs/physics-model.md §12.2 ``outputs``; roadmap M10.10a; CLAUDE.md non-negotiable #2 (the disk
 rule); ADR 0004 (hashes travel with data).
 
-§12.2 names four outputs and they do not want the same container:
+§12.2 names four outputs, plus the optional scene reference, and they do not want the same
+container:
 
-==============  =======================  ==================================================
-output          file                     why
-==============  =======================  ==================================================
-``radiance``    ``.npy`` or ``.exr``     W/m2/sr (or photons/s/m2/sr) -- float32, always
-``apparent_t``  ``.npy`` or ``.exr``     kelvin -- float32, always
-``dn16``        ``.png`` (uint16)        an ADC code is an integer; nothing is lost
-``display8``    ``.png`` (RGBA8)         already 8-bit by construction
-==============  =======================  ==================================================
+====================  ====================  ===================================================
+output                file                  why
+====================  ====================  ===================================================
+``radiance``          ``.npy`` or ``.exr``  W/m2/sr (or photons/s/m2/sr) -- float32, always
+``apparent_t``        ``.npy`` or ``.exr``  kelvin, the camera's reading -- float32, always
+``scene_apparent_t``  ``.npy`` or ``.exr``  kelvin before the camera -- float32, when asked for
+``dn16``              ``.png`` (uint16)     an ADC code is an integer; nothing is lost
+``display8``          ``.png`` (RGBA8)      already 8-bit by construction
+====================  ====================  ===================================================
 
 The rule the table encodes: **a plane in physical units never goes to an integer container.**
 A 16-bit PNG spanning 200--400 K quantises to 3 mK, which sounds harmless next to a 50 mK NETD
@@ -62,6 +64,11 @@ FloatFormat = Literal["npy", "exr"]
 PLANE_UNITS: dict[str, str] = {
     "radiance": "W/m^2/sr (energy form) or photons/s/m^2/sr (photon form) -- see quantity",
     "apparent_t": "K",
+    "scene_apparent_t": (
+        "K -- apparent temperature of the scene radiance at the aperture (stages 1+2: emission, "
+        "reflection, atmosphere), box-averaged in radiance to the native grid; no optics, "
+        "detector, noise or ISP"
+    ),
     "dn16": "ADC code (uint16, 0..2^bit_depth-1)",
     "display8": "RGBA8 display code (no physical unit; AGC and palette applied)",
     "signal_dn": "DN before quantisation (float32)",
@@ -187,7 +194,7 @@ def write_frame(
             "unit": PLANE_UNITS.get(key, "unspecified"),
         }
 
-    for key in ("radiance", "apparent_t"):
+    for key in ("radiance", "apparent_t", "scene_apparent_t"):
         value = getattr(outputs, key, None)
         if value is None:
             continue

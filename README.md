@@ -71,6 +71,7 @@ Validated so far against physics identities and public thermal imagery — see t
 
 ## What's new
 
+- **A reference temperature to compare a real camera against** — each frame can also save the scene's temperature as it reaches the lens, before the camera's optics, noise and calibration touch it.
 - **Seven kinds of drone in the anti-drone dataset** — from a palm-sized Mini to a Matrice 300, pitching and rolling as they fly, alongside the solved Phantom 4.
 - **Drones as soft as a real tracking camera sees them** — the lens is focused once per clip, so a drone away from that distance blurs the way it does in real anti-drone footage.
 - **Clouds that move** — in a rendered clip the clouds now drift with the wind, and the thermal and colour cameras see them move together.

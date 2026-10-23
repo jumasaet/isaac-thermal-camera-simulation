@@ -13,6 +13,8 @@
 Outputs follow §12.2 ``outputs``: ``radiance`` (float32, scene band radiance at the native grid),
 ``apparent_t`` (float32 K, from the float32 signal route), ``dn16`` (uint16), ``display8``
 (RGBA8 through the isp block, ADR 0031). A flag set to ``false`` yields ``None`` -- never zeros.
+``scene_apparent_t`` (float32 K, optional) is taken before the camera: L_B⁻¹ of the stage-2
+radiance box-averaged to the native grid, so it carries no optics, detector, noise or ISP.
 The bolometer path uses the energy-form LUT table; a photon FPA runs the same chain on the
 photon table with N_e = η t_int Φ_q (ADR 0021).
 
@@ -42,6 +44,7 @@ from irsim.optics.defocus import scene_defocus_um
 from irsim.optics.layered import layered_defocus
 from irsim.optics.projection import Intrinsics
 from irsim.optics.psf import apply_psf
+from irsim.optics.sampling import box_downsample
 from irsim.optics.stage import apply_optics, invert_optics, shutter_flux
 from irsim.optics.thermal_defocus import effective_focus_distance_m, thermal_defocus_um
 from irsim.pipeline.atmosphere import (
@@ -145,6 +148,8 @@ class Outputs:
     flux: NDArray[np.float32]  # stage-3 pixel power (W or photons/s), always kept
     isp_hash: str | None = None  # config hash of the isp block that produced display8
     report: Any = None  # FrameReport from the M9 chain (M9.8); None when no chain is attached
+    # float32 K before the camera (stages 1+2 only); None unless outputs.scene_apparent_temperature
+    scene_apparent_t: NDArray[np.float32] | None = None
 
 
 def _detector_signal(
@@ -314,6 +319,12 @@ def run_frame(
             q,
             sky_mask=planes.get("sky_mask"),
         )
+    # The scene as it arrives at the aperture, before anything the camera does to it -- including
+    # 2e's ceiling, which is the gain state's, not the scene's. Box-averaged in *radiance* to the
+    # native grid (a pixel integrates power, not temperature), then inverted (§3.3).
+    scene_apparent_t = None
+    if sensor.outputs.scene_apparent_temperature:
+        scene_apparent_t = apparent_temperature(box_downsample(radiance_ss, k), lut, q)
     # stage 2e: the gain state's intrascene ceiling (`PH.8`). Last thing in scene-radiance units
     # and the first place a fire stops being radiometry and starts being a camera problem. In
     # radiance and never in kelvin: what arrives is ε L_B(T) + (1 − ε) L_env plus the path, which
@@ -459,4 +470,5 @@ def run_frame(
         flux=flux,
         isp_hash=isp_hash,
         report=report,
+        scene_apparent_t=scene_apparent_t,
     )
