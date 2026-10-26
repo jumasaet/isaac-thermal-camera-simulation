@@ -14,6 +14,9 @@ Se ejecuta con `/home/jumasaet/isaac_sim/python.sh`, en este orden:
 | 3a | `run_all_renders.sh` (llama a `task3_render_cups.py`) | `sim_<caso>/` (YAML nuevo) y `simorig_<caso>/` (YAML original) |
 | 3b | `task3_compare.py` | `task3_comparison.{json,png}` |
 | 5 | `task5_figures.py` | `figures/`: una hoja real/simulado por caso y una resumen, en white-hot y jet |
+| 6a | `task6_psf.py` | `task6_psf.{json,png}`: el borde real medido (ESF, LSF); con `--sim <tag>`, el mismo en los renders |
+| 6b | `task6_focus_fit.py` | `task6_focus_fit.{json,png}`: foco y aberración que reproducen los bordes |
+| 6c | `task3_render_cups.py <caso> …ctc006…yaml sim6_<caso>` | `sim6_<caso>/`: los cuatro casos con la cámara nueva |
 
 `cups_common.py` reúne lo compartido: lectura de los datos, regiones del vaso y del fondo, radiancia de
 banda y LiDAR. `materials/paper_cup.yaml` es el material de papel, que se añade a la librería solo
@@ -291,6 +294,165 @@ loader lo acepta. Contiene:
 
 **No representable en el esquema actual:** la memoria temporal del denoise, su correlación espacial y las
 colas. Haría falta una extensión del esquema.
+
+---
+
+## Tarea 6: el desenfoque real, medido y puesto en la cámara
+
+Fecha: 2026-10-26. La cámara confirmada es la **CTC-006-VGA**: 14,6 mm, F/1,3, 30 Hz. YAML nuevo:
+`bench/camera_check/cellplus_ctc006_lwir_cups.yaml`. Los dos YAML anteriores no se tocaron.
+
+### Focal y FOV
+
+| | focal | FOV H × V |
+|---|---|---|
+| hoja de datos CTC-006 | 14,6 mm | 60° × 50° |
+| pinhole 14,6 mm, 640 × 480 a 24 µm | — | 55,5° × 43,1° |
+| calibración RGB-térmica (fx, fy) | 15,05 / 14,89 mm | pinhole 54,2° × 42,0° |
+| calibración con su distorsión (bordes del sensor) | — | **61,3° × 44,7°** |
+
+- La focal calibrada está un 2–3 % por encima de la nominal, dentro de la tolerancia habitual.
+- El FOV horizontal coincide con la hoja de datos (61,3° frente a 60°). El vertical, no: 44,7° frente a 50°.
+- La proyección del simulador sigue en `calibration.geometric`. `focal_length_mm` solo entra en el
+  desenfoque y en el viñeteo cos⁴, así que el vaso no cambia de tamaño en el render.
+
+### Medida: borde → ESF → LSF (`task6_psf.py`)
+
+**Método:**
+- Se usan los dos bordes laterales de cada vaso.
+- La pared está inclinada 9,5°, así que cada fila muestrea el borde con otra fase subpíxel (slant edge).
+- Los counts se usan restando la pizarra de cada frame y dividiendo por el contraste del agua de ese
+  frame. Son lineales en radiancia, y eso elimina los saltos de FFC y el enfriamiento.
+- Se promedian todos los frames de la serie (12–19).
+- Modelo: un rectángulo convolucionado con la LSF, ajustado a todos los píxeles de las filas del agua.
+
+| caso | frames | distancia | gaussiano σ (rms) | núcleo σ | halo σ | fracción en el halo (rms) | 10–90 % sin modelo |
+|---|---|---|---|---|---|---|---|
+| caliente 50 | 19 | 0,503 m | 5,14 px (0,013) | 4,75 | 14,9 | 9 % (0,012) | **13,5 px** |
+| frío 50 | 15 | 0,502 m | 5,09 px (0,018) | 4,68 | 11,2 | 11 % (0,018) | **13,25 px** |
+| caliente 95 | 17 | 0,951 m | 3,56 px (0,025) | 2,64 | 17,4 | 28 % (0,009) | **12,0 px** |
+| frío 95 | 12 | 0,958 m | 3,84 px (0,032) | 2,73 | 19,4 | 33 % (0,017) | **13,75 px** |
+
+- **A 50 cm un gaussiano encaja**: el halo apenas baja el residuo.
+- **A 95 cm no encaja**:
+  - hace falta un núcleo estrecho (σ ≈ 2,7 px) más un halo ancho (σ ≈ 18 px) con el 30 % de la energía;
+  - el gaussiano solo deja 2–3 veces más residuo;
+  - el halo sale igual en el vaso frío que en el caliente, así que no es la columna de vapor.
+- El núcleo se estrecha con la distancia, así que el desenfoque es real. El halo relativo crece a 95 cm.
+  Eso es lo típico de una lente con aberración esférica a un lado del foco, pero estos datos no lo
+  demuestran.
+
+### Ajuste con la óptica del simulador (`task6_focus_fit.py`)
+
+**Método:**
+- Para cada par (vergencia de foco x = 1/s_f, σ de aberración), la LSF es la OTF de Hopkins de `irsim`
+  (§8.3, ADR 0129) por el gaussiano de aberración y por la caja del píxel, a 11 µm.
+- Círculo de desenfoque `c = f²|1/s − x| / (F(1 − f x))`, con f = 14,6 mm.
+- Se ajusta a los cuatro casos a la vez. Cada caso conserva su nivel, contraste, bordes e inclinación.
+
+| modelo | foco | σ aberración | rms conjunto |
+|---|---|---|---|
+| M0: sin desenfoque | — | 104 µm (4,3 px) | 0,0257 |
+| **M1: foco ≥ f + aberración (lo que admite el esquema)** | **infinito** | **80 µm (3,3 px)** | **0,0230** |
+| M2: foco libre, también «más allá del infinito» | −0,2 dpt | 70 µm | 0,0229 |
+
+Perfil del error frente al foco, con la aberración reoptimizada:
+
+| vergencia | −0,4 | −0,2 | 0 (∞) | +0,15 (hiperfocal, 6,8 m) | +0,3 (3,3 m) | +0,5 (2 m) | +1 (1 m) |
+|---|---|---|---|---|---|---|---|
+| rms | 0,0230 | 0,0229 | 0,0230 | 0,0231 | 0,0233 | 0,0236 | 0,0245 |
+
+- **Enfoque implícito: lejos, a ≳ 3 m.**
+  - Los datos no distinguen el infinito de la hiperfocal ni de un ligero «más allá del infinito».
+  - A 2 m o 1 m el ajuste es claramente peor.
+- La lente está enfocada para distancias de vehículo, así que a 0,5 m desenfoca un círculo de 13,6 px.
+  Eso explica la mayor parte del borde a 50 cm.
+- Los 80 µm independientes de la distancia mezclan dos cosas que el esquema no separa:
+  - las aberraciones de la lente;
+  - el denoise espacial del núcleo (r = 0,37 con el vecino, tarea 4).
+- **El halo de 95 cm no es representable en el esquema** (hueco de esquema).
+
+### La cámara nueva en el render
+
+Se renderizaron los cuatro casos en `sim6_<caso>/` (focus `infinity`, `hopkins`, `aberration_sigma_um: 80`,
+`defocus_apply: layered`) y se midieron con el mismo script (`task6_psf.py --sim sim6`):
+
+| caso | 10–90 % real | 10–90 % simulado antes (solo difracción) | **10–90 % simulado ahora** | σ gaussiano real / sim |
+|---|---|---|---|---|
+| caliente 50 | 13,5 px | 1,2 px | **12,0 px** | 5,14 / 4,58 |
+| frío 50 | 13,25 px | 1,2 px | **12,0 px** | 5,09 / 4,54 |
+| caliente 95 | 12,0 px | 1,2 px | **10,25 px** | 3,56 / 3,81 |
+| frío 95 | 13,75 px | 1,2 px | **10,25 px** | 3,84 / 3,81 |
+
+(Antes, el 10–90 % sale del ajuste gaussiano; la medida sin modelo tiene un suelo de ~1,7 px por el
+suavizado de 5 bins.)
+
+- **A 50 cm** el borde simulado queda un 10 % más fino que el real.
+- **A 95 cm** coincide el gaussiano equivalente, pero el 10–90 % real lo marca el halo, que falta.
+
+**Un problema encontrado y cómo se sorteó.**
+- Con `layered` tal cual, el vaso a 50 cm salía con el mismo borde que a 95 cm (σ 3,8 px).
+- **Causa:** `irsim.optics.layered.depth_layers` usa 8 bins de anchura igual en W020 sobre todo el rango del
+  frame. La mesa llega a 3,2 cm debajo de la lente y se queda con 7 bins. Una sola capa va de 0,14 a 1,29 m,
+  con el núcleo de 1,01 m, así que el vaso recibía el desenfoque de la pizarra.
+- **Remedio, solo en el banco:** `common.Clock(min_distance_m=…)` mediante `CUPS_MIN_DISTANCE_M=0.3`
+  (`report.json` → `defocus_min_distance_m`). Solo cambia la mesa a menos de 0,3 m, fuera del recorte de las
+  figuras.
+- El arreglo de verdad va en `src/`: más capas o bins acotados. Está en `ISSUE_DRAFT_layered_bins.md`.
+
+### ¿Cambia la temperatura aparente de los vasos?
+
+Media sobre la meseta del agua, con la misma definición (`find_cup`) en real y simulado:
+
+| caso | real | sim, cámara anterior | **sim, CTC-006** | cambio del sim | real − sim antes → ahora |
+|---|---|---|---|---|---|
+| caliente 50 | 66,94 °C | 63,27 | **62,99** | −0,28 K | +3,67 → **+3,95 K** |
+| caliente 95 | 51,96 °C | 55,69 | **55,27** | −0,42 K | −3,74 → **−3,32 K** |
+| frío 50 | 12,87 °C | 11,71 | **11,74** | +0,03 K | +1,16 → **+1,12 K** |
+| frío 95 | 13,85 °C | 11,73 | **11,88** | +0,15 K | +2,12 → **+1,96 K** |
+
+- **Cambia poco: menos de 0,5 K.** Los vasos miden 40–80 px y el desenfoque solo les quita el borde.
+- El cambio es mayor a 95 cm, donde el vaso es más pequeño: el caliente pierde un 1,2 % de su contraste
+  de 34 K.
+- En los datos reales, la pérdida de 50 a 95 cm era del 3,3 % (tarea 1). La diferencia es el halo que
+  falta.
+- Los errores real − sim siguen dominados por las lecturas de temperatura (tareas 1 y 3), no por la óptica.
+
+### Nota aparte: el reflejo del vaso en la mesa
+
+**Sí está en los datos.** En el eje del vaso, justo debajo del borde inferior, hay una meseta de unas
+12 filas:
+
+| caso | fracción del contraste del vaso |
+|---|---|
+| caliente 50 | 0,42 |
+| caliente 95 | 0,49–0,55 |
+| frío 50 | 0,47–0,52 |
+| frío 95 | 0,49–0,57 |
+
+Después decae hacia la mesa. A dos anchos de vaso hacia un lado, la mesa da 0 ± 0,03.
+
+**Es un reflejo especular, no conducción:**
+- es igual de fuerte con el vaso frío que con el caliente;
+- tiene la forma del vaso;
+- empieza en el mismo borde.
+
+**Cuadra con la física:** la cámara está a 3,3 cm sobre la mesa y mira el tablero a ~86° de incidencia.
+A ese ángulo, la reflectancia de Fresnel de una superficie barnizada (n ≈ 1,5) ronda 0,5.
+
+**El simulador no lo reproduce hoy:**
+- El término reflejado es el entorno (cielo más un suelo uniforme, ADR 0045).
+- El lóbulo GGX (ADR 0067) solo muestrea ese entorno.
+- Los reflejos entre objetos de la escena no están modelados.
+
+**Formas de conseguirlo**, de la más barata a la más completa (skill `isaac-sim-spg`, «The reflection
+problem»):
+1. Un rayo Warp en la dirección especular, solo para los materiales marcados como especulares (la mesa),
+   contra el campo de temperaturas.
+2. Una segunda pasada de render con rebotes, codificando radiancia.
+
+Además, la mesa tendría que tener un material con Fresnel especular a ángulo rasante. El contrachapado
+rugoso actual no lo tiene. No está implementado.
 
 ---
 

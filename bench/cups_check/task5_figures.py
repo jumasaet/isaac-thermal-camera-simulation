@@ -1,18 +1,23 @@
 #!/usr/bin/env python
 """Task 5: side-by-side sheets, real calibrated cup against the simulated one, for slides.
 
-    /home/jumasaet/isaac_sim/python.sh bench/cups_check/task5_figures.py     (after task1 and the renders)
+    /home/jumasaet/isaac_sim/python.sh bench/cups_check/task5_figures.py [--sim sim6]   (after task1, the renders,
+                                                                                    and task6_psf.py on both)
 
 Real: the blackbody apparent temperature of ONE frame, the one the temperature reading refers to (first frame of
 hot_50, cold_50, cold_95; last frame of hot_95 -- the task-1 time-order assumption), with the task-1 calibration
 T_app = L_B^-1(L_B(T_air) + (c - c_board) / G) and that frame's own board reference (docs/physics-model.md §3.2 (b),
 §3.3). Not the set mean that task 1 saves as apparent_t_<case>.npy: hot_50 cools 2.3 K during its series.
-Simulated: the camera chain's apparent_t of the sim_<case> render (calibrated YAML; PSF and noise included),
-which is within 0.1 K of its scene_apparent_t over the water.
+Simulated: the camera chain's apparent_t of the <tag>_<case> render (PSF and noise included). The default tag,
+sim6, is the CTC-006 camera with the blur measured in task 6 (bench/camera_check/cellplus_ctc006_lwir_cups.yaml);
+`--sim sim` redraws the first sheets (diffraction-only optics, cellplus_ctc007_lwir_cups.yaml).
+Each sheet also quotes the 10-90 % edge width, real and simulated, measured the same way on both (task6_psf.py,
+model-free half-ESF of the cup's side edges).
 
-Each number is the MEAN apparent temperature over the water region: the task-1 rectangle on the real frame, the
-task-3 wetted-wall core (3 px clear of its edges, central half of its width) on the render. RESULTADOS.md quotes
-the median of the same regions; the two differ by at most 0.3 K (hot_50, where the region has a gradient).
+Each number is the MEAN apparent temperature over the water region, found the same way on both images
+(cups_common.find_cup: the plateau >= 90 % of the cup's peak, 2 px in, central half of the 50 % width). Until
+task 6 the render used the task-3 wetted-wall core instead; with the measured blur that core reaches into the dry
+band's blur, so it no longer measures the same thing as the real rectangle.
 
 Both images of a sheet share one fixed temperature window and one palette. The window is per water temperature
 (hot / cold), identical for 50 and 95 cm, so the two distances of one water compare directly.
@@ -36,6 +41,9 @@ LABEL = {"hot_water_50": "Agua caliente, 50 cm", "hot_water_95": "Agua caliente,
 WINDOW_C = {"hot": (15.0, 70.0), "cold": (8.0, 26.0)}
 PALETTES = {"whitehot": "gray", "jet": "jet"}
 CROP_W, CROP_H = 256, 192  # same pixel box on both images, centred on the real water region
+SIM_TAG = "sim6"
+CAMERA = {"sim6": "cámara CTC-006 (14,6 mm F/1,3) con el desenfoque medido: foco ∞ + σ 80 µm",
+          "sim": "óptica solo con difracción (YAML anterior)"}
 
 
 def fmt(x: float, nd: int = 1, sign: bool = False) -> str:
@@ -57,9 +65,9 @@ def real_frame_c(case: str, t1: dict) -> tuple[np.ndarray, tuple, float]:
     return t_k - np.float32(273.15), tuple(reg["water"]), float(times[i])
 
 
-def sim_frame_c(case: str) -> tuple[np.ndarray, np.ndarray]:
-    """(camera apparent T image in C, water-core mask) of the sim_<case> render."""
-    d = cc.OUT / f"sim_{case}"
+def sim_frame_c(case: str, tag: str | None = None) -> tuple[np.ndarray, np.ndarray]:
+    """(camera apparent T image in C, water-core mask) of the <tag>_<case> render."""
+    d = cc.OUT / f"{tag or SIM_TAG}_{case}"
     t_k = np.load(d / "apparent_t_k.npy")
     assert t_k.dtype == np.float32
     scene = np.load(d / "scene_apparent_t_k.npy")
@@ -81,7 +89,13 @@ def sim_frame_c(case: str) -> tuple[np.ndarray, np.ndarray]:
     rep = json.loads((d / "report.json").read_text())
     check = float(np.median(t_k[core])) - 273.15
     assert abs(check - rep["cup_apparent_t_c"]) < 0.01, (case, check, rep["cup_apparent_t_c"])
-    return t_k - np.float32(273.15), core
+    # The region the mean is taken over is found exactly as on the real frame (cups_common.find_cup on a quantity
+    # linear in radiance): with a blurred camera the wetted-wall core above reaches into the dry band's blur and a
+    # differently defined region would compare two different things.
+    water = cc.find_cup(cc.band_l(t_k), case.startswith("hot"))["water"]
+    region = np.zeros(t_k.shape, bool)
+    region[water[0]:water[1], water[2]:water[3]] = True
+    return t_k - np.float32(273.15), region
 
 
 def crop_box(water: tuple) -> tuple[int, int, int, int]:
@@ -94,15 +108,21 @@ def crop_box(water: tuple) -> tuple[int, int, int, int]:
 
 def collect() -> dict:
     t1 = json.loads((cc.OUT / "task1_calibration.json").read_text())
+    edge_real = json.loads((cc.OUT / "task6_psf.json").read_text())["cases"]
+    edge_sim = json.loads((cc.OUT / f"task6_psf_sim_{SIM_TAG}.json").read_text())["cases"]
     data = {}
     for case in ORDER:
         real, water, t_s = real_frame_c(case, t1)
         sim, core = sim_frame_c(case)
-        y0, y1, x0, x1 = water
         data[case] = {"real": real, "sim": sim, "water": water, "core": core, "box": crop_box(water),
                       "real_mean": float(cc.roi(real, water).mean()), "sim_mean": float(sim[core].mean()),
-                      "frame": "último" if REF_FRAME[case] == -1 else "primer"}
+                      "frame": "último" if REF_FRAME[case] == -1 else "primer",
+                      "edge_real_px": edge_real[case]["core_plus_halo"]["w10_90_px_modelfree"],
+                      "edge_sim_px": edge_sim[case]["core_plus_halo"]["w10_90_px_modelfree"]}
         data[case]["diff"] = data[case]["real_mean"] - data[case]["sim_mean"]
+        if SIM_TAG != "sim" and (cc.OUT / f"sim_{case}").exists():
+            prev, prev_core = sim_frame_c(case, "sim")
+            data[case]["sim_mean_previous_camera"] = float(prev[prev_core].mean())
     return data
 
 
@@ -124,7 +144,7 @@ def draw_pair(ax_real, ax_sim, d: dict, cmap: str, lo: float, hi: float, size: f
     for lw, col, ls in ((2.4, "white", "-"), (1.2, "black", (0, (3, 2)))):
         ax_real.add_patch(Rectangle((x0 - 0.5, y0 - 0.5), x1 - x0, y1 - y0, fill=False, lw=lw, ec=col, ls=ls))
         ax_sim.contour(np.arange(640), np.arange(480), d["core"].astype(float), levels=[0.5], colors=[col],
-                       linewidths=lw, linestyles=[ls])
+                       linewidths=lw, linestyles=[ls], corner_mask=False)
     ax_sim.set_xlim(ext[0], ext[1])
     ax_sim.set_ylim(ext[2], ext[3])
     return im
@@ -150,8 +170,9 @@ def sheet(case: str, d: dict, pal: str) -> None:
                  fontweight="bold", y=0.96)
     fig.text(0.475, 0.885, f"Real: {d['frame']} frame de la serie, al que se refiere la lectura · ventana fija "
              f"{fmt(lo, 0)}–{fmt(hi, 0)} °C en las dos imágenes", ha="center", fontsize=9.5, color="#444")
-    fig.text(0.475, 0.04, note(case) + "\nMedia sobre la región marcada (agua). RESULTADOS.md usa la mediana "
-             "(≤ 0,3 K de diferencia).", ha="center", fontsize=8.5, color="#444")
+    fig.text(0.475, 0.025, f"Borde 10–90 %: real {fmt(d['edge_real_px'])} px · simulada {fmt(d['edge_sim_px'])} px"
+             f" · {CAMERA[SIM_TAG]}\n" + note(case) + "\nMedia sobre la región marcada (meseta del agua, misma "
+             "definición en las dos imágenes).", ha="center", fontsize=8.5, color="#444")
     fig.savefig(FIG / f"cups_{case}_{pal}.png", facecolor="white")
     plt.close(fig)
 
@@ -172,6 +193,8 @@ def summary(data: dict, pal: str) -> None:
         ims[kind] = draw_pair(ax_r, ax_s, d, PALETTES[pal], lo, hi, size=10.5)
         ax_r.set_title(f"{LABEL[case]}\nReal (calibrada)", fontsize=12)
         ax_s.set_title(f"Simulada · Δ = {fmt(d['diff'], 1, True)} K", fontsize=12, fontweight="bold")
+        ax_s.text(0.5, -0.20, f"borde 10–90 %: real {fmt(d['edge_real_px'])} · sim {fmt(d['edge_sim_px'])} px",
+                  transform=ax_s.transAxes, ha="center", va="top", fontsize=10, color="#444")
     for kind, c in (("hot", 2), ("cold", 6)):
         lo, hi = WINDOW_C[kind]
         cb = fig.colorbar(ims[kind], cax=fig.add_subplot(gs[:, c]))
@@ -181,7 +204,8 @@ def summary(data: dict, pal: str) -> None:
         fig.text(0.012, y, row_lbl[r], rotation=90, va="center", fontsize=14, fontweight="bold")
     fig.suptitle("Vasos de agua: cámara real calibrada frente al simulador (LWIR 8–14 µm)", fontsize=18,
                  fontweight="bold", y=0.965)
-    fig.text(0.5, 0.885, "Δ = T aparente media del agua, real − simulada · arriba y abajo, misma ventana y paleta",
+    fig.text(0.5, 0.885, "Δ = T aparente media del agua, real − simulada · misma ventana y paleta · "
+             + CAMERA[SIM_TAG],
              ha="center", fontsize=12, color="#444")
     fig.text(0.5, 0.045,
              "Simulación con la temperatura leída (66 / 58 / 11 / 11 °C) y ε = 0,93. A 50 cm la calibración se "
@@ -194,8 +218,14 @@ def summary(data: dict, pal: str) -> None:
 
 
 def main() -> None:
+    import argparse
+
     import matplotlib
 
+    global SIM_TAG
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--sim", default=SIM_TAG, choices=sorted(CAMERA))
+    SIM_TAG = ap.parse_args().sim
     matplotlib.use("Agg")
     FIG.mkdir(exist_ok=True)
     data = collect()
@@ -203,9 +233,11 @@ def main() -> None:
         for case in ORDER:
             sheet(case, data[case], pal)
         summary(data, pal)
-    rows = {c: {k: round(data[c][k], 2) for k in ("real_mean", "sim_mean", "diff")} for c in ORDER}
-    (FIG / "figures.json").write_text(json.dumps({"mean_apparent_t_c_water_region": rows, "window_c": WINDOW_C,
-                                                  "reference_frame": REF_FRAME}, indent=1))
+    keys = ("real_mean", "sim_mean", "diff", "sim_mean_previous_camera", "edge_real_px", "edge_sim_px")
+    rows = {c: {k: round(data[c][k], 2) for k in keys if k in data[c]} for c in ORDER}
+    (FIG / "figures.json").write_text(json.dumps({"sim_tag": SIM_TAG, "camera": CAMERA[SIM_TAG],
+                                                  "mean_apparent_t_c_water_region_and_edges": rows,
+                                                  "window_c": WINDOW_C, "reference_frame": REF_FRAME}, indent=1))
     print(json.dumps(rows, indent=1))
 
 

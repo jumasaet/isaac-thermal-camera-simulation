@@ -148,10 +148,15 @@ def render_sync(ctx: dict, position, look) -> dict:
 class Clock:
     """The thermal clock and the camera state across a sequence: one frame period per call."""
 
-    def __init__(self, ctx: dict) -> None:
+    def __init__(self, ctx: dict, min_distance_m: float | None = None) -> None:
         from irsim.pipeline.core import PipelineState
 
         self.ctx = ctx
+        #: Floor on the distance plane the camera chain sees (None = off, the default). A bench workaround for
+        #: `layered` defocus: its eight bins are equal-width in W020 over the frame's whole range, so a table
+        #: reaching to 3 cm under the lens takes seven of them and leaves the 0.5 m cup sharing the 1 m board's
+        #: kernel (bench/cups_check/RESULTADOS.md, task 6). Only geometry nearer than the floor changes.
+        self.min_distance_m = min_distance_m
         self.t0 = ctx["camera"].scene.t0_s
         self.period = ctx["camera"].frame_period_s
         self.rel = 0.0
@@ -174,6 +179,8 @@ class Clock:
         _l, temp, mat, sky = lite.reduced_numpy(ids, labels, camera, t_s)
         dist = _data(payload["distance"]).numpy().reshape(hs, ws)
         dist = np.where(sky, 0.0, np.nan_to_num(dist, posinf=0.0)).astype(np.float32)
+        if self.min_distance_m:
+            dist = np.where(sky, 0.0, np.maximum(dist, np.float32(self.min_distance_m))).astype(np.float32)
         planes = {"temperature_k": temp, "material_id": mat, "sky_mask": sky, "distance_m": dist,
                   "sky_view_factor": np.full((hs, ws), 0.5, np.float32)}
         self.state.t_s = t_s

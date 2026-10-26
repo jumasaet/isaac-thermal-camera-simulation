@@ -1,0 +1,399 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1792993709.702971 2274031 descriptor_database.cc:633] File already exists in database: grpc/health/v1/health.proto
+W0000 00:00:1792993709.703022 2274031 message.cc:301] Protobuf GeneratedMessageFactory: File is already registered: grpc/health/v1/health.proto
+2026-10-26T05:48:29Z [Info] [carb] Logging to file: /home/jumasaet/isaac_sim/kit/logs/Kit/Isaac-Sim Python/6.1/kit_20261026_144829.log
+[0.074s] [ext: omni.assets.plugins-0.0.0] startup
+[0.075s] [ext: omni.blobkey-1.1.2] startup
+[0.075s] [ext: omni.kit.async_engine-0.0.3] startup
+[0.642s] [ext: omni.client.lib-1.1.1] startup
+[0.654s] [ext: omni.client-1.3.0] startup
+[0.658s] [ext: omni.protobuf.lib-1.0.1] startup
+[0.659s] [ext: omni.grpc.lib-1.0.0] startup
+[0.664s] [ext: omni.metrics.core-0.0.3] startup
+[0.664s] [ext: omni.datastore-0.0.0] startup
+[0.665s] [ext: omni.gpu_foundation.shadercache.vulkan-1.0.0] startup
+[0.668s] [ext: omni.hsscclient-1.1.4] startup
+[0.668s] [ext: omni.stats-1.0.1] startup
+[0.669s] [ext: omni.ujitso.default-1.0.0] startup
+[0.672s] [ext: omni.gpu_foundation-0.0.0] startup
+[0.889s] [ext: carb.windowing.plugins-1.0.1] startup
+[0.890s] [ext: omni.kit.renderer.init-1.0.1] startup
+
+|---------------------------------------------------------------------------------------------|
+| Driver Version: 580.178.04    | Graphics API: Vulkan
+|=============================================================================================|
+| GPU | Name                             | Active | LDA | GPU Memory | Vendor-ID | LUID       |
+|     |                                  |        |     |            | Device-ID | UUID       |
+|     |                                  |        |     |            | Bus-ID    |            |
+|---------------------------------------------------------------------------------------------|
+| 0   | NVIDIA GeForce RTX 3090          | Yes: 0 |     | 24576   MB | 10de      | 0          |
+|     |                                  |        |     |            | 2204      | 1f2cbfcc.. |
+|     |                                  |        |     |            | 1         |            |
+|=============================================================================================|
+| OS: 22.04.5 LTS (Jammy Jellyfish) ubuntu, Version: 22.04.5, Kernel: 6.8.0-138-generic
+| XServer Vendor: The X.Org Foundation, XServer Version: 12101004 (1.21.1.4)
+| Processor: Intel(R) Core(TM) i9-10900 CPU @ 2.80GHz
+| Cores: 10 | Logical Cores: 20
+|---------------------------------------------------------------------------------------------|
+| Total Memory (MB): 31945 | Free Memory: 19505
+| Total Page/Swap (MB): 2047 | Free Page/Swap: 1993
+|---------------------------------------------------------------------------------------------|
+2026-10-26T05:48:30Z [1,563ms] [Warning] [omni.rtx] CPU performance profile is set to powersave. This profile sets the CPU to the lowest frequency reducing performance.
+[1.717s] [ext: omni.kit.pipapi-0.0.0] startup
+[1.718s] [ext: omni.kit.pip_archive-0.0.0] startup
+[1.719s] [ext: isaacsim.pip.newton-0.11.0] startup
+[1.719s] [ext: isaacsim.pip.nv-1.0.2] startup
+[1.720s] [ext: isaacsim.pip.onnx-1.0.1] startup
+[1.720s] [ext: omni.pip.compute-1.9.5] startup
+[1.721s] [ext: omni.isaac.core_archive-5.4.0] startup
+[1.721s] [ext: omni.kit.telemetry-0.5.2] startup
+[1.748s] [ext: omni.kit.loop-isaac-1.6.2] startup
+[1.750s] [ext: omni.kit.test-2.1.1] startup
+[1.825s] [ext: omni.materialx.libs-1.0.9] startup
+[1.834s] [ext: omni.gpucompute.plugins-0.0.0] startup
+[1.834s] [ext: omni.usd.config-1.0.8] startup
+[1.840s] [ext: omni.usd.libs-1.0.3] startup
+[1.940s] [ext: omni.iray.libs-0.0.1] startup
+[1.944s] [ext: omni.mdl-57.0.6] startup
+[1.971s] [ext: omni.mdl.neuraylib-0.2.22] startup
+[1.974s] [ext: omni.kit.usd.mdl-1.1.11] startup
+[2.104s] [ext: omni.appwindow-1.2.2] startup
+[2.106s] [ext: omni.kit.renderer.core-1.3.1] startup
+[3.270s] [ext: omni.kit.renderer.capture-2.0.1] startup
+[3.273s] [ext: omni.kit.renderer.imgui-2.1.0] startup
+[3.324s] [ext: omni.ui-3.3.1] startup
+[3.337s] [ext: omni.kit.mainwindow-1.0.4] startup
+[3.338s] [ext: carb.audio-0.1.0] startup
+[3.341s] [ext: omni.uiaudio-1.0.0] startup
+[3.342s] [ext: omni.kit.uiapp-0.0.0] startup
+[3.342s] [ext: omni.usd.schema.metrics.assembler-110.1.0] startup
+[3.345s] [ext: omni.usd.schema.audio-0.0.1] startup
+[3.349s] [ext: omni.usd_resolver-1.0.0] startup
+[3.353s] [ext: omni.usd.core-1.10.10] startup
+[3.357s] [ext: omni.metropolis.schema-0.0.3] startup
+[3.358s] [ext: isaacsim.anim.robot.schema-0.1.1] startup
+[3.359s] [ext: isaacsim.common-6.2.0] startup
+[3.360s] [ext: omni.usd.schema.anim-0.0.1] startup
+[3.381s] [ext: omni.usd.schema.geospatial-0.0.1] startup
+[3.384s] [ext: omni.usd.schema.omnigraph-1.0.1] startup
+[3.391s] [ext: omni.usd.schema.semantics-0.0.0] startup
+[3.393s] [ext: omni.activity.core-1.0.4] startup
+[3.395s] [ext: omni.cubric-0.1.0] startup
+[3.395s] [ext: omni.graph.exec-0.9.6] startup
+[3.395s] [ext: omni.hydra.scene_delegate-0.3.5] startup
+[3.400s] [ext: usdrt.scenegraph-7.6.3] startup
+[3.433s] [ext: omni.hydra.usdrt_delegate-7.5.2] startup
+[3.440s] [ext: omni.inspect-1.0.2] startup
+[3.442s] [ext: omni.kit.actions.core-1.2.0] startup
+[3.444s] [ext: omni.kit.audiodeviceenum-1.0.2] startup
+[3.445s] [ext: omni.kit.commands-1.5.0] startup
+[3.449s] [ext: omni.kit.exec.core-0.13.6] startup
+[3.451s] [ext: omni.kit.usd_undo-0.1.8] startup
+[3.451s] [ext: omni.kit.window.popup_dialog-2.0.26] startup
+[3.456s] [ext: omni.kit.widget.connection_manager-1.0.3] startup
+[3.463s] [ext: omni.timeline-1.1.0] startup
+[3.465s] [ext: omni.usd-1.18.0] startup
+[3.509s] [ext: omni.graph.core-3.1.5] startup
+[3.512s] [ext: omni.kit.notification_manager-1.0.16] startup
+[3.514s] [ext: isaacsim.core.deprecation_manager-0.4.4] startup
+[3.515s] [ext: isaacsim.replicator.agent.schema-0.1.1] startup
+[3.516s] [ext: isaacsim.robot.schema-7.0.2] startup
+[3.522s] [ext: isaacsim.robot_motion.schema-0.2.2] startup
+[3.523s] [ext: omni.anim.behavior.schema-110.3.0] startup
+[3.527s] [ext: omni.anim.graph.schema-110.3.0] startup
+[3.534s] [ext: omni.anim.navigation.schema-110.3.0] startup
+[3.538s] [ext: omni.behavior.tree.schema-110.3.0] startup
+[3.539s] [ext: omni.isaac.ml_archive-3.4.0] startup
+[3.539s] [ext: omni.kit.asset_converter-6.0.5] startup
+2026-10-26T05:48:32Z [3,515ms] [Warning] [asset_converter_native_bindings._bootstrap] A different OpenUSD (pxr) build was already imported from /home/jumasaet/isaac_sim/extscache/omni.usd.schema.semantics-0.0.0+00c488ae.lx64.r.cp312/pxr before usd-convert-asset loaded. The host pxr bindings will remain in use rather than reloading the bundled OpenUSD at /home/jumasaet/isaac_sim/extscache/omni.kit.asset_converter-6.0.5+110.1.1.lx64.r.cp312.u7f4/asset_converter_native_bindings/libs/lib/python/pxr, /home/jumasaet/isaac_sim/extscache/omni.kit.asset_converter-6.0.5+110.1.1.lx64.r.cp312.u7f4/asset_converter_native_bindings/libs/python/pxr. Mixing USD builds in one process can cause ABI and singleton conflicts; prefer importing usd_convert_asset first, or run the converter in a separate process/venv when mixing unrelated USD builds.
+[3.553s] [ext: omni.pip.cloud-1.5.5] startup
+[3.555s] [ext: omni.usd.schema.flow-110.0.0] startup
+[3.556s] [ext: omni.usd.schema.newton-1.4.0] startup
+[3.557s] [ext: omni.usd.schema.mujoco-1.1.4] startup
+[3.558s] [ext: omni.usd.schema.omni_dome_light-1.0.0] startup
+[3.558s] [ext: omni.usd.schema.omni_lens_distortion-1.0.0] startup
+[3.559s] [ext: omni.usd.schema.omni_projectors-1.0.0] startup
+[3.560s] [ext: omni.usd.schema.omni_sensors-0.0.0] startup
+[3.570s] [ext: omni.usd.schema.omniscripting-1.0.1] startup
+[3.575s] [ext: omni.usd.schema.physical_lighting-0.1.0] startup
+[3.579s] [ext: omni.usd.schema.physx-110.3.2] startup
+[3.617s] [ext: omni.usd.schema.render_settings.rtx-1.0.3] startup
+[3.622s] [ext: omni.usd.schema.usd_particle_field-1.0.0] startup
+[3.623s] [ext: isaacsim.core.version-2.2.1] startup
+[3.626s] [ext: omni.kit.menu.core-1.3.0] startup
+[3.627s] [ext: omni.kit.menu.utils-2.2.8] startup
+[3.636s] [ext: isaacsim.app.about-2.3.2] startup
+[3.642s] [ext: isaacsim.asset.transformer-6.1.0] startup
+[3.646s] [ext: omni.scene.optimizer.core-110.2.1] startup
+[3.717s] [ext: isaacsim.asset.importer.utils-1.9.1] startup
+[3.721s] [ext: omni.convexdecomposition-110.3.2] startup
+[3.724s] [ext: omni.physics-110.3.2] startup
+[3.728s] [ext: omni.physx.gpu-110.3.2] startup
+[3.728s] [ext: omni.physx.foundation-110.3.2] startup
+[3.730s] [ext: omni.usdphysics-110.3.2] startup
+[3.732s] [ext: omni.physx.cooking-110.3.2] startup
+[3.734s] [ext: omni.physx-110.3.2] startup
+[3.746s] [ext: omni.physics.physx-110.3.2] startup
+[3.748s] [ext: isaacsim.asset.exporter.urdf-2.2.6] startup
+[3.760s] [ext: omni.kit.clipboard-1.1.1] startup
+[3.761s] [ext: omni.kit.usd.layers-2.7.2] startup
+[3.770s] [ext: omni.kit.widget.context_menu-1.5.0] startup
+[3.773s] [ext: omni.kit.context_menu-1.10.0] startup
+[3.775s] [ext: omni.kit.helper.file_utils-0.1.10] startup
+[3.777s] [ext: omni.kit.widget.nucleus_info-2.0.2] startup
+[3.778s] [ext: omni.kit.search_core-1.0.8] startup
+[3.779s] [ext: omni.kit.widget.path_field-2.0.13] startup
+[3.780s] [ext: omni.kit.widget.browser_bar-2.0.11] startup
+[3.781s] [ext: omni.kit.widget.filebrowser-2.14.0] startup
+[3.788s] [ext: omni.kit.widget.nucleus_connector-2.4.0] startup
+[3.789s] [ext: omni.kit.widget.options_menu-1.1.7] startup
+[3.793s] [ext: omni.kit.widget.options_button-1.0.3] startup
+[3.794s] [ext: omni.kit.widget.search_delegate-1.0.10] startup
+[3.795s] [ext: omni.ui.scene-2.0.4] startup
+[3.801s] [ext: omni.kit.window.filepicker-3.0.14] startup
+[3.822s] [ext: omni.kit.window.file_importer-1.1.22] startup
+[3.824s] [ext: omni.kit.material.library-3.1.7] startup
+[3.831s] [ext: isaacsim.asset.transformer.rules-1.7.18] startup
+[3.845s] [ext: omni.usdex.libs-2.3.0] startup
+[3.855s] [ext: isaacsim.asset.importer.mjcf-3.12.1] startup
+[3.858s] [ext: omni.kit.primitive.mesh-1.1.1] startup
+[3.861s] [ext: omni.kit.stage_template.core-1.1.23] startup
+[3.862s] [ext: omni.kit.stage_templates-2.0.3] startup
+[3.864s] [ext: omni.usd.metrics.assembler-110.1.2] startup
+[3.868s] [ext: omni.warp.core-1.16.0] startup
+[4.212s] [ext: isaacsim.core.experimental.utils-0.23.0] startup
+[4.215s] [ext: isaacsim.asset.importer.urdf-3.11.10] startup
+[4.221s] [ext: omni.physics.stageupdate-110.3.2] startup
+[4.223s] [ext: omni.physics.tensors-110.3.2] startup
+[4.228s] [ext: omni.physx.tensors-110.3.2] startup
+[4.232s] [ext: isaacsim.core.simulation_manager-1.17.1] startup
+[4.247s] [ext: isaacsim.storage.native-1.11.0] startup
+[4.249s] [ext: omni.usd.metrics.assembler.physics-110.3.2] startup
+[4.251s] [ext: isaacsim.core.utils-4.1.9] startup
+[4.253s] [ext: isaacsim.core.prims-0.11.7] startup
+[5.860s] [ext: isaacsim.core.api-5.3.2] startup
+[5.869s] [ext: isaacsim.core.cloner-1.7.5] startup
+[5.871s] [ext: isaacsim.test.docstring-1.3.2] startup
+[5.876s] [ext: isaacsim.core.experimental.prims-1.10.8] startup
+[5.898s] [ext: isaacsim.core.experimental.primdata-0.3.6] startup
+[5.901s] [ext: omni.graph.tools-1.81.0] startup
+[5.934s] [ext: omni.graph-1.142.5] startup
+[5.993s] [ext: isaacsim.core.experimental.actuators-0.1.6] startup
+[6.016s] [ext: isaacsim.core.experimental.materials-0.10.0] startup
+[6.021s] [ext: isaacsim.core.experimental.objects-0.9.0] startup
+[6.131s] [ext: omni.hydra.engine.stats-1.0.5] startup
+[6.134s] [ext: omni.hydra.rtx.shadercache.vulkan-1.0.0] startup
+[6.136s] [ext: omni.index.libs-392300.961.0] startup
+[6.136s] [ext: omni.index-1.0.1] startup
+[6.137s] [ext: omni.ujitso.client-0.0.0] startup
+[6.137s] [ext: omni.usd.schema.playback-1.1.0] startup
+[6.138s] [ext: omni.volume-0.5.2] startup
+[6.144s] [ext: omni.hydra.rtx-1.0.4] startup
+2026-10-26T05:48:35Z [6,136ms] [Warning] [omni.log] Source: omni.hydra was already registered.
+[6.182s] [ext: omni.kit.hydra_texture-1.6.2] startup
+[6.187s] [ext: omni.kit.raycast.query-1.2.0] startup
+[6.193s] [ext: omni.kit.viewport.legacy_gizmos-1.0.24] startup
+[6.197s] [ext: omni.kit.viewport.registry-104.0.6] startup
+[6.198s] [ext: omni.kit.viewport.scene_camera_model-1.0.7] startup
+[6.204s] [ext: omni.kit.widget.viewport-110.0.0] startup
+[6.209s] [ext: omni.kit.window.drop_support-1.0.8] startup
+[6.210s] [ext: omni.kit.viewport.window-110.0.1] startup
+[6.234s] [ext: omni.kit.viewport.utility-2.1.0] startup
+[6.236s] [ext: isaacsim.core.rendering_manager-0.5.1] startup
+[6.254s] [ext: omni.graph.action_core-1.1.9] startup
+[6.257s] [ext: omni.graph.action_nodes_core-2.11.0] startup
+[6.261s] [ext: omni.graph.action_nodes-2.11.0] startup
+[6.289s] [ext: omni.graph.action-2.10.2] startup
+[6.292s] [ext: omni.graph.image.core-0.6.1] startup
+[6.293s] [ext: omni.graph.image.nodes-1.3.2] startup
+[6.294s] [ext: omni.graph.nodes_core-2.11.0] startup
+[6.301s] [ext: omni.graph.nodes-2.12.0] startup
+[6.308s] [ext: omni.kit.hotkeys.core-1.4.0] startup
+[6.310s] [ext: omni.kit.property.adapter.core-1.1.1] startup
+[6.313s] [ext: omni.kit.property.adapter.usd-1.0.6] startup
+[6.315s] [ext: omni.kit.widget.filter-1.1.8] startup
+[6.317s] [ext: omni.kit.widget.highlight_label-1.0.3] startup
+[6.318s] [ext: omni.kit.widget.searchfield-1.1.8] startup
+[6.321s] [ext: omni.kit.window.file_exporter-1.0.38] startup
+[6.322s] [ext: omni.kit.widget.stage-4.6.5] startup
+[6.335s] [ext: omni.kit.window.content_browser_registry-0.0.6] startup
+[6.336s] [ext: omni.kit.window.file-2.0.15] startup
+[6.341s] [ext: omni.kit.window.content_browser-3.1.12] startup
+[6.358s] [ext: omni.kit.window.property-1.15.2] startup
+[6.376s] [ext: omni.kit.property.usd-4.9.14] startup
+[6.391s] [ext: omni.graph.scriptnode-2.10.2] startup
+[6.404s] [ext: omni.kit.widget.searchable_combobox-1.0.7] startup
+[6.406s] [ext: omni.kit.widget.settings-2.0.1] startup
+[6.409s] [ext: omni.kit.window.preferences-1.8.5] startup
+[6.416s] [ext: omni.kit.viewport.menubar.core-110.0.3] startup
+[6.435s] [ext: omni.syntheticdata-0.6.17] startup
+[6.475s] [ext: omni.replicator.nv-1.1.6] startup
+[6.484s] [ext: omni.videoencoding-0.2.1] startup
+[6.486s] [ext: omni.replicator.core-1.13.36] startup
+2026-10-26T05:48:35Z [6,473ms] [Warning] [pxr.Semantics] pxr.Semantics is deprecated - please use Semantics instead
+2026-10-26T05:48:35Z [6,557ms] [Warning] [omni.replicator.core.scripts.extension] No material configuration file, adding configuration to material settings directly.
+[6.775s] [ext: isaacsim.core.nodes-5.10.13] startup
+[6.828s] [ext: isaacsim.core.throttling-2.3.7] startup
+[6.831s] [ext: omni.kit.manipulator.viewport-107.0.1] startup
+[6.832s] [ext: omni.graph.visualization.nodes-2.1.4] startup
+[6.853s] [ext: omni.kit.window.extensions-1.5.16] startup
+[6.861s] [ext: isaacsim.gui.components-1.8.9] startup
+[6.868s] [ext: isaacsim.robot.surface_gripper-3.6.3] startup
+[6.886s] [ext: isaacsim.robot.manipulators-3.4.5] startup
+[6.905s] [ext: isaacsim.robot_motion.lula-4.1.4] startup
+[6.914s] [ext: isaacsim.robot_motion.motion_generation-8.2.9] startup
+[6.924s] [ext: isaacsim.cortex.framework-1.0.20] startup
+[6.927s] [ext: isaacsim.cortex.behaviors-2.0.18] startup
+[6.930s] [ext: isaacsim.examples.base-1.3.4] startup
+[6.935s] [ext: omni.kit.widget.zoombar-1.0.7] startup
+[6.936s] [ext: omni.kit.browser.core-2.3.18] startup
+[6.941s] [ext: omni.kit.browser.folder.core-2.0.3] startup
+[6.949s] [ext: omni.kit.widget.stage_icons-1.0.8] startup
+[6.951s] [ext: omni.kit.window.stage-2.6.1] startup
+[6.955s] [ext: omni.kit.menu.stage-1.2.7] startup
+[6.957s] [ext: omni.kit.usd.collect-3.0.6] startup
+[6.961s] [ext: omni.kit.widget.prompt-1.0.7] startup
+[6.964s] [ext: omni.kit.tool.collect-2.2.19] startup
+[6.967s] [ext: isaacsim.examples.browser-0.3.4] startup
+[6.970s] [ext: omni.kit.search.files-1.0.4] startup
+[6.971s] [ext: omni.kit.widget.calendar-1.0.9] startup
+[6.973s] [ext: omni.kit.widget.extended_searchfield-1.0.31] startup
+[6.985s] [ext: omni.simready.content.browser-0.3.8] startup
+[7.147s] [ext: isaacsim.gui.content_browser-0.5.1] startup
+[7.152s] [ext: omni.kit.selection-0.1.6] startup
+[7.154s] [ext: isaacsim.gui.menu-2.10.12] startup
+[7.168s] [ext: isaacsim.gui.property-1.6.4] startup
+[7.180s] [ext: omni.kit.viewport.actions-110.1.0] startup
+[7.188s] [ext: omni.kit.viewport.menubar.display-110.0.0] startup
+[7.190s] [ext: isaacsim.gui.sensors.icon-2.2.4] startup
+[7.195s] [ext: omni.behavior.scripting.core-110.3.0] startup
+[7.200s] [ext: isaacsim.replicator.behavior-1.6.2] startup
+[7.208s] [ext: isaacsim.replicator.experimental.domain_randomization-1.2.10] startup
+[7.234s] [ext: isaacsim.replicator.domain_randomization-1.2.3] startup
+[7.363s] [ext: isaacsim.replicator.writers-1.5.6] startup
+[7.403s] [ext: isaacsim.robot.experimental.wheeled_robots-0.2.14] startup
+[7.440s] [ext: isaacsim.robot_motion.experimental.motion_generation-7.1.2] startup
+[7.455s] [ext: isaacsim.robot.policy.examples-7.2.0] startup
+[8.906s] [ext: isaacsim.robot.wheeled_robots-5.2.5] startup
+[8.913s] [ext: isaacsim.robot.wheeled_robots.nodes-0.1.12] startup
+[8.943s] [ext: isaacsim.robot_motion.controllers-0.3.2] startup
+[8.960s] [ext: isaacsim.robot_motion.cumotion-1.4.0] startup
+[8.978s] [ext: omni.kit.numpy.common-0.1.3] startup
+[8.981s] [ext: omni.rtx.spg-0.4.0] startup
+[8.986s] [ext: omni.sensors.nv.camera-1.0.0] startup
+[8.994s] [ext: isaacsim.sensors.camera-1.7.13] startup
+[9.038s] [ext: isaacsim.sensors.experimental.physics-3.3.0] startup
+[9.051s] [ext: omni.sensors.net-1.0.1] startup
+[9.054s] [ext: omni.sensors.nv.common-3.0.0] startup
+[9.067s] [ext: omni.sensors.nv.materials-2.0.0] startup
+[9.072s] [ext: omni.sensors.nv.acoustic-3.0.0] startup
+[9.076s] [ext: omni.sensors.nv.ids-2.0.1] startup
+[9.079s] [ext: omni.sensors.nv.lidar-3.0.0] startup
+[9.084s] [ext: omni.sensors.nv.radar-3.0.0] startup
+[9.089s] [ext: isaacsim.sensors.experimental.rtx-1.9.0] startup
+[9.505s] [ext: isaacsim.sensors.physics.nodes-1.6.2] startup
+[9.515s] [ext: isaacsim.util.debug_draw-3.2.6] startup
+[9.522s] [ext: isaacsim.sensors.physx-2.5.7] startup
+[9.534s] [ext: isaacsim.sensors.rtx-15.17.5] startup
+[9.552s] [ext: isaacsim.simulation_app-2.19.0] startup
+[9.553s] [ext: omni.anim.curve.core-1.6.1] startup
+[9.567s] [ext: omni.graph.ui_nodes-2.11.1] startup
+[9.602s] [ext: omni.kit.manipulator.camera-110.1.0] startup
+[9.608s] [ext: omni.kit.manipulator.selector-1.1.4] startup
+[9.610s] [ext: omni.kit.manipulator.transform-107.0.1] startup
+[9.616s] [ext: omni.kit.widget.toolbar-2.1.0] startup
+[9.625s] [ext: omni.kit.manipulator.tool.snap-1.5.15] startup
+[9.631s] [ext: omni.kit.viewport.manipulator.transform-107.0.4] startup
+[9.634s] [ext: omni.kit.manipulator.prim.core-108.0.2] startup
+[9.643s] [ext: omni.kit.manipulator.prim.usd-107.0.3] startup
+[9.645s] [ext: omni.kit.manipulator.prim-108.0.0] startup
+[9.645s] [ext: omni.kit.manipulator.selection-110.0.0] startup
+[9.647s] [ext: omni.kit.menu.create-2.0.2] startup
+[9.650s] [ext: omni.kit.property.audio-1.0.18] startup
+[9.654s] [ext: omni.kit.property.camera-1.0.14] startup
+[9.656s] [ext: omni.kit.property.geometry-2.1.2] startup
+[9.661s] [ext: omni.kit.property.light-1.0.16] startup
+[9.706s] [ext: omni.kit.property.material-1.14.10] startup
+[9.716s] [ext: omni.kit.property.render-1.2.2] startup
+[9.718s] [ext: omni.kit.property.transform-1.6.12] startup
+[9.723s] [ext: omni.kit.property.bundle-1.5.2] startup
+[9.725s] [ext: omni.kit.usdz_export-1.1.1] startup
+[9.729s] [ext: omni.kit.tool.asset_importer-6.0.2] startup
+[9.736s] [ext: omni.kit.ui.actions-1.0.5] startup
+[9.739s] [ext: omni.kit.viewport.menubar.camera-107.0.14] startup
+[9.746s] [ext: omni.kit.viewport.menubar.lighting-107.3.2] startup
+[9.750s] [ext: omni.kit.viewport.menubar.render-110.1.1] startup
+[9.753s] [ext: omni.kit.viewport.menubar.settings-110.0.1] startup
+[9.759s] [ext: omni.kit.window.console-1.1.10] startup
+[9.764s] [ext: omni.kit.window.status_bar-0.1.11] startup
+[9.767s] [ext: omni.kit.window.toolbar-3.0.3] startup
+[9.771s] [ext: omni.ocio-0.1.1] startup
+[9.772s] [ext: omni.physx.commands-110.3.2] startup
+[9.777s] [ext: omni.replicator.replicator_yaml-2.0.12] startup
+[9.792s] [ext: omni.rtx.window.settings-0.8.2] startup
+[9.800s] [ext: omni.rtx.settings.core-0.7.1] startup
+[9.804s] [ext: omni.usd.metrics.assembler.ui-110.1.1] startup
+[9.814s] [ext: semantics.schema.editor-2.0.2] startup
+[9.818s] [ext: semantics.schema.property-2.0.2] startup
+[9.820s] [ext: omni.kit.menu.common-2.0.2] startup
+[9.822s] [ext: isaacsim.exp.base-6.1.0] startup
+[9.823s] [ext: isaacsim.exp.base.python-6.1.0] startup
+[9.825s] Simulation App Starting
+[11.148s] Viewport updates disabled
+[11.148s] Simulation App Startup Complete
+[11.150s] app ready
+Starting kit application with the following args:  ['/home/jumasaet/isaac_sim/exts/isaacsim.simulation_app/isaacsim/simulation_app/simulation_app.py', '/home/jumasaet/isaac_sim/apps/isaacsim.exp.base.python.kit', '--/app/tokens/exe-path=/home/jumasaet/isaac_sim/kit', '--/persistent/app/viewport/displayOptions=3094', '--/rtx/materialDb/syncLoads=True', '--/rtx/hydra/materialSyncLoads=True', '--/omni/kit/plugin/syncUsdLoads=True', '--/app/renderer/resolution/width=1280', '--/app/renderer/resolution/height=720', '--/app/window/width=1440', '--/app/window/height=900', '--/renderer/multiGpu/enabled=False', '--/app/fastShutdown=True', '--/app/installSignalHandlers=0', '--ext-folder', '/home/jumasaet/isaac_sim/exts', '--ext-folder', '/home/jumasaet/isaac_sim/apps', '--/renderer/activeGpu=0', '--/physics/cudaDevice=0', '--/plugins/carb.tasking.plugin/threadCount=16', '--/plugins/omni.tbb.globalcontrol/maxThreadCount=16', '--portable', '--no-window', '--/app/window/hideUi=1']
+Passing the following args to the base kit application:  ['--/rtx/post/aa/op=0', '--/rtx/post/dlss/execMode=0']
+Warp 1.16.0 initialized:
+   CUDA Toolkit 12.9, Driver 13.0
+   Devices:
+     "cpu"      : "x86_64"
+     "cuda:0"   : "NVIDIA GeForce RTX 3090" (24 GiB, sm_86, mempool enabled)
+   Kernel cache:
+     /home/jumasaet/.cache/warp/1.16.0
+{
+ "case": "hot_water_50",
+ "sensor_yaml": "bench/camera_check/cellplus_ctc006_lwir_cups.yaml",
+ "t_surface_c": 66.0,
+ "t_air_c": 22.0,
+ "paper_eps_lwir": 0.93,
+ "camera_position": [
+  0.0,
+  0.0,
+  0.0323
+ ],
+ "camera_look": [
+  -0.9997759060560157,
+  0.0,
+  0.021169262383767325
+ ],
+ "cup_axis_m": [
+  -0.5033,
+  -0.0757,
+  0.0
+ ],
+ "board_distance_m": 1.0143,
+ "hfov_deg": 54.080499394486715,
+ "vfov_deg": 41.89448896613136,
+ "render_product_w_h": [
+  2560,
+  1920
+ ],
+ "water_roi_pixels": 1672,
+ "cup_scene_apparent_t_c": 63.341,
+ "cup_apparent_t_c": 63.138,
+ "board_scene_apparent_t_c": 22.0,
+ "board_apparent_t_c": 21.655,
+ "silhouette": {
+  "top_row": 199.75,
+  "bottom_row": 277.75,
+  "height_px": 78.0,
+  "width_top10_px": 84.25,
+  "width_bottom10_px": 63.75,
+  "centre_col": 239.12
+ },
+ "defocus_min_distance_m": 0.3
+}
+2026-10-26T05:48:43Z [13,968ms] [Warning] [omni.syntheticdata.plugin] OgnSdPostRenderVarToHost : rendervar copy from texture directly to host buffer is counter-performant. Please use copy from texture to device buffer first.
+2026-10-26T05:48:43Z [13,986ms] [Warning] [omni.syntheticdata.plugin] SdPostRenderVarToHost : invalid input resource for renderVar AmbientOcclusion
+[58.066s] Simulation App Shutting Down

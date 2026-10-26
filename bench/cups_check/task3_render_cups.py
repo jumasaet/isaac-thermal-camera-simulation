@@ -28,6 +28,7 @@ from __future__ import annotations
 
 import json
 import math
+import os
 import pathlib
 import sys
 
@@ -203,7 +204,9 @@ def main() -> None:
 
     from irsim_isaac.pipeline.material_ids import labels_from_payload, labels_to_paths
 
-    clock = cm.Clock(ctx)
+    # CUPS_MIN_DISTANCE_M: see common.Clock.min_distance_m. Set to 0.3 for the sim6_* renders (task 6).
+    min_d = float(os.environ.get("CUPS_MIN_DISTANCE_M", "0")) or None
+    clock = cm.Clock(ctx, min_distance_m=min_d)
     for _ in range(4):
         clock.frame(cm.render_sync(ctx, pos, look))
     payload = cm.render_sync(ctx, pos, look)
@@ -246,6 +249,7 @@ def main() -> None:
         "board_scene_apparent_t_c": round(float(np.median(out.scene_apparent_t[bg])) - 273.15, 3),
         "board_apparent_t_c": round(float(np.median(out.apparent_t[bg])) - 273.15, 3),
         "silhouette": silhouette(cup_ss, k),
+        "defocus_min_distance_m": min_d,
     }
     (OUT / "report.json").write_text(json.dumps(rep, indent=1))
     print(json.dumps(rep, indent=1), flush=True)

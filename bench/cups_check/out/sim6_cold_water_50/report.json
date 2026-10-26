@@ -1,0 +1,43 @@
+{
+ "case": "cold_water_50",
+ "sensor_yaml": "bench/camera_check/cellplus_ctc006_lwir_cups.yaml",
+ "t_surface_c": 11.0,
+ "t_air_c": 22.0,
+ "paper_eps_lwir": 0.93,
+ "camera_position": [
+  0.0,
+  0.0,
+  0.0323
+ ],
+ "camera_look": [
+  -0.9997759060560157,
+  0.0,
+  0.021169262383767325
+ ],
+ "cup_axis_m": [
+  -0.5021,
+  -0.0822,
+  0.0
+ ],
+ "board_distance_m": 1.029,
+ "hfov_deg": 54.080499394486715,
+ "vfov_deg": 41.89448896613136,
+ "render_product_w_h": [
+  2560,
+  1920
+ ],
+ "water_roi_pixels": 1676,
+ "cup_scene_apparent_t_c": 11.815,
+ "cup_apparent_t_c": 11.741,
+ "board_scene_apparent_t_c": 22.0,
+ "board_apparent_t_c": 21.649,
+ "silhouette": {
+  "top_row": 199.75,
+  "bottom_row": 277.75,
+  "height_px": 78.0,
+  "width_top10_px": 84.5,
+  "width_bottom10_px": 63.5,
+  "centre_col": 231.12
+ },
+ "defocus_min_distance_m": 0.3
+}

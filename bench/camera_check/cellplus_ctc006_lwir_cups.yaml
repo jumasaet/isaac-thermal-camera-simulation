@@ -1,0 +1,196 @@
+# Cellplus CTC-006-VGA USB (LWIR, uncooled microbolometer, 14.6 mm F/1.3 lens, 30 Hz) -- the unit
+# confirmed as the one that recorded thermal_specs/ (2026-10-26).
+# DRAFT for bench/camera_check -- not part of configs/sensors/.
+# cellplus_ctc006_lwir_cups.yaml = cellplus_ctc007_lwir_cups.yaml (noise, calibration.geometric,
+# calibration.radiometric from bench/cups_check tasks 1-4, generated there by task4_noise.py) with the
+# CTC-006 lens and the blur measured on the cups' edges (bench/cups_check/task6_psf.py,
+# task6_focus_fit.py): optics.focal_length_mm, optics.focus, optics.mtf, fpa.frame_rate_hz.
+# Hand-edited copy; the two earlier YAMLs are unchanged. Tags [DATA cups], [DATA cups-psf].
+# Schema: docs/physics-model.md §12.2, laid out like configs/sensors/flir_boson_640_lwir.yaml.
+#
+# Source of every value, one of:
+#   [DS]    thermal_specs/thermal_camera_specs.md (the Cellplus datasheet)
+#   [INFO]  thermal_specs/lab/thermal/thermal_info.json (written by the capture tool, read off the core)
+#   [DATA]  measured from the .npy recordings in bench/camera_check/ (agc_check.py, noise_prelim.py)
+#   PENDIENTE  nothing published and nothing measured. The schema requires a value, so the Boson's
+#           number stays as a placeholder; do not trust any result that depends on it.
+#
+# The core reports itself as "Obsidian Sensors Inc. Thermal Camera MirVG", firmware 4.6.6.3 [INFO].
+
+schema_version: 12
+
+sensor:
+  name: cellplus_ctc006_lwir_cups
+  band:
+    lambda_min_um: 8.0                           # [DS] "8-14 um"
+    lambda_max_um: 14.0                          # [DS]
+    # PENDIENTE: the Boson's raised-cosine shape moved to 8/14 um. Path is relative to data/, so this
+    # points back out to the bench copy; a real curve (manufacturer or monochromator) replaces it.
+    spectral_response: ../bench/camera_check/cellplus_ctc007_response_ESTIMATED.csv
+    regime: emissive
+
+  optics:
+    f_number: 1.3                                # [DS]
+    focal_length_mm: 14.6                        # [DS] CTC-005/006. Pinhole 640 x 24 um / 14.6 mm -> 55.5 x 43.1 deg.
+                                                 # The projection uses calibration.geometric below (fx 626.9 =
+                                                 # 15.05 mm, fy 620.6 = 14.89 mm at 24 um: +2-3 % on the nominal);
+                                                 # with its distortion the calibrated FOV is 61.3 x 44.7 deg, the
+                                                 # datasheet's 60 x 50 (H x V of this 640 x 480 stream). This field
+                                                 # feeds the defocus (blur ~ f^2) and the cos^4 vignetting.
+    transmittance: 0.92                          # PENDIENTE (Boson). Datasheet: "shortwave-blocking
+                                                 # coating on the lens" -- material and AR coat unknown
+    housing_temp_mode: coupled
+    housing_tau_s: 900.0                         # PENDIENTE (Boson). Core 25-31 g without lens [DS]
+    housing_self_heating_k: 4.0                  # PENDIENTE (Boson). This core draws 1.2 W [DS],
+                                                 # ~2.4x the Boson's ~0.5 W, so likely higher
+    cold_shield_efficiency: 1.0                  # n/a for uncooled
+    distortion:
+      model: brown_conrady
+      coeffs: [0.0, 0.0, 0.0, 0.0, 0.0]          # PENDIENTE -- cali_board/ has 27 circle-grid views;
+                                                 # a calibration goes in `calibration.geometric`
+    vignetting_cos4: true
+    mtf:
+      # PENDIENTE. No MTF published. The Boson's 1.654 um was solved from FLIR's 42 % at Nyquist and
+      # does not transfer. 0.0 = diffraction-limited: at F/1.3, 11 um and 24 um pitch (Nyquist
+      # 20.8 cyc/mm) that is MTF_diff ~ 0.63 -- an upper bound on a real lens. Measure a slant edge.
+      # [DATA cups-psf] Measured, not PENDIENTE any more. bench/cups_check/task6_psf.py fits the cups' slanted
+      # side edges (12-19 frames per set, board-referenced counts, which are linear in radiance):
+      #   50 cm: one Gaussian fits (sigma 5.1 px, 10-90 % 13.0-13.5 px);
+      #   95 cm: a core (sigma 2.6-2.7 px) plus a wide halo (sigma 17-19 px) carrying 28-33 % of the energy
+      #          (10-90 % 12-14 px, set by the halo); a single Gaussian leaves 2-3x the residual.
+      # The blur shrinks with distance, so most of it is defocus. task6_focus_fit.py fits this camera's own
+      # optics (Hopkins defocus OTF x aberration Gaussian x pixel box) to all four sets at once: focus at
+      # infinity with a distance-independent Gaussian of 80 um (3.3 px). The focus is poorly pinned: any
+      # vergence from -0.4 to +0.3 dpt (focused at >= 3 m, or slightly past infinity) fits within 1 %, and
+      # 0.5 / 1 dpt (2 m / 1 m) are clearly worse. The 80 um holds the lens's aberrations AND the core's
+      # spatial denoise (neighbour r = 0.37, task 4), which the schema cannot separate.
+      # NOT representable (schema gap): the 95 cm halo. The simulated edge at 95 cm matches the core+halo's
+      # least-squares Gaussian, not the halo; the halo's energy is missing from the render.
+      aberration_sigma_um: 80.0
+      defocus_model: hopkins                     # ADR 0129: the model valid in the transition band
+      defocus_apply: layered                     # one kernel per depth: the global mode takes the frame's
+                                                 # median range (the board, ~1 m) and would blur the cup at
+                                                 # 0.5 m with the board's kernel
+    focus:
+      mode: infinity                             # [DATA cups-psf] see mtf above; hyperfocal (6.8 m at c = 1
+                                                 # pitch) is equally consistent with these edges
+
+  fpa:
+    type: bolometer
+    # [DATA] The .npy frames are 480 rows x 640 columns and the scene is upright in them, so the
+    # recordings are 640 wide. The datasheet lists "640 x 480 (viewer) / 480 x 640 (camera)" and
+    # FOV (H x V) 30 x 40: the native readout is portrait and the viewer/capture rotates it. Keep
+    # 640 x 480 to compare with these files; swap width/height to model the native stream.
+    width: 640
+    height: 480
+    pitch_um: 24.0                               # [DS]
+    fill_factor: 0.90                            # PENDIENTE (Boson)
+    frame_rate_hz: 30.0                          # [DS] CTC-006 = 30 Hz (confirmed unit). The lab recording
+                                                 # runs at 10.0 Hz [DATA]: the capture tool's rate, not the core's
+    bit_depth: 14                                # [INFO] "16383 - raw sensor counts"; the files hold
+                                                 # 16383 - raw (invert_raw: true), higher = hotter
+    thermal_time_constant_ms: 8.0                # PENDIENTE (Boson). Datasheet "latency 1 ms" is the
+                                                 # readout latency, not the membrane time constant
+    g_th_w_per_k: 2.0e-8                         # PENDIENTE (Boson; a 24 um membrane differs)
+    tcr_per_k: -0.021                            # PENDIENTE (Boson, VOx). Sensing material unknown
+
+  noise:
+    netd_mk_at_300k: 50.0                        # [DS] "<= 50 mK". NOT the anchor any more: the measured
+                                                 # calibration.radiometric.netd_k below replaces it (ADR 0025)
+    ratios_3d:
+      # [DATA cups] bench/cups_check/task4_noise.py, the 63 frames of thermal_specs/cali_board_new, rows
+      # 10-180 x cols 330-530 (board and wall, clear of the cups and of the hot cup's
+      # plume), inside FFC segments, AFTER the core's denoise: 40. In counts:
+      #   temporal (pairs >= 1.5 s apart = independent frames): tvh 1.391, tv 0.299, th 0.39
+      #   frame bounce t 0.101 (pairs <= 0.35 s; filtered, a lower bound)
+      #   fixed (set means, scene high-passed, bias-corrected): vh 1.429 within one FFC period
+      #   (0.864 of it survives the FFCs between sets), v 0.575, h 0.28.
+      # Fixed rows ~2x fixed columns (v ~ 2 h), as in the lab set: the readout is rotated 90 deg.
+      # NOT representable in this schema (PENDIENTE, schema gap):
+      #   - the denoise has memory: frames 0.1 s apart are correlated r = 0.485, 0.2-0.5 s r = 0.28;
+      #     the simulator's tvh is white in time;
+      #   - and in space: neighbour r = 0.374 (h), 0.297 (v); the simulator's tvh is white in space;
+      #   - heavy tails: beyond 5 sigma 4.13e-04 of samples (Gaussian 5.7e-07),
+      #     0.09 % of pixels have > 2x the median temporal sigma.
+      tvh: 1.00
+      vh:  1.027
+      h:   0.201
+      v:   0.413
+      tv:  0.215
+      th:  0.280
+      t:   0.073
+    fpn_drift_tau_s: 120.0                       # PENDIENTE (Boson). FFCs reset part of VH between sets (r = 0.3-0.4
+                                                 # between sets minutes apart); no FFC-free minute in the data
+    # [DATA cups] The camera replaces its defects, and its denoise erases the footprint: no pixel copies a
+    # neighbour, none shows an interpolation's low variance + high neighbour correlation, and no fixed-pattern
+    # outlier (> 8 sigma_vh in all four sets) is left unreplaced. So the replaced population cannot be
+    # counted here: the datasheet's 99.5 % operability stays, and nothing is visible after replacement.
+    bad_pixel_fraction: 0.005                    # [DS]
+    bad_pixel_cluster_lambda: 1.6                # PENDIENTE (Boson)
+    bad_pixel_late_fraction: 0.0                 # [DATA cups] none of the ~1500 defects 0.5 % implies is visible;
+                                                 # 0 seen -> < 0.2 % of them at 95 % confidence
+
+  nuc:
+    # Shuttered: the frame header carries a shutter temperature [INFO, thermal_sync_events.csv], and
+    # the lab set has one whole-frame +106-count step across a 0.7 s output pause [DATA].
+    mode: shuttered
+    ffc_interval_s: 300                          # PENDIENTE (Boson). One event in 120 s of data
+    ffc_freeze_ms: 700                           # [DATA] one event: 0.70 s between frames vs 0.10 s
+                                                 # nominal, i.e. ~600 ms with no output. Coincides
+                                                 # with the Boson's 700
+    residual_gain_ppm_per_k: 900                 # PENDIENTE (Boson)
+    residual_offset_mk_per_k: 45                 # PENDIENTE (Boson). [DATA] between FFCs the level
+                                                 # drifts up to ~1 count/frame
+
+  # The recordings are raw counts with no ISP, so the comparison plane is `dn_16`, not `display_8`.
+  # The camera's own 8-bit video path (if it has an AGC) was not recorded -- PENDIENTE.
+  # The capture tool's thermal_color/*.png are a FIXED linear window, stored counts 15096 -> 0 and
+  # 15500 -> 255 [DATA]; the schema has no fixed-window mode (`none` maps the whole 14-bit range),
+  # so `linear` here is a placeholder and the Boson's equaliser settings are dropped.
+  isp:
+    agc: linear                                  # PENDIENTE
+    plateau: 0.07                                # unused by `linear`
+    clip_percentiles: [0.005, 0.995]
+    gamma: 1.0
+    dde_gain: 0.0
+    polarity: white_hot
+    palette: gray
+
+  outputs:
+    radiance_linear: true
+    apparent_temperature: true
+    dn_16: true
+    display_8: true
+    scene_apparent_temperature: true             # the reference a radiometric comparison needs
+
+  # [DATA cups] The RGB-thermal calibration (16 views, 0.40 px reprojection,
+  # thermal_specs/cali_board_new/RGBT_calibration_result_matrix.txt) gives fx = 626.9 px, i.e. 15.0 mm at
+  # 24 um -- the CTC-006's 14.6 mm within 3 %, not the CTC-007's 22.2 mm -- and the cups' sizes agree with it
+  # within -7..+8 % (bench/cups_check/task2_geometry.py). Present, this block replaces
+  # optics.focal_length_mm and optics.distortion everywhere the projection is used.
+  calibration:
+    geometric:
+      fx_px: 626.94618350
+      fy_px: 620.62145336
+      cx_px: 332.60285388
+      cy_px: 222.85948387
+      k1: -0.2738138890
+      k2: -0.5834928420
+      p1: 0.0088117352
+      p2: 0.0012314182
+      k3: 0.7123230428
+    radiometric:
+      # sigma_tvh 1.391 counts / SITF 52.91 counts/K at 300 K (bench/cups_check/task1,
+      # radiance-linear, board-referenced; SITF range [47.67, 58.73] from the disagreement of the
+      # 11 / 22 / 66 C readings) = 26.3 mK (range [23.7, 29.2]). OUTPUT noise, after denoise: 40.
+      netd_k: 0.0263
+      sitf_dn_per_k: 52.91
+
+  extensions:
+    core: Obsidian Sensors MirVG
+    firmware: 4.6.6.3
+    capture_invert_raw: true                     # files store 16383 - raw
+    capture_denoise: 40                          # core denoise setting during capture
+    capture_t_list: [0.006, 4.0, 0.35, 55000.0, 0.0]   # undocumented; ask the vendor
+    object_range_c: [-100, 400]                  # [DS]; one or two gain states unknown
+    accuracy: "+/-3 C (10-60 C), +/-5 % to 400 C, ambient 15-35 C"   # [DS]

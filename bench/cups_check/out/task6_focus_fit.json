@@ -1,0 +1,171 @@
+{
+ "M0_in_focus_aberration_only": {
+  "aberration_sigma_um": 104.0,
+  "aberration_sigma_px": 4.33,
+  "score_rms": 0.0257,
+  "cases": {
+   "hot_water_50": {
+    "rms": 0.017,
+    "w10_90_px_model": 11.45
+   },
+   "hot_water_95": {
+    "rms": 0.0283,
+    "w10_90_px_model": 11.45
+   },
+   "cold_water_50": {
+    "rms": 0.021,
+    "w10_90_px_model": 11.45
+   },
+   "cold_water_95": {
+    "rms": 0.0332,
+    "w10_90_px_model": 11.45
+   }
+  }
+ },
+ "M1_focus_at_or_inside_infinity": {
+  "focus_vergence_dpt": 0.0,
+  "focus_distance_m": "infinity",
+  "aberration_sigma_um": 80.0,
+  "aberration_sigma_px": 3.33,
+  "score_rms": 0.023,
+  "cases": {
+   "hot_water_50": {
+    "distance_m": 0.5033,
+    "blur_circle_um": 325.8,
+    "blur_circle_px": 13.57,
+    "rms": 0.0132,
+    "w10_90_px_model": 12.55
+   },
+   "hot_water_95": {
+    "distance_m": 0.9512,
+    "blur_circle_um": 172.4,
+    "blur_circle_px": 7.18,
+    "rms": 0.0245,
+    "w10_90_px_model": 10.05
+   },
+   "cold_water_50": {
+    "distance_m": 0.5021,
+    "blur_circle_um": 326.6,
+    "blur_circle_px": 13.61,
+    "rms": 0.0184,
+    "w10_90_px_model": 12.55
+   },
+   "cold_water_95": {
+    "distance_m": 0.9576,
+    "blur_circle_um": 171.2,
+    "blur_circle_px": 7.13,
+    "rms": 0.0316,
+    "w10_90_px_model": 10.05
+   }
+  }
+ },
+ "M2_focus_free_incl_beyond_infinity": {
+  "focus_vergence_dpt": -0.2,
+  "focus_distance_m": "virtual, -5.000",
+  "aberration_sigma_um": 70.0,
+  "aberration_sigma_px": 2.92,
+  "score_rms": 0.0229,
+  "cases": {
+   "hot_water_50": {
+    "distance_m": 0.5033,
+    "blur_circle_um": 357.5,
+    "blur_circle_px": 14.9,
+    "rms": 0.0133,
+    "w10_90_px_model": 12.55
+   },
+   "hot_water_95": {
+    "distance_m": 0.9512,
+    "blur_circle_um": 204.6,
+    "blur_circle_px": 8.52,
+    "rms": 0.0241,
+    "w10_90_px_model": 9.65
+   },
+   "cold_water_50": {
+    "distance_m": 0.5021,
+    "blur_circle_um": 358.3,
+    "blur_circle_px": 14.93,
+    "rms": 0.0185,
+    "w10_90_px_model": 12.55
+   },
+   "cold_water_95": {
+    "distance_m": 0.9576,
+    "blur_circle_um": 203.4,
+    "blur_circle_px": 8.48,
+    "rms": 0.0318,
+    "w10_90_px_model": 9.55
+   }
+  }
+ },
+ "focus_profile_best_aberration_per_vergence": {
+  "-0.400": {
+   "aberration_sigma_um": 63.9,
+   "score_rms": 0.02302
+  },
+  "-0.200": {
+   "aberration_sigma_um": 72.7,
+   "score_rms": 0.02291
+  },
+  "+0.000": {
+   "aberration_sigma_um": 78.9,
+   "score_rms": 0.02298
+  },
+  "+0.100": {
+   "aberration_sigma_um": 81.8,
+   "score_rms": 0.02307
+  },
+  "+0.147": {
+   "aberration_sigma_um": 83.6,
+   "score_rms": 0.02311
+  },
+  "+0.200": {
+   "aberration_sigma_um": 84.9,
+   "score_rms": 0.02317
+  },
+  "+0.300": {
+   "aberration_sigma_um": 86.9,
+   "score_rms": 0.02329
+  },
+  "+0.500": {
+   "aberration_sigma_um": 91.4,
+   "score_rms": 0.02359
+  },
+  "+0.750": {
+   "aberration_sigma_um": 95.3,
+   "score_rms": 0.02401
+  },
+  "+1.000": {
+   "aberration_sigma_um": 98.4,
+   "score_rms": 0.02451
+  }
+ },
+ "reference_free_core_plus_halo_rms": {
+  "hot_water_50": 0.0117,
+  "hot_water_95": 0.0088,
+  "cold_water_50": 0.0178,
+  "cold_water_95": 0.017
+ },
+ "reference_free_gaussian_rms": {
+  "hot_water_50": 0.0126,
+  "hot_water_95": 0.0245,
+  "cold_water_50": 0.0181,
+  "cold_water_95": 0.0322
+ },
+ "measured_w10_90_px_modelfree": {
+  "hot_water_50": 13.5,
+  "hot_water_95": 12.0,
+  "cold_water_50": 13.25,
+  "cold_water_95": 13.75
+ },
+ "lens": {
+  "focal_length_mm": 14.6,
+  "f_number": 1.3,
+  "pitch_um": 24.0,
+  "wavelength_um": 11.0
+ },
+ "infinity_focus_blur_px": {
+  "hot_water_50": 13.57,
+  "hot_water_95": 7.18,
+  "cold_water_50": 13.61,
+  "cold_water_95": 7.13
+ }
+}
