@@ -1,0 +1,37 @@
+comparison_ref_k4 exit=0 epp=performance
+[comparison_ref_k4] gui False viewport flag False -> updates_enabled False | rendermode RealTimePathTracing | epp performance | k 4 render product 2560x2048 optics fused psf (53, 53) | 640x512 HFOV 30.68 VFOV 24.75 | authored {'focalLength': 14.0, 'horizontalAperture': 7.68, 'verticalAperture': 6.144, 'schema': 'OmniLensDistortionOpenCvPinholeAPI', 'model': 'opencvPinhole'} | period 16.667 ms | palette jet | ros {'enabled': True, 'subscribers_at_start': {'/thermal_sim/ir/image_raw': 1, '/thermal_sim/rgb/image_raw': 1}, 'ir_topic': '/thermal_sim/ir/image_raw', 'rgb_topic': '/thermal_sim/rgb/image_raw', 'ir_content': 'display8', 'ir_encoding': 'rgba8', 'rgb_encoding': 'rgba8', 'camera_info': True}
+[comparison_ref_k4 rgb-reduction] {"max_abs_diff": 0, "full_res_shape": [2048, 2560, 4]}
+[comparison_ref_k4 serial] {"camera_fstop": 0.0, "rows": [{"pose": 40, "ids_identical": true, "distance_identical": true, "rgb_mean_abs_diff_same_serial": 0.1278665542602539, "rgb_mean_abs_diff_other_serial": 0.1864795684814453}, {"pose": 100, "ids_identical": true, "distance_identical": true, "rgb_mean_abs_diff_same_serial": 0.26247034072875974, "rgb_mean_abs_diff_other_serial": 0.33353543281555176}], "ok": true}
+[comparison_ref_k4 check g        poses 8..11] same noise: flux 2.9e-06 rel | signal max 0.0269 DN = 0.15 mK | dn16 3791 px max 1 | display8 10333 px max 4; away from a DN change 5360 px max 1 || own noise: max|z| 2.08 || ok
+[comparison_ref_k4 check g        poses 40..43] same noise: flux 2.7e-06 rel | signal max 0.0898 DN = 0.50 mK | dn16 3610 px max 1 | display8 15647 px max 5; away from a DN change 8864 px max 1 || own noise: max|z| 2.08 || ok
+[comparison_ref_k4 check g        poses 62..65] same noise: flux 4.1e-06 rel | signal max 0.0898 DN = 0.50 mK | dn16 3720 px max 1 | display8 15863 px max 5; away from a DN change 9023 px max 1 || own noise: max|z| 2.08 || ok
+[comparison_ref_k4 check g        poses 100..103] same noise: flux 2.5e-06 rel | signal max 0.0410 DN = 0.23 mK | dn16 3447 px max 1 | display8 8786 px max 4; away from a DN change 4474 px max 1 || own noise: max|z| 2.08 || ok
+[comparison_ref_k4 check g_m9_ff  poses 8..11] same noise: flux 2.9e-06 rel | signal max 0.0269 DN = 0.15 mK | dn16 3808 px max 1 | display8 16677 px max 11; away from a DN change 9591 px max 1 || own noise: max|z| 2.09 || ok
+[comparison_ref_k4 check g_m9_ff  poses 40..43] same noise: flux 2.7e-06 rel | signal max 0.0898 DN = 0.50 mK | dn16 3558 px max 1 | display8 27015 px max 14; away from a DN change 17939 px max 1 || own noise: max|z| 2.09 || ok
+[comparison_ref_k4 check g_m9_ff  poses 62..65] same noise: flux 4.1e-06 rel | signal max 0.0918 DN = 0.52 mK | dn16 3685 px max 1 | display8 24878 px max 14; away from a DN change 16368 px max 1 || own noise: max|z| 2.09 || ok
+[comparison_ref_k4 check g_m9_ff  poses 100..103] same noise: flux 2.5e-06 rel | signal max 0.0410 DN = 0.23 mK | dn16 3434 px max 1 | display8 13316 px max 10; away from a DN change 7315 px max 1 || own noise: max|z| 2.09 || ok
+[comparison_ref_k4] check passed: the device frame is run_frame's within the repo's tolerances
+[comparison_ref_k4 object] AluPanel   kinetic   90.00 C  apparent   29.12 C  (524829 px)
+[comparison_ref_k4 object] Bar_C1     kinetic   60.00 C  apparent   58.26 C  (32236 px)
+[comparison_ref_k4 object] Bar_C2     kinetic   60.00 C  apparent   58.26 C  (31862 px)
+[comparison_ref_k4 object] Bar_C3     kinetic   60.00 C  apparent   58.26 C  (31644 px)
+[comparison_ref_k4 object] Bar_F1     kinetic   60.00 C  apparent   58.26 C  (8843 px)
+[comparison_ref_k4 object] Bar_F2     kinetic   60.00 C  apparent   58.26 C  (8941 px)
+[comparison_ref_k4 object] Bar_F3     kinetic   60.00 C  apparent   58.26 C  (9066 px)
+[comparison_ref_k4 object] Bar_F4     kinetic   60.00 C  apparent   58.26 C  (9178 px)
+[comparison_ref_k4 object] ColdPipe   kinetic    8.00 C  apparent    9.41 C  (396932 px)
+[comparison_ref_k4 object] ColdTank   kinetic    5.00 C  apparent    6.76 C  (942627 px)
+[comparison_ref_k4 object] Floor      kinetic   20.00 C  apparent   20.08 C  (227840 px)
+[comparison_ref_k4 object] HotPipe    kinetic   80.00 C  apparent   72.61 C  (403663 px)
+[comparison_ref_k4 object] HotPlate   kinetic   90.00 C  apparent   81.55 C  (436247 px)
+[comparison_ref_k4 object] HotSpot    kinetic  150.00 C  apparent  135.58 C  (7390 px)
+[comparison_ref_k4 object] Post       kinetic   20.00 C  apparent   20.05 C  (428929 px)
+[comparison_ref_k4 object] Wall       kinetic   25.00 C  apparent   24.68 C  (4710875 px)
+[comparison_ref_k4 object] WarmCrate  kinetic   35.00 C  apparent   34.32 C  (679563 px)
+[comparison_ref_k4 #0 timed  ]  12.38 fps (min 11.0 max 12.9 sd 0.34) |  80.78 ms (p95 84.95 max 90.55) = pose 0.90 + render 38.30 + get_data 4.97 + fresh 0.08 + tables 1.78 + s12 0.63 + gpu 6.92 + sync 24.87 + download 0.65 + store 0.19 + publish 1.50 | m9_clock=0.11 m9_drift=0.29 m9_rts=0.10 s3_optics=0.16 s4_detector=0.16 s5_noise=0.12 m9_defects=0.11 m9_replace=1.98 m9_residual=0.11 m9_ffc=0.07 adc=0.08 flat_field=0.09 s6_agc_table=3.16 s6_lut_dde=0.17 s6_palette=0.08 | lag {'1': 240} anomalies 0 missing 0 ffc 0
+[comparison_ref_k4 saved] {"dir": "/home/jumasaet/isaac-thermal-camera-simulation/outputs/comparison_ref_k4", "rgb.mp4": "ok", "rgb_png": 240, "thermal.mp4": "ok", "thermal_png": 240}
+[comparison_ref_k4 #0 audit  ]  12.63 fps (min 11.3 max 13.2 sd 0.29) |  79.20 ms (p95 82.35 max 88.75) = pose 0.86 + render 37.85 + get_data 5.05 + fresh 0.08 + tables 1.75 + s12 0.62 + gpu 6.97 + sync 25.20 + download 0.64 + store 0.19 + publish 0.00 | m9_clock=0.11 m9_drift=0.28 m9_rts=0.10 s3_optics=0.15 s4_detector=0.17 s5_noise=0.12 m9_defects=0.11 m9_replace=1.96 m9_residual=0.11 m9_ffc=0.07 adc=0.08 flat_field=0.09 s6_agc_table=3.23 s6_lut_dde=0.17 s6_palette=0.07 | lag {'1': 240} anomalies 0 missing 0 ffc 0
+[comparison_ref_k4 audit-ids] {"identical_to_own_pose": 240, "n": 240, "worst_px_differing_from_own": 0, "identical_to_previous_pose": 0, "identical_to_next_pose": 0, "frames_whose_reference_equals_a_neighbour": [119, 120], "distinguishable": 238, "distinguishable_and_identical_to_own": 238, "min_px_between_neighbouring_poses": 7227, "lag_hist": {"1": 240}, "delivered": 240}
+{"topic": "/thermal_sim/ir/image_raw", "sent": 240, "received": 480, "missing": 0, "duplicates": 0, "in_order": true, "payload_crc_mismatches": 240, "encoding": ["bgr8", "rgba8"], "frame_id": ["ir_camera", "thermal_camera"], "width_height_step_len": [[640, 512, 1920, 983040], [640, 512, 2560, 1310720]], "arrival_rate_hz": 8.96}
+{"topic": "/thermal_sim/rgb/image_raw", "sent": 240, "received": 240, "missing": 0, "duplicates": 0, "in_order": true, "payload_crc_mismatches": 0, "encoding": ["rgba8"], "frame_id": ["rgb_camera"], "width_height_step_len": [[640, 512, 2560, 1310720]], "arrival_rate_hz": 12.38}
+RECEPTION NOT CLEAN

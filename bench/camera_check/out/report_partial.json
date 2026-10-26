@@ -1,0 +1,88 @@
+{
+ "lab": {
+  "n_frames": 1146,
+  "dtype": "int16",
+  "shape_hw": [
+   480,
+   640
+  ],
+  "duration_s": 119.90087485313416,
+  "median_dt_s": 0.09999370574951172,
+  "index_gaps": 2,
+  "frames_missing_by_index": 18,
+  "global_min": 14969,
+  "global_max": 16963,
+  "per_frame_span_counts": {
+   "min": 149.0,
+   "median": 575.5,
+   "max": 1824.0,
+   "fraction_of_14bit": 0.0351278764573033
+  },
+  "per_frame_p50_counts": {
+   "min": 15114.0,
+   "max": 15283.0
+  },
+  "frozen_repeats": 0,
+  "motion_median_absdiff_counts": {
+   "p5": 2.0,
+   "p50": 4.0,
+   "p95": 10.0
+  },
+  "static_threshold_counts": 3.0,
+  "static_runs": [
+   {
+    "from": 377,
+    "to": 389,
+    "t0_s": 37.89868783950806,
+    "len": 13
+   },
+   {
+    "from": 650,
+    "to": 663,
+    "t0_s": 65.20178556442261,
+    "len": 14
+   }
+  ]
+ },
+ "lab_png": {
+  "dtype": "uint8",
+  "shape_hw": [
+   480,
+   640
+  ],
+  "per_frame_min": [
+   0,
+   61
+  ],
+  "per_frame_max": [
+   80,
+   255
+  ],
+  "per_frame_p0.5_median": 12.99750000000006,
+  "per_frame_p99.5_median": 163.5,
+  "gain_codes_per_count": [
+   0.2501512052624982,
+   0.6074235749985422,
+   0.6314530621488662
+  ],
+  "window_lo_raw": [
+   14818.072315771524,
+   15092.999927147372,
+   15096.059584280263
+  ],
+  "window_hi_raw": [
+   15499.890075072757,
+   15512.64645670805,
+   15838.87401736919
+  ],
+  "fit_rms_codes": [
+   0.28816838270982414,
+   2.2280698708782047,
+   17.60599872827304
+  ],
+  "window_vs_frame_p0.5_p99.5_corr": [
+   -0.7244188370071879,
+   0.9132335807617811
+  ]
+ }
+}

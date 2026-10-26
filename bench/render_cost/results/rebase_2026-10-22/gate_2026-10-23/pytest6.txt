@@ -1,0 +1,58 @@
+......................sss.ss............................................ [ 19%]
+s....................................................................... [ 39%]
+........................................................................ [ 59%]
+........................................................................ [ 79%]
+........................................................................ [ 99%]
+...                                                                      [100%]
+=============================== warnings summary ===============================
+tests/unit/test_atmosphere_handout.py: 1 warning
+tests/unit/test_cloud_clutter.py: 2 warnings
+tests/unit/test_layered_atmosphere.py: 8 warnings
+tests/unit/test_specular_lobe.py: 1 warning
+tests/unit/test_tier3_atmosphere.py: 5 warnings
+  /home/jumasaet/isaac-thermal-camera-simulation/src/irsim/atmosphere/layered.py:849: UserWarning: LayeredAtmosphere has no spectral response for band 'lwir', so its spectral-class weights come from a nominal top-hat rather than from the camera -- and since AT.10 its spectral *classes* too, since they are derived from the band's own span. Pass responses= (irsim.radiometry.lut_files.load_band_response_for_config) -- measured on the shipped InSb MWIR response, this is a 6.8x error in the h2o_wing class weight.
+    weights = self.weights(band)
+
+tests/unit/test_layered_atmosphere.py::test_single_class_horizontal_reproduces_beer_lambert_to_1e12
+tests/unit/test_layered_atmosphere.py::test_horizontal_200m_anchor_matches_the_grey_preset[fog_dense_50m]
+tests/unit/test_layered_atmosphere.py::test_horizontal_200m_anchor_matches_the_grey_preset[fog_light_200m]
+tests/unit/test_layered_atmosphere.py::test_horizontal_200m_anchor_matches_the_grey_preset[haze]
+tests/unit/test_layered_atmosphere.py::test_horizontal_200m_anchor_matches_the_grey_preset[midlat_summer_humid]
+tests/unit/test_layered_atmosphere.py::test_horizontal_200m_anchor_matches_the_grey_preset[midlat_winter_dry]
+tests/unit/test_layered_atmosphere.py::test_horizontal_200m_anchor_matches_the_grey_preset[tropical]
+tests/unit/test_layered_atmosphere.py::test_horizontal_200m_anchor_matches_the_grey_preset[us_standard_clear]
+  /home/jumasaet/isaac-thermal-camera-simulation/src/irsim/atmosphere/layered.py:849: UserWarning: LayeredAtmosphere has no spectral response for band 'visible', so its spectral-class weights come from a nominal top-hat rather than from the camera -- and since AT.10 its spectral *classes* too, since they are derived from the band's own span. Pass responses= (irsim.radiometry.lut_files.load_band_response_for_config) -- measured on the shipped InSb MWIR response, this is a 6.8x error in the h2o_wing class weight.
+    weights = self.weights(band)
+
+tests/unit/test_layered_atmosphere.py::test_horizontal_200m_anchor_matches_the_grey_preset[fog_dense_50m]
+tests/unit/test_layered_atmosphere.py::test_horizontal_200m_anchor_matches_the_grey_preset[fog_light_200m]
+tests/unit/test_layered_atmosphere.py::test_horizontal_200m_anchor_matches_the_grey_preset[haze]
+tests/unit/test_layered_atmosphere.py::test_horizontal_200m_anchor_matches_the_grey_preset[midlat_summer_humid]
+tests/unit/test_layered_atmosphere.py::test_horizontal_200m_anchor_matches_the_grey_preset[midlat_winter_dry]
+tests/unit/test_layered_atmosphere.py::test_horizontal_200m_anchor_matches_the_grey_preset[tropical]
+tests/unit/test_layered_atmosphere.py::test_horizontal_200m_anchor_matches_the_grey_preset[us_standard_clear]
+  /home/jumasaet/isaac-thermal-camera-simulation/src/irsim/atmosphere/layered.py:849: UserWarning: LayeredAtmosphere has no spectral response for band 'mwir', so its spectral-class weights come from a nominal top-hat rather than from the camera -- and since AT.10 its spectral *classes* too, since they are derived from the band's own span. Pass responses= (irsim.radiometry.lut_files.load_band_response_for_config) -- measured on the shipped InSb MWIR response, this is a 6.8x error in the h2o_wing class weight.
+    weights = self.weights(band)
+
+tests/unit/test_layered_atmosphere.py::test_horizontal_200m_anchor_matches_the_grey_preset[fog_dense_50m]
+tests/unit/test_layered_atmosphere.py::test_horizontal_200m_anchor_matches_the_grey_preset[fog_light_200m]
+tests/unit/test_layered_atmosphere.py::test_horizontal_200m_anchor_matches_the_grey_preset[haze]
+tests/unit/test_layered_atmosphere.py::test_horizontal_200m_anchor_matches_the_grey_preset[midlat_summer_humid]
+tests/unit/test_layered_atmosphere.py::test_horizontal_200m_anchor_matches_the_grey_preset[midlat_winter_dry]
+tests/unit/test_layered_atmosphere.py::test_horizontal_200m_anchor_matches_the_grey_preset[tropical]
+tests/unit/test_layered_atmosphere.py::test_horizontal_200m_anchor_matches_the_grey_preset[us_standard_clear]
+  /home/jumasaet/isaac-thermal-camera-simulation/src/irsim/atmosphere/layered.py:849: UserWarning: LayeredAtmosphere has no spectral response for band 'swir', so its spectral-class weights come from a nominal top-hat rather than from the camera -- and since AT.10 its spectral *classes* too, since they are derived from the band's own span. Pass responses= (irsim.radiometry.lut_files.load_band_response_for_config) -- measured on the shipped InSb MWIR response, this is a 6.8x error in the h2o_wing class weight.
+    weights = self.weights(band)
+
+tests/unit/test_layered_atmosphere.py::test_horizontal_200m_anchor_matches_the_grey_preset[fog_dense_50m]
+tests/unit/test_layered_atmosphere.py::test_horizontal_200m_anchor_matches_the_grey_preset[fog_light_200m]
+tests/unit/test_layered_atmosphere.py::test_horizontal_200m_anchor_matches_the_grey_preset[haze]
+tests/unit/test_layered_atmosphere.py::test_horizontal_200m_anchor_matches_the_grey_preset[midlat_summer_humid]
+tests/unit/test_layered_atmosphere.py::test_horizontal_200m_anchor_matches_the_grey_preset[midlat_winter_dry]
+tests/unit/test_layered_atmosphere.py::test_horizontal_200m_anchor_matches_the_grey_preset[tropical]
+tests/unit/test_layered_atmosphere.py::test_horizontal_200m_anchor_matches_the_grey_preset[us_standard_clear]
+  /home/jumasaet/isaac-thermal-camera-simulation/src/irsim/atmosphere/layered.py:849: UserWarning: LayeredAtmosphere has no spectral response for band 'nir', so its spectral-class weights come from a nominal top-hat rather than from the camera -- and since AT.10 its spectral *classes* too, since they are derived from the band's own span. Pass responses= (irsim.radiometry.lut_files.load_band_response_for_config) -- measured on the shipped InSb MWIR response, this is a 6.8x error in the h2o_wing class weight.
+    weights = self.weights(band)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+357 passed, 7 skipped, 46 warnings in 313.80s (0:05:13)

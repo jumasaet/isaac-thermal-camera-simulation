@@ -1,0 +1,25 @@
+........................................................................ [ 11%]
+........................................................................ [ 22%]
+........................................................................ [ 34%]
+........................................................................ [ 45%]
+........................................................................ [ 57%]
+........................................................s............... [ 68%]
+........................................................................ [ 79%]
+........................................................................ [ 91%]
+..........................s............................                  [100%]
+=============================== warnings summary ===============================
+tests/unit/test_aerial_target.py::test_belly_reads_warmer_than_top_under_a_clear_sky
+tests/unit/test_aerial_target.py::test_drone_is_bright_at_zenith_and_inverts_near_the_horizon
+tests/unit/test_aerial_target.py::test_zero_contrast_elevation_matches_the_rendered_root_within_one_degree
+tests/unit/test_aerial_target.py::test_the_inversion_is_the_reflected_term
+tests/unit/test_aerial_target.py::test_a_hot_target_never_crosses
+tests/unit/test_cloud_base_law.py::test_a_marched_deck_is_read_at_its_own_base
+  /home/jumasaet/isaac-thermal-camera-simulation/src/irsim/atmosphere/layered.py:849: UserWarning: LayeredAtmosphere has no spectral response for band 'lwir', so its spectral-class weights come from a nominal top-hat rather than from the camera -- and since AT.10 its spectral *classes* too, since they are derived from the band's own span. Pass responses= (irsim.radiometry.lut_files.load_band_response_for_config) -- measured on the shipped InSb MWIR response, this is a 6.8x error in the h2o_wing class weight.
+    weights = self.weights(band)
+
+tests/unit/test_lateral_conduction.py::test_the_car_bonnet_conducts_laterally_and_its_gradient_softens
+  /home/jumasaet/isaac-thermal-camera-simulation/src/irsim_isaac/car_demo.py:902: UserWarning: view factors summed to 1.4118 > 1 on 24 cell(s) -- radiator footprints overlap; rescaling proportionally to conserve energy (docs/decisions/0090-clamped-view-factors-for-nested-radiators.md)
+    clamped_views = clamp_view_factor_sum(raw_views)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+629 passed, 2 skipped, 7 warnings in 330.40s (0:05:30)

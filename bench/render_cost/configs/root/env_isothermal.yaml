@@ -1,0 +1,25 @@
+# Isothermal closed enclosure, expressed with the stock schema (no repo change).
+# L_env = V_s*L_sky,eff + (1-V_s)*L_B(T_ground). To make that a SCALAR:
+#   * cloud_fraction = 1.0 (weather) and tau = 0.0 (opaque)  -> c = 1 -> L_sky,eff = L_B(T_base)
+#     at EVERY tilt, so the sky term loses its angular dependence.
+#   * min_base_m = max_base_m ~ 0                            -> T_base = T_air (no lapse drop)
+#   * ground.mode: air                                       -> T_ground = T_air = T_base
+# => L_env = L_B(T_air) for any V_s: the enclosure wall.
+schema_version: 2
+environment:
+  name: isothermal_enclosure
+  description: "Isothermal closed enclosure: L_env is one scalar, L_B(T_air), at every tilt"
+  regime: overcast
+  sky:
+    # Does NOT drive the radiance (that is the layered column via the atmosphere preset);
+    # kept inside the overcast band only to satisfy _delta_t_matches_regime.
+    delta_t_clear_k: {lwir: 7.0, mwir: 3.0, swir: 0.0, nir: 0.0}
+    q: 0.75
+  ground: {mode: air}
+  solar: {enabled: false, glint_model: lambertian}
+  night:
+    airglow_irradiance_nw_cm2: 3.5          # schema floor; NIR/SWIR only, irrelevant to LWIR
+    airglow_shape_file: null
+    k_cloud: 0.5
+    moon: {enabled: false, phase_fraction: 0.0}
+  clouds: {tau: 0.0, beta: 1.8, min_base_m: 0.0, max_base_m: 0.001}

@@ -1,0 +1,16 @@
+x_iso exit=0
+=== X:alternatives ===
+[X:alternatives] {"vpon:cpu:wait:1": {"step": 75.27146847860422, "step_sd": 1.5720684959592486, "read": 3.116376989055425, "get_outputs": 461.5378808666719}, "vpon:cpu:nowait:1": {"step": 21.496366898645647, "step_sd": 0.46997755245828854, "read": 3.0362634861376137, "get_outputs": 414.79525149043184}, "vpon:cpu:nowait+1:1": {"step": 47.94421738188248, "step_sd": 20.889017890284936, "read": 3.1705338769825175, "get_outputs": 444.74632835772354}, "vpon:cuda:wait:1": {"step": 82.94640999520198, "step_sd": 26.345448860106632, "read": 4.645888620871119, "get_outputs": 479.11156025656965}, "vpon:cu
+=== END ===
+x_clear exit=0
+=== X:alternatives ===
+[X:alternatives] {"vpon:cpu:wait:1": {"step": 82.81659637577832, "step_sd": 1.1856440204974585, "read": 3.0984092445578426, "get_outputs": 653.6591211624909}, "vpon:cpu:nowait:1": {"step": 20.77187135000713, "step_sd": 1.2610623390338558, "read": 3.3844891586340964, "get_outputs": 593.8740139681613}, "vpon:cpu:nowait+1:1": {"step": 43.71916287345812, "step_sd": 20.373970835543126, "read": 3.288489140686579, "get_outputs": 625.1867923710961}, "vpon:cuda:wait:1": {"step": 82.43405120447278, "step_sd": 27.139501359535497, "read": 4.614719990058802, "get_outputs": 662.3131575033767}, "vpon:cuda:no
+=== END ===
+x_iso_waitidle exit=0
+=== X:alternatives ===
+[X:alternatives] {"vpon:cpu:wait:1": {"step": 73.23214286589064, "step_sd": 1.4808757597885112, "read": 3.19341583235655, "get_outputs": 466.0589112609159}, "vpon:cpu:nowait:1": {"step": 35.8524376351852, "step_sd": 27.24201255919708, "read": 3.1349035125458613, "get_outputs": 432.0651713642292}, "vpon:cpu:nowait+1:1": {"step": 53.16193762701005, "step_sd": 27.89456935339436, "read": 3.1133768789004534, "get_outputs": 433.3972965250723}, "vpon:cuda:wait:1": {"step": 81.37621675268747, "step_sd": 27.82368260226321, "read": 4.722269542980939, "get_outputs": 477.5864669645671}, "vpon:cuda:nowait:
+=== END ===
+x_clear_waitidle exit=0
+=== X:alternatives ===
+[X:alternatives] {"vpon:cpu:wait:1": {"step": 76.61115887458436, "step_sd": 21.045132229345384, "read": 3.057564521441236, "get_outputs": 666.2423186353408}, "vpon:cpu:nowait:1": {"step": 19.686659012222663, "step_sd": 0.41546877043998337, "read": 2.977755371830426, "get_outputs": 612.5427878723713}, "vpon:cpu:nowait+1:1": {"step": 36.05026086734142, "step_sd": 0.8419388483649806, "read": 3.204112406820059, "get_outputs": 610.7205832522595}, "vpon:cuda:wait:1": {"step": 74.48858550924342, "step_sd": 21.44963697098439, "read": 4.542053255136125, "get_outputs": 661.8569391284836}, "vpon:cuda:now
+=== END ===

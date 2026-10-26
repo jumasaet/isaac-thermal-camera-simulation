@@ -1,0 +1,14 @@
+........................................................................ [ 20%]
+.............................................................s.......... [ 41%]
+........................................................................ [ 61%]
+........................................................................ [ 82%]
+.................................................s............           [100%]
+=============================== warnings summary ===============================
+tests/unit/test_reflected_environment.py::test_cold_roof_drop_under_a_clear_sky
+tests/unit/test_reflected_environment.py::test_environment_radiance_ground_modes_and_guards
+tests/unit/test_reflected_environment.py::test_scene_builds_sky_models_on_the_same_weather
+  /home/jumasaet/isaac-thermal-camera-simulation/src/irsim/atmosphere/layered.py:849: UserWarning: LayeredAtmosphere has no spectral response for band 'lwir', so its spectral-class weights come from a nominal top-hat rather than from the camera -- and since AT.10 its spectral *classes* too, since they are derived from the band's own span. Pass responses= (irsim.radiometry.lut_files.load_band_response_for_config) -- measured on the shipped InSb MWIR response, this is a 6.8x error in the h2o_wing class weight.
+    weights = self.weights(band)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+348 passed, 4 skipped, 3 warnings in 522.56s (0:08:42)

@@ -1,0 +1,40 @@
+{
+ "mean_apparent_t_c_water_region": {
+  "hot_water_50": {
+   "real_mean": 66.94,
+   "sim_mean": 63.27,
+   "diff": 3.67
+  },
+  "hot_water_95": {
+   "real_mean": 51.96,
+   "sim_mean": 55.69,
+   "diff": -3.74
+  },
+  "cold_water_50": {
+   "real_mean": 12.87,
+   "sim_mean": 11.71,
+   "diff": 1.16
+  },
+  "cold_water_95": {
+   "real_mean": 13.85,
+   "sim_mean": 11.72,
+   "diff": 2.12
+  }
+ },
+ "window_c": {
+  "hot": [
+   15.0,
+   70.0
+  ],
+  "cold": [
+   8.0,
+   26.0
+  ]
+ },
+ "reference_frame": {
+  "hot_water_50": 0,
+  "hot_water_95": -1,
+  "cold_water_50": 0,
+  "cold_water_95": 0
+ }
+}

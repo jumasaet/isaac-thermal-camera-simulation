@@ -1,0 +1,27 @@
+# bench/ keeps code, configs, reports, result JSON/CSV/logs and summary sheets.
+# Bulky or regenerable artefacts stay on disk only (back them up separately).
+
+# Raw arrays and point clouds
+*.npy
+*.npz
+*.pcd
+
+# Regenerable band LUTs (rebuilt from the sensor YAML on first use)
+lut/
+*.f32
+
+# Videos and full frame sequences
+*.mp4
+camera_preview/comparison/rgb/
+camera_preview/comparison/thermal/
+
+# Python / process leftovers
+__pycache__/
+*.pyc
+*.pid
+
+# Full-size contact sheets that have a _half copy next to them (kept on disk)
+render_cost/sheets/full/out/deliver/contact_circular_054.png
+render_cost/sheets/full/out/deliver/contact_linear_040.png
+render_cost/sheets/stages/out/hl/contact6_circular_054.png
+render_cost/sheets/stages/out/hl/contact6_linear_040.png

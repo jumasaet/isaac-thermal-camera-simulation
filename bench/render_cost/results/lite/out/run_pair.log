@@ -1,0 +1,44 @@
+pair_iso_1 exit=0
+[all5_step_only#1      ] total  15.31 (p50  15.02 p95  17.51 max  26.81) = step  12.86 + get  2.45 + refresh  0.00 + kern  0.00 + rb  0.00 + rgb_rb  0.00 | >33ms 0.0% uploads 0
+[ids:s1#1              ] total  13.07 (p50  12.54 p95  13.95 max  52.32) = step   9.26 + get  0.67 + refresh  1.00 + kern  1.82 + rb  0.31 + rgb_rb  0.00 | >33ms 1.0% uploads 330
+[ids+dist:s1+s2#1      ] total  14.08 (p50  12.83 p95  16.22 max  83.09) = step   9.91 + get  1.18 + refresh  1.88 + kern  0.79 + rb  0.31 + rgb_rb  0.00 | >33ms 1.7% uploads 330
+[all5_step_only#2      ] total  30.59 (p50  23.39 p95  84.01 max  88.36) = step  26.22 + get  4.37 + refresh  0.00 + kern  0.00 + rb  0.00 + rgb_rb  0.00 | >33ms 12.7% uploads 0
+[ids:s1#2              ] total  27.75 (p50  18.66 p95  79.38 max 103.07) = step  23.60 + get  1.40 + refresh  1.53 + kern  0.65 + rb  0.57 + rgb_rb  0.00 | >33ms 14.7% uploads 330
+[ids+dist:s1+s2#2      ] total  31.71 (p50  21.11 p95  81.99 max  85.12) = step  25.09 + get  2.18 + refresh  2.82 + kern  1.08 + rb  0.54 + rgb_rb  0.00 | >33ms 18.0% uploads 330
+lag ('instance',) {'ref_unique': 40, 'wait': {'lag_mode': 0, 'lag_min': 0, 'lag_max': 0, 'stale': 0, 'unmatched': 0}, 'nowait': {'lag_mode': 1, 'lag_min': 1, 'lag_max': 1, 'stale': 1, 'unmatched': 0}}
+pair_clear_1 exit=0
+[all5_step_only#1      ] total  32.41 (p50  21.80 p95  82.89 max  86.00) = step  28.45 + get  3.95 + refresh  0.00 + kern  0.00 + rb  0.00 + rgb_rb  0.00 | >33ms 18.3% uploads 0
+[ids:s1#1              ] total 264.85 (p50 241.62 p95 374.20 max 436.17) = step  12.05 + get  0.96 + refresh 251.00 + kern  0.42 + rb  0.42 + rgb_rb  0.00 | >33ms 100.0% uploads 330
+[ids+dist:s1+s2#1      ] total 217.37 (p50 215.87 p95 229.56 max 256.38) = step   9.21 + get  1.12 + refresh 206.05 + kern  0.67 + rb  0.30 + rgb_rb  0.00 | >33ms 100.0% uploads 330
+[all5_step_only#2      ] total  15.17 (p50  15.17 p95  16.42 max  18.04) = step  12.80 + get  2.37 + refresh  0.00 + kern  0.00 + rb  0.00 + rgb_rb  0.00 | >33ms 0.0% uploads 0
+[ids:s1#2              ] total 214.09 (p50 212.82 p95 224.36 max 239.08) = step   9.16 + get  0.65 + refresh 203.64 + kern  0.32 + rb  0.32 + rgb_rb  0.00 | >33ms 100.0% uploads 330
+[ids+dist:s1+s2#2      ] total 222.59 (p50 220.10 p95 239.24 max 334.34) = step   9.40 + get  1.20 + refresh 211.00 + kern  0.69 + rb  0.31 + rgb_rb  0.00 | >33ms 100.0% uploads 330
+lag ('instance',) {'ref_unique': 40, 'wait': {'lag_mode': 0, 'lag_min': 0, 'lag_max': 0, 'stale': 0, 'unmatched': 0}, 'nowait': {'lag_mode': 2, 'lag_min': 1, 'lag_max': 2, 'stale': 3, 'unmatched': 0}}
+pair_iso_2 exit=0
+[all5_step_only#1      ] total  15.52 (p50  15.29 p95  16.64 max  76.45) = step  13.09 + get  2.43 + refresh  0.00 + kern  0.00 + rb  0.00 + rgb_rb  0.00 | >33ms 0.3% uploads 0
+[ids:s1#1              ] total  13.55 (p50  13.11 p95  14.39 max  73.88) = step   9.56 + get  0.71 + refresh  1.00 + kern  1.94 + rb  0.34 + rgb_rb  0.00 | >33ms 0.7% uploads 330
+[ids+dist:s1+s2#1      ] total  13.21 (p50  13.16 p95  14.51 max  16.23) = step   9.04 + get  1.17 + refresh  1.82 + kern  0.86 + rb  0.32 + rgb_rb  0.00 | >33ms 0.0% uploads 330
+[all5_step_only#2      ] total  17.31 (p50  16.44 p95  17.94 max  78.79) = step  14.71 + get  2.60 + refresh  0.00 + kern  0.00 + rb  0.00 + rgb_rb  0.00 | >33ms 1.3% uploads 0
+[ids:s1#2              ] total  13.30 (p50  13.18 p95  14.75 max  15.70) = step   9.29 + get  0.72 + refresh  1.01 + kern  1.94 + rb  0.35 + rgb_rb  0.00 | >33ms 0.0% uploads 330
+[ids+dist:s1+s2#2      ] total  13.43 (p50  13.12 p95  14.63 max  74.92) = step   9.30 + get  1.19 + refresh  1.84 + kern  0.78 + rb  0.32 + rgb_rb  0.00 | >33ms 0.3% uploads 330
+lag ('instance',) {'ref_unique': 40, 'wait': {'lag_mode': 0, 'lag_min': 0, 'lag_max': 0, 'stale': 0, 'unmatched': 0}, 'nowait': {'lag_mode': 2, 'lag_min': 1, 'lag_max': 2, 'stale': 6, 'unmatched': 0}}
+pair_clear_2 exit=0
+[all5_step_only#1      ] total  15.98 (p50  15.78 p95  17.01 max  76.07) = step  13.50 + get  2.48 + refresh  0.00 + kern  0.00 + rb  0.00 + rgb_rb  0.00 | >33ms 0.3% uploads 0
+[ids:s1#1              ] total 219.23 (p50 218.13 p95 230.26 max 268.76) = step   9.36 + get  0.69 + refresh 208.51 + kern  0.34 + rb  0.33 + rgb_rb  0.00 | >33ms 100.0% uploads 330
+[ids+dist:s1+s2#1      ] total 223.89 (p50 222.61 p95 239.46 max 259.57) = step   9.57 + get  1.21 + refresh 212.07 + kern  0.72 + rb  0.32 + rgb_rb  0.00 | >33ms 100.0% uploads 330
+[all5_step_only#2      ] total  16.41 (p50  16.23 p95  17.80 max  76.92) = step  13.85 + get  2.56 + refresh  0.00 + kern  0.00 + rb  0.00 + rgb_rb  0.00 | >33ms 0.3% uploads 0
+[ids:s1#2              ] total 217.04 (p50 216.22 p95 226.04 max 245.68) = step   9.34 + get  0.68 + refresh 206.35 + kern  0.34 + rb  0.33 + rgb_rb  0.00 | >33ms 100.0% uploads 330
+[ids+dist:s1+s2#2      ] total 221.36 (p50 220.43 p95 231.36 max 253.93) = step   9.44 + get  1.20 + refresh 209.70 + kern  0.70 + rb  0.32 + rgb_rb  0.00 | >33ms 100.0% uploads 330
+lag ('instance',) {'ref_unique': 40, 'wait': {'lag_mode': 0, 'lag_min': 0, 'lag_max': 0, 'stale': 0, 'unmatched': 0}, 'nowait': {'lag_mode': 2, 'lag_min': 1, 'lag_max': 2, 'stale': 4, 'unmatched': 0}}
+vpon_iso exit=0
+[all5_step_only#1      ] total  19.65 (p50  19.63 p95  21.03 max  22.92) = step  17.16 + get  2.49 + refresh  0.00 + kern  0.00 + rb  0.00 + rgb_rb  0.00 | >33ms 0.0% uploads 0
+[ids:s1#1              ] total  16.81 (p50  16.76 p95  18.11 max  19.39) = step  10.61 + get  0.68 + refresh  0.96 + kern  4.27 + rb  0.31 + rgb_rb  0.00 | >33ms 0.0% uploads 330
+[ids+dist:s1+s2#1      ] total  17.54 (p50  17.30 p95  18.45 max  78.36) = step  11.15 + get  1.20 + refresh  1.83 + kern  3.03 + rb  0.33 + rgb_rb  0.00 | >33ms 0.3% uploads 330
+[all5_step_only#2      ] total  20.10 (p50  19.64 p95  21.08 max  80.62) = step  17.65 + get  2.45 + refresh  0.00 + kern  0.00 + rb  0.00 + rgb_rb  0.00 | >33ms 0.7% uploads 0
+[ids:s1#2              ] total  16.98 (p50  16.95 p95  18.07 max  19.56) = step  10.75 + get  0.68 + refresh  0.97 + kern  4.25 + rb  0.33 + rgb_rb  0.00 | >33ms 0.0% uploads 330
+[ids+dist:s1+s2#2      ] total  17.45 (p50  17.39 p95  18.76 max  20.17) = step  10.98 + get  1.19 + refresh  1.83 + kern  3.11 + rb  0.34 + rgb_rb  0.00 | >33ms 0.0% uploads 330
+   lag instance       wait            hist {'0': 140} stale 0 unmatched 0  frame 55.20 ms (p95 64.44)
+   lag instance       nowait          hist {'1': 140} stale 1 unmatched 0  frame 16.47 ms (p95 17.26)
+   lag instance       nowait+1update  hist {'1': 140} stale 1 unmatched 0  frame 24.03 ms (p95 24.78)
+   lag instance       nowait@30Hz     hist {'1': 140} stale 1 unmatched 0  frame 17.09 ms (p95 18.15)
+=== pair done ===

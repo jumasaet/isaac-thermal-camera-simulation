@@ -1,0 +1,41 @@
+=================== ss4_rt ===================
+exit=0
+requested rendermode 'RaytracedLighting' -> effective 'RealTimePathTracing'
+supersample x4, native 640x512, render product 2560x2048
+VRAM max 4289.0 MiB -> /tmp/irsim_render_cost/result_ss4_rt.json
+=================== ss1_rt ===================
+exit=0
+requested rendermode 'RaytracedLighting' -> effective 'RealTimePathTracing'
+supersample x1, native 640x512, render product 640x512
+VRAM max 2009.0 MiB -> /tmp/irsim_render_cost/result_ss1_rt.json
+=================== ss4_pt ===================
+exit=0
+requested rendermode 'PathTracing' -> effective 'PathTracing'
+supersample x4, native 640x512, render product 2560x2048
+VRAM max 6982.0 MiB -> /tmp/irsim_render_cost/result_ss4_pt.json
+=================== ss1_pt ===================
+exit=0
+requested rendermode 'PathTracing' -> effective 'PathTracing'
+supersample x1, native 640x512, render product 640x512
+VRAM max 2519.0 MiB -> /tmp/irsim_render_cost/result_ss1_pt.json
+=================== ss4_rt_iso ===================
+exit=0
+requested rendermode 'RaytracedLighting' -> effective 'RealTimePathTracing'
+supersample x4, native 640x512, render product 2560x2048
+VRAM max 4289.0 MiB -> /tmp/irsim_render_cost/result_ss4_rt_iso.json
+=================== ss1_rt_iso ===================
+exit=0
+requested rendermode 'RaytracedLighting' -> effective 'RealTimePathTracing'
+supersample x1, native 640x512, render product 640x512
+VRAM max 2009.0 MiB -> /tmp/irsim_render_cost/result_ss1_rt_iso.json
+=== all done ===
+-rw-rw-r-- 1 jumasaet jumasaet 2385 Oct  7 15:58 /tmp/irsim_render_cost/result_smoke2.json
+-rw-rw-r-- 1 jumasaet jumasaet 2387 Oct  7 15:59 /tmp/irsim_render_cost/result_smoke3.json
+-rw-rw-r-- 1 jumasaet jumasaet 2386 Oct  7 16:00 /tmp/irsim_render_cost/result_smoke4.json
+-rw-rw-r-- 1 jumasaet jumasaet 1861 Oct  7 15:56 /tmp/irsim_render_cost/result_smoke.json
+-rw-rw-r-- 1 jumasaet jumasaet 2367 Oct  7 16:15 /tmp/irsim_render_cost/result_ss1_pt.json
+-rw-rw-r-- 1 jumasaet jumasaet 2390 Oct  7 16:22 /tmp/irsim_render_cost/result_ss1_rt_iso.json
+-rw-rw-r-- 1 jumasaet jumasaet 2398 Oct  7 16:08 /tmp/irsim_render_cost/result_ss1_rt.json
+-rw-rw-r-- 1 jumasaet jumasaet 2365 Oct  7 16:14 /tmp/irsim_render_cost/result_ss4_pt.json
+-rw-rw-r-- 1 jumasaet jumasaet 2385 Oct  7 16:21 /tmp/irsim_render_cost/result_ss4_rt_iso.json
+-rw-rw-r-- 1 jumasaet jumasaet 2389 Oct  7 16:07 /tmp/irsim_render_cost/result_ss4_rt.json

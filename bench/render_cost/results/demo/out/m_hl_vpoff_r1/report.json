@@ -1,0 +1,928 @@
+{
+ "tag": "m_hl_vpoff_r1",
+ "gui": false,
+ "viewport_flag": false,
+ "rgb": true,
+ "resolution": [
+  640,
+  512
+ ],
+ "n_frames": 120,
+ "palette": "ironbow",
+ "t_range_c": [
+  15.0,
+  160.0
+ ],
+ "materials": {
+  "Floor": "concrete",
+  "Wall": "concrete",
+  "HotPipe": "rusted_steel",
+  "Anomaly": "rusted_steel",
+  "Crate_01": "abs_plastic_white",
+  "Crate_02": "abs_plastic_white",
+  "Ball": "rubber_tyre"
+ },
+ "frame_period_s": 0.016666666666666666,
+ "camera": {
+  "authored": {
+   "focalLength": 14.0,
+   "horizontalAperture": 7.68,
+   "verticalAperture": 6.144,
+   "schema": "OmniLensDistortionOpenCvPinholeAPI",
+   "model": "opencvPinhole"
+  },
+  "hfov_deg_from_rendered_projection": 30.676393032914383,
+  "vfov_deg_from_rendered_projection": 24.75237226059246
+ },
+ "settings": {
+  "/rtx/rendermode": "RealTimePathTracing",
+  "/rtx/post/aa/op": 3,
+  "/rtx/post/dlss/execMode": 0,
+  "/rtx/post/tonemap/filmIso": 100.0,
+  "/app/vsync": false,
+  "/app/runLoops/main/rateLimitEnabled": false,
+  "/app/runLoops/main/rateLimitFrequency": 120,
+  "/app/asyncRendering": false,
+  "/app/window/width": 1440,
+  "/app/window/height": 900,
+  "/app/renderer/resolution/width": 1280,
+  "/app/renderer/resolution/height": 720,
+  "/app/window/hideUi": 1
+ },
+ "passes": [
+  {
+   "trajectory": "linear",
+   "pass": 1,
+   "n_frames": 120,
+   "fps": {
+    "sequence": 68.10324088779203,
+    "wall": 68.04400942497452,
+    "min": 60.171523996807146,
+    "max": 75.22628433044183,
+    "sd": 2.8539334538685615,
+    "p05": 63.1250562953988,
+    "p50": 68.4610384332961
+   },
+   "ms": {
+    "pose": {
+     "mean": 0.5576332924344266,
+     "p50": 0.5486220470629632,
+     "p95": 0.630125094903633,
+     "max": 0.7454219739884138,
+     "min": 0.4924660315737128,
+     "sd": 0.045731522173340776
+    },
+    "render": {
+     "mean": 8.955800811721323,
+     "p50": 8.919196028728038,
+     "p95": 9.764409775380045,
+     "max": 10.86027396377176,
+     "min": 7.854404975660145,
+     "sd": 0.501443610606989
+    },
+    "get_data": {
+     "mean": 1.7271745280595496,
+     "p50": 1.7069725436158478,
+     "p95": 1.8496817559935153,
+     "max": 2.5257550878450274,
+     "min": 1.5976530266925693,
+     "sd": 0.09988300485539775
+    },
+    "fresh": {
+     "mean": 0.10178003673596929,
+     "p50": 0.09885302279144526,
+     "p95": 0.12190775014460085,
+     "max": 0.1627479214221239,
+     "min": 0.09162398055195808,
+     "sd": 0.011567147366037096
+    },
+    "tables": {
+     "mean": 1.6761490211744483,
+     "p50": 1.6433350392617285,
+     "p95": 1.8435800564475358,
+     "max": 2.4799519451335073,
+     "min": 1.5686310362070799,
+     "sd": 0.13291570233047859
+    },
+    "kernels": {
+     "mean": 0.7340068521443754,
+     "p50": 0.7061194628477097,
+     "p95": 0.869260705076158,
+     "max": 1.0168890003114939,
+     "min": 0.6732239853590727,
+     "sd": 0.06485784022538071
+    },
+    "output": {
+     "mean": 0.9310444758739322,
+     "p50": 1.0013909195549786,
+     "p95": 1.0831210645847023,
+     "max": 1.4317010063678026,
+     "min": 0.7203659042716026,
+     "sd": 0.14713857190299423
+    },
+    "total": {
+     "mean": 14.683589018144025,
+     "p50": 14.60684952326119,
+     "p95": 15.841592609649524,
+     "max": 16.619156929664314,
+     "min": 13.293226016685367,
+     "sd": 0.6280782594914638
+    }
+   },
+   "frac_over_33ms": 0.0,
+   "frac_over_16p7ms": 0.0,
+   "freshness": {
+    "lag_hist": {
+     "1": 120
+    },
+    "anomalous_reads": 0,
+    "repeated_reads": 0,
+    "poses_never_delivered": [],
+    "poses_delivered_twice": [],
+    "recovered_synchronously": 0,
+    "lead_in_anomalies": 0,
+    "events": []
+   },
+   "table_uploads": null,
+   "host_before": {
+    "epp": "performance",
+    "gpu_temp_util_power_clock_mem": "64, 65, 202.95, 1980, 2743",
+    "cpu_mhz_mean": 4312
+   },
+   "host_after": {
+    "epp": "performance",
+    "gpu_temp_util_power_clock_mem": "64, 39, 200.29, 1965, 2719",
+    "cpu_mhz_mean": 4115
+   },
+   "thermal_sha1": "59fa15d479de3c97fa869674b66914c824209128"
+  },
+  {
+   "trajectory": "circular",
+   "pass": 1,
+   "n_frames": 120,
+   "fps": {
+    "sequence": 66.81069972603034,
+    "wall": 66.75048101941127,
+    "min": 53.572176537544244,
+    "max": 74.53140466685718,
+    "sd": 2.8750308001606033,
+    "p05": 62.378022657979606,
+    "p50": 66.99628273911017
+   },
+   "ms": {
+    "pose": {
+     "mean": 0.7115802601523077,
+     "p50": 0.6970220129005611,
+     "p95": 0.8030641765799373,
+     "max": 0.9450310608372092,
+     "min": 0.630056019872427,
+     "sd": 0.05701806168146393
+    },
+    "render": {
+     "mean": 9.031324205958905,
+     "p50": 8.99123348062858,
+     "p95": 9.705754922470078,
+     "max": 12.097814003936946,
+     "min": 7.790260948240757,
+     "sd": 0.5396061480223175
+    },
+    "get_data": {
+     "mean": 1.7358348850393668,
+     "p50": 1.7084010760299861,
+     "p95": 1.878522103652358,
+     "max": 2.5902719935402274,
+     "min": 1.604918041266501,
+     "sd": 0.1128987992917262
+    },
+    "fresh": {
+     "mean": 0.10343944013584405,
+     "p50": 0.10132195893675089,
+     "p95": 0.1267547602765262,
+     "max": 0.1574009656906128,
+     "min": 0.09152502752840519,
+     "sd": 0.010760680111065266
+    },
+    "tables": {
+     "mean": 1.670640698284842,
+     "p50": 1.650801976211369,
+     "p95": 1.8343378556892276,
+     "max": 1.9262410933151841,
+     "min": 1.5597979072481394,
+     "sd": 0.08112102651308259
+    },
+    "kernels": {
+     "mean": 0.7488563841131205,
+     "p50": 0.7167725125327706,
+     "p95": 0.9100374591071159,
+     "max": 1.722422894090414,
+     "min": 0.6715520285069942,
+     "sd": 0.11745472844340546
+    },
+    "output": {
+     "mean": 0.9659865531527126,
+     "p50": 1.0178830125369132,
+     "p95": 1.3939950324129313,
+     "max": 1.7585490131750703,
+     "min": 0.7139559602364898,
+     "sd": 0.19406233787586935
+    },
+    "total": {
+     "mean": 14.9676624268371,
+     "p50": 14.926201431080699,
+     "p95": 16.031319421017542,
+     "max": 18.666406045667827,
+     "min": 13.41716293245554,
+     "sd": 0.6713409751386841
+    }
+   },
+   "frac_over_33ms": 0.0,
+   "frac_over_16p7ms": 0.008333333333333333,
+   "freshness": {
+    "lag_hist": {
+     "1": 120
+    },
+    "anomalous_reads": 0,
+    "repeated_reads": 0,
+    "poses_never_delivered": [],
+    "poses_delivered_twice": [],
+    "recovered_synchronously": 0,
+    "lead_in_anomalies": 0,
+    "events": []
+   },
+   "table_uploads": null,
+   "host_before": {
+    "epp": "performance",
+    "gpu_temp_util_power_clock_mem": "64, 39, 189.98, 1965, 2719",
+    "cpu_mhz_mean": 3590
+   },
+   "host_after": {
+    "epp": "performance",
+    "gpu_temp_util_power_clock_mem": "63, 40, 189.91, 1890, 2719",
+    "cpu_mhz_mean": 4114
+   },
+   "thermal_sha1": "03064a6f45bdb51f9be6f398a7ee78ff1fd890d7"
+  },
+  {
+   "trajectory": "linear",
+   "pass": 2,
+   "n_frames": 120,
+   "fps": {
+    "sequence": 67.70484325268606,
+    "wall": 67.64424975353647,
+    "min": 58.41963636716296,
+    "max": 74.81903903837205,
+    "sd": 2.890853211004785,
+    "p05": 63.29835649267382,
+    "p50": 67.51168357068644
+   },
+   "ms": {
+    "pose": {
+     "mean": 0.5704570561647415,
+     "p50": 0.5590830114670098,
+     "p95": 0.6408494897186756,
+     "max": 0.8565450552850962,
+     "min": 0.5043309647589922,
+     "sd": 0.0511130044399989
+    },
+    "render": {
+     "mean": 9.000248338755531,
+     "p50": 9.063026518560946,
+     "p95": 9.76557552930899,
+     "max": 10.907429037615657,
+     "min": 7.820407045073807,
+     "sd": 0.5503359401334418
+    },
+    "get_data": {
+     "mean": 1.739378838101402,
+     "p50": 1.7191160004585981,
+     "p95": 1.904712471878156,
+     "max": 2.1298020146787167,
+     "min": 1.6290589701384306,
+     "sd": 0.0908337079863637
+    },
+    "fresh": {
+     "mean": 0.10240557894576341,
+     "p50": 0.10193296475335956,
+     "p95": 0.11317962780594826,
+     "max": 0.13524491805583239,
+     "min": 0.09213900193572044,
+     "sd": 0.006818866635544644
+    },
+    "tables": {
+     "mean": 1.683770557671475,
+     "p50": 1.6538570052944124,
+     "p95": 1.80869692703709,
+     "max": 2.742359065450728,
+     "min": 1.5790009638294578,
+     "sd": 0.13500152751250016
+    },
+    "kernels": {
+     "mean": 0.7353017426794395,
+     "p50": 0.7081564399413764,
+     "p95": 0.8968123758677392,
+     "max": 1.2548969825729728,
+     "min": 0.6789290346205235,
+     "sd": 0.08243902847131085
+    },
+    "output": {
+     "mean": 0.9384299880669763,
+     "p50": 1.0060684871859848,
+     "p95": 1.0924204252660275,
+     "max": 1.510494970716536,
+     "min": 0.7189590251073241,
+     "sd": 0.1540960393252999
+    },
+    "total": {
+     "mean": 14.769992100385329,
+     "p50": 14.812250970862806,
+     "p95": 15.798198501579463,
+     "max": 17.11753208655864,
+     "min": 13.365581980906427,
+     "sd": 0.6341799259352151
+    }
+   },
+   "frac_over_33ms": 0.0,
+   "frac_over_16p7ms": 0.008333333333333333,
+   "freshness": {
+    "lag_hist": {
+     "1": 120
+    },
+    "anomalous_reads": 0,
+    "repeated_reads": 0,
+    "poses_never_delivered": [],
+    "poses_delivered_twice": [],
+    "recovered_synchronously": 0,
+    "lead_in_anomalies": 0,
+    "events": []
+   },
+   "table_uploads": null,
+   "host_before": {
+    "epp": "performance",
+    "gpu_temp_util_power_clock_mem": "63, 40, 177.53, 1890, 2719",
+    "cpu_mhz_mean": 3599
+   },
+   "host_after": {
+    "epp": "performance",
+    "gpu_temp_util_power_clock_mem": "64, 35, 200.40, 1980, 2719",
+    "cpu_mhz_mean": 4301
+   },
+   "thermal_sha1": "59fa15d479de3c97fa869674b66914c824209128"
+  },
+  {
+   "trajectory": "circular",
+   "pass": 2,
+   "n_frames": 120,
+   "fps": {
+    "sequence": 67.16156747472155,
+    "wall": 67.10184813481428,
+    "min": 52.42596719306909,
+    "max": 73.5555726301689,
+    "sd": 3.072549262722135,
+    "p05": 62.789168918147745,
+    "p50": 67.41876575849399
+   },
+   "ms": {
+    "pose": {
+     "mean": 0.7122826151316985,
+     "p50": 0.6979574682191014,
+     "p95": 0.8029762655496597,
+     "max": 1.2282719835639,
+     "min": 0.6187469698488712,
+     "sd": 0.08050545363531772
+    },
+    "render": {
+     "mean": 9.00014881141639,
+     "p50": 9.028382948599756,
+     "p95": 9.782917029224336,
+     "max": 11.507148970849812,
+     "min": 7.836119970306754,
+     "sd": 0.5482429790669281
+    },
+    "get_data": {
+     "mean": 1.7344541226824124,
+     "p50": 1.7054820200428367,
+     "p95": 1.9239876884967089,
+     "max": 2.5348420022055507,
+     "min": 1.5972639666870236,
+     "sd": 0.12423914770432176
+    },
+    "fresh": {
+     "mean": 0.1032416175197189,
+     "p50": 0.10065000969916582,
+     "p95": 0.12426275061443445,
+     "max": 0.2023150445893407,
+     "min": 0.09148404933512211,
+     "sd": 0.015188483452274219
+    },
+    "tables": {
+     "mean": 1.664548457483761,
+     "p50": 1.6335524851456285,
+     "p95": 1.8170327180996537,
+     "max": 2.1958539728075266,
+     "min": 1.5550149837508798,
+     "sd": 0.0889154572459177
+    },
+    "kernels": {
+     "mean": 0.7295719173271209,
+     "p50": 0.704339996445924,
+     "p95": 0.8415149175561965,
+     "max": 1.085579046048224,
+     "min": 0.6754710339009762,
+     "sd": 0.06356408847433304
+    },
+    "output": {
+     "mean": 0.9452203133453926,
+     "p50": 1.0123284882865846,
+     "p95": 1.1352825036738068,
+     "max": 1.4816959155723453,
+     "min": 0.7184699643403292,
+     "sd": 0.16772066904327299
+    },
+    "total": {
+     "mean": 14.889467854906494,
+     "p50": 14.832665969152004,
+     "p95": 15.926321764709428,
+     "max": 19.074516952969134,
+     "min": 13.59516300726682,
+     "sd": 0.7308523147951235
+    }
+   },
+   "frac_over_33ms": 0.0,
+   "frac_over_16p7ms": 0.016666666666666666,
+   "freshness": {
+    "lag_hist": {
+     "1": 120
+    },
+    "anomalous_reads": 0,
+    "repeated_reads": 0,
+    "poses_never_delivered": [],
+    "poses_delivered_twice": [],
+    "recovered_synchronously": 0,
+    "lead_in_anomalies": 0,
+    "events": []
+   },
+   "table_uploads": null,
+   "host_before": {
+    "epp": "performance",
+    "gpu_temp_util_power_clock_mem": "63, 12, 191.75, 1980, 2719",
+    "cpu_mhz_mean": 3535
+   },
+   "host_after": {
+    "epp": "performance",
+    "gpu_temp_util_power_clock_mem": "63, 37, 193.44, 1890, 2719",
+    "cpu_mhz_mean": 3136
+   },
+   "thermal_sha1": "03064a6f45bdb51f9be6f398a7ee78ff1fd890d7"
+  }
+ ],
+ "audit": {
+  "linear": {
+   "reference_stamp_mismatches": 0,
+   "device_vs_cpu": {
+    "frame": 0,
+    "s1_bit_identical_px": 101009,
+    "n_px": 327680,
+    "s1s2_vs_cpu_max_rel": 2.1361596719542314e-07,
+    "s1s2_vs_cpu_max_mK": 0.030517578125,
+    "display_px_differing_from_cpu": 0,
+    "display_max_code_diff": 0
+   },
+   "passes": {
+    "1": {
+     "thermal_frames_identical": 120,
+     "thermal_worst_frame_px": 0,
+     "thermal_identical_if_shifted": {
+      "-2": 2,
+      "-1": 0,
+      "1": 0,
+      "2": 2
+     },
+     "rgb_best_match_is_own_pose": 120,
+     "rgb_best_match_hist": {
+      "-1": 0,
+      "0": 120,
+      "1": 0
+     },
+     "rgb_mse_own": 3.452450792491436,
+     "rgb_mse_neighbour": 55.119575818379715
+    },
+    "2": {
+     "thermal_frames_identical": 120,
+     "thermal_worst_frame_px": 0,
+     "thermal_identical_if_shifted": {
+      "-2": 2,
+      "-1": 0,
+      "1": 0,
+      "2": 2
+     },
+     "rgb_best_match_is_own_pose": 120,
+     "rgb_best_match_hist": {
+      "-1": 0,
+      "0": 120,
+      "1": 0
+     },
+     "rgb_mse_own": 3.1855047166347505,
+     "rgb_mse_neighbour": 54.80328003565471
+    }
+   }
+  },
+  "circular": {
+   "reference_stamp_mismatches": 0,
+   "device_vs_cpu": {
+    "frame": 0,
+    "s1_bit_identical_px": 151120,
+    "n_px": 327680,
+    "s1s2_vs_cpu_max_rel": 2.1366063483702466e-07,
+    "s1s2_vs_cpu_max_mK": 0.030517578125,
+    "display_px_differing_from_cpu": 0,
+    "display_max_code_diff": 0
+   },
+   "passes": {
+    "1": {
+     "thermal_frames_identical": 120,
+     "thermal_worst_frame_px": 0,
+     "thermal_identical_if_shifted": {
+      "-2": 2,
+      "-1": 0,
+      "1": 0,
+      "2": 2
+     },
+     "rgb_best_match_is_own_pose": 119,
+     "rgb_best_match_hist": {
+      "-1": 1,
+      "0": 119,
+      "1": 0
+     },
+     "rgb_mse_own": 5.362110517422358,
+     "rgb_mse_neighbour": 21.505889828999837
+    },
+    "2": {
+     "thermal_frames_identical": 120,
+     "thermal_worst_frame_px": 0,
+     "thermal_identical_if_shifted": {
+      "-2": 2,
+      "-1": 0,
+      "1": 0,
+      "2": 2
+     },
+     "rgb_best_match_is_own_pose": 120,
+     "rgb_best_match_hist": {
+      "-1": 0,
+      "0": 120,
+      "1": 0
+     },
+     "rgb_mse_own": 5.144290179014206,
+     "rgb_mse_neighbour": 21.867096122105917
+    }
+   }
+  }
+ },
+ "objects": {
+  "linear": {
+   "0": [
+    {
+     "prim": "/World/Floor",
+     "material": "concrete",
+     "eps_band": 0.9200000166893005,
+     "t_kinetic_c": 20.0,
+     "t_apparent_c_median": 20.084130859375023,
+     "pixels": 101009
+    },
+    {
+     "prim": "/World/HotPipe",
+     "material": "rusted_steel",
+     "eps_band": 0.8500000238418579,
+     "t_kinetic_c": 80.0,
+     "t_apparent_c_median": 72.51503906250002,
+     "pixels": 13418
+    },
+    {
+     "prim": "/World/Wall",
+     "material": "concrete",
+     "eps_band": 0.9200000166893005,
+     "t_kinetic_c": 25.0,
+     "t_apparent_c_median": 24.669244384765648,
+     "pixels": 204844
+    },
+    {
+     "prim": "<background, id 0>",
+     "material": null,
+     "eps_band": null,
+     "t_kinetic_c": null,
+     "t_apparent_c_median": 20.999993896484398,
+     "pixels": 8409
+    }
+   ],
+   "20": [
+    {
+     "prim": "/World/Floor",
+     "material": "concrete",
+     "eps_band": 0.9200000166893005,
+     "t_kinetic_c": 20.0,
+     "t_apparent_c_median": 20.084100341796898,
+     "pixels": 86092
+    },
+    {
+     "prim": "/World/HotPipe",
+     "material": "rusted_steel",
+     "eps_band": 0.8500000238418579,
+     "t_kinetic_c": 80.0,
+     "t_apparent_c_median": 72.5161071777344,
+     "pixels": 38400
+    },
+    {
+     "prim": "/World/Wall",
+     "material": "concrete",
+     "eps_band": 0.9200000166893005,
+     "t_kinetic_c": 25.0,
+     "t_apparent_c_median": 24.669183349609398,
+     "pixels": 197120
+    },
+    {
+     "prim": "/World/Anomaly",
+     "material": "rusted_steel",
+     "eps_band": 0.8500000238418579,
+     "t_kinetic_c": 150.0,
+     "t_apparent_c_median": 135.5035339355469,
+     "pixels": 6068
+    }
+   ],
+   "40": [
+    {
+     "prim": "/World/Floor",
+     "material": "concrete",
+     "eps_band": 0.9200000166893005,
+     "t_kinetic_c": 20.0,
+     "t_apparent_c_median": 20.084161376953148,
+     "pixels": 59417
+    },
+    {
+     "prim": "/World/HotPipe",
+     "material": "rusted_steel",
+     "eps_band": 0.8500000238418579,
+     "t_kinetic_c": 80.0,
+     "t_apparent_c_median": 72.5161071777344,
+     "pixels": 38400
+    },
+    {
+     "prim": "/World/Wall",
+     "material": "concrete",
+     "eps_band": 0.9200000166893005,
+     "t_kinetic_c": 25.0,
+     "t_apparent_c_median": 24.669183349609398,
+     "pixels": 191689
+    },
+    {
+     "prim": "/World/Crate_01",
+     "material": "abs_plastic_white",
+     "eps_band": 0.949999988079071,
+     "t_kinetic_c": 18.0,
+     "t_apparent_c_median": 18.161889648437523,
+     "pixels": 27090
+    },
+    {
+     "prim": "/World/Crate_02",
+     "material": "abs_plastic_white",
+     "eps_band": 0.949999988079071,
+     "t_kinetic_c": 30.0,
+     "t_apparent_c_median": 29.546899414062523,
+     "pixels": 11084
+    }
+   ],
+   "60": [
+    {
+     "prim": "/World/Floor",
+     "material": "concrete",
+     "eps_band": 0.9200000166893005,
+     "t_kinetic_c": 20.0,
+     "t_apparent_c_median": 20.084130859375023,
+     "pixels": 101009
+    },
+    {
+     "prim": "/World/HotPipe",
+     "material": "rusted_steel",
+     "eps_band": 0.8500000238418579,
+     "t_kinetic_c": 80.0,
+     "t_apparent_c_median": 72.51503906250002,
+     "pixels": 13418
+    },
+    {
+     "prim": "/World/Wall",
+     "material": "concrete",
+     "eps_band": 0.9200000166893005,
+     "t_kinetic_c": 25.0,
+     "t_apparent_c_median": 24.669244384765648,
+     "pixels": 204844
+    },
+    {
+     "prim": "<background, id 0>",
+     "material": null,
+     "eps_band": null,
+     "t_kinetic_c": null,
+     "t_apparent_c_median": 20.999993896484398,
+     "pixels": 8409
+    }
+   ]
+  },
+  "circular": {
+   "0": [
+    {
+     "prim": "/World/Floor",
+     "material": "concrete",
+     "eps_band": 0.9200000166893005,
+     "t_kinetic_c": 20.0,
+     "t_apparent_c_median": 20.084619140625023,
+     "pixels": 126756
+    },
+    {
+     "prim": "/World/HotPipe",
+     "material": "rusted_steel",
+     "eps_band": 0.8500000238418579,
+     "t_kinetic_c": 80.0,
+     "t_apparent_c_median": 72.47017822265627,
+     "pixels": 24787
+    },
+    {
+     "prim": "/World/Wall",
+     "material": "concrete",
+     "eps_band": 0.9200000166893005,
+     "t_kinetic_c": 25.0,
+     "t_apparent_c_median": 24.664514160156273,
+     "pixels": 148675
+    },
+    {
+     "prim": "/World/Crate_01",
+     "material": "abs_plastic_white",
+     "eps_band": 0.949999988079071,
+     "t_kinetic_c": 18.0,
+     "t_apparent_c_median": 18.167260742187523,
+     "pixels": 14091
+    },
+    {
+     "prim": "/World/Anomaly",
+     "material": "rusted_steel",
+     "eps_band": 0.8500000238418579,
+     "t_kinetic_c": 150.0,
+     "t_apparent_c_median": 135.4456726074219,
+     "pixels": 10273
+    },
+    {
+     "prim": "<background, id 0>",
+     "material": null,
+     "eps_band": null,
+     "t_kinetic_c": null,
+     "t_apparent_c_median": 20.999993896484398,
+     "pixels": 3098
+    }
+   ],
+   "20": [
+    {
+     "prim": "/World/Floor",
+     "material": "concrete",
+     "eps_band": 0.9200000166893005,
+     "t_kinetic_c": 20.0,
+     "t_apparent_c_median": 20.084436035156273,
+     "pixels": 112861
+    },
+    {
+     "prim": "/World/HotPipe",
+     "material": "rusted_steel",
+     "eps_band": 0.8500000238418579,
+     "t_kinetic_c": 80.0,
+     "t_apparent_c_median": 72.47207031250002,
+     "pixels": 30146
+    },
+    {
+     "prim": "/World/Wall",
+     "material": "concrete",
+     "eps_band": 0.9200000166893005,
+     "t_kinetic_c": 25.0,
+     "t_apparent_c_median": 24.665460205078148,
+     "pixels": 160973
+    },
+    {
+     "prim": "/World/Crate_01",
+     "material": "abs_plastic_white",
+     "eps_band": 0.949999988079071,
+     "t_kinetic_c": 18.0,
+     "t_apparent_c_median": 18.166101074218773,
+     "pixels": 16136
+    },
+    {
+     "prim": "/World/Anomaly",
+     "material": "rusted_steel",
+     "eps_band": 0.8500000238418579,
+     "t_kinetic_c": 150.0,
+     "t_apparent_c_median": 135.4277282714844,
+     "pixels": 7564
+    }
+   ],
+   "40": [
+    {
+     "prim": "/World/Floor",
+     "material": "concrete",
+     "eps_band": 0.9200000166893005,
+     "t_kinetic_c": 20.0,
+     "t_apparent_c_median": 20.084405517578148,
+     "pixels": 117177
+    },
+    {
+     "prim": "/World/HotPipe",
+     "material": "rusted_steel",
+     "eps_band": 0.8500000238418579,
+     "t_kinetic_c": 80.0,
+     "t_apparent_c_median": 72.47207031250002,
+     "pixels": 30146
+    },
+    {
+     "prim": "/World/Wall",
+     "material": "concrete",
+     "eps_band": 0.9200000166893005,
+     "t_kinetic_c": 25.0,
+     "t_apparent_c_median": 24.665399169921898,
+     "pixels": 162357
+    },
+    {
+     "prim": "/World/Crate_01",
+     "material": "abs_plastic_white",
+     "eps_band": 0.949999988079071,
+     "t_kinetic_c": 18.0,
+     "t_apparent_c_median": 18.164514160156273,
+     "pixels": 10685
+    },
+    {
+     "prim": "/World/Anomaly",
+     "material": "rusted_steel",
+     "eps_band": 0.8500000238418579,
+     "t_kinetic_c": 150.0,
+     "t_apparent_c_median": 135.39589843750002,
+     "pixels": 7315
+    }
+   ],
+   "60": [
+    {
+     "prim": "/World/Floor",
+     "material": "concrete",
+     "eps_band": 0.9200000166893005,
+     "t_kinetic_c": 20.0,
+     "t_apparent_c_median": 20.084680175781273,
+     "pixels": 118276
+    },
+    {
+     "prim": "/World/HotPipe",
+     "material": "rusted_steel",
+     "eps_band": 0.8500000238418579,
+     "t_kinetic_c": 80.0,
+     "t_apparent_c_median": 72.47017822265627,
+     "pixels": 24787
+    },
+    {
+     "prim": "/World/Wall",
+     "material": "concrete",
+     "eps_band": 0.9200000166893005,
+     "t_kinetic_c": 25.0,
+     "t_apparent_c_median": 24.664422607421898,
+     "pixels": 148223
+    },
+    {
+     "prim": "/World/Crate_01",
+     "material": "abs_plastic_white",
+     "eps_band": 0.949999988079071,
+     "t_kinetic_c": 18.0,
+     "t_apparent_c_median": 18.162927246093773,
+     "pixels": 16030
+    },
+    {
+     "prim": "/World/Crate_02",
+     "material": "abs_plastic_white",
+     "eps_band": 0.949999988079071,
+     "t_kinetic_c": 30.0,
+     "t_apparent_c_median": 29.545404052734398,
+     "pixels": 11009
+    },
+    {
+     "prim": "/World/Anomaly",
+     "material": "rusted_steel",
+     "eps_band": 0.8500000238418579,
+     "t_kinetic_c": 150.0,
+     "t_apparent_c_median": 135.36394653320315,
+     "pixels": 6257
+    },
+    {
+     "prim": "<background, id 0>",
+     "material": null,
+     "eps_band": null,
+     "t_kinetic_c": null,
+     "t_apparent_c_median": 20.999993896484398,
+     "pixels": 3098
+    }
+   ]
+  }
+ },
+ "saved": {},
+ "viewport_updates_enabled": false,
+ "viewport_resolution": [
+  1280,
+  720
+ ]
+}

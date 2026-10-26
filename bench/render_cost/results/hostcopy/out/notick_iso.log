@@ -1,0 +1,506 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1791437447.783047    2567 descriptor_database.cc:633] File already exists in database: grpc/health/v1/health.proto
+W0000 00:00:1791437447.783083    2567 message.cc:301] Protobuf GeneratedMessageFactory: File is already registered: grpc/health/v1/health.proto
+2026-10-08T05:30:47Z [Info] [carb] Logging to file: /home/jumasaet/isaac_sim/kit/logs/Kit/Isaac-Sim Python/6.1/kit_20261008_143047.log
+[0.071s] [ext: omni.assets.plugins-0.0.0] startup
+[0.072s] [ext: omni.blobkey-1.1.2] startup
+[0.072s] [ext: omni.kit.async_engine-0.0.3] startup
+[0.650s] [ext: omni.client.lib-1.1.1] startup
+[0.661s] [ext: omni.client-1.3.0] startup
+[0.665s] [ext: omni.protobuf.lib-1.0.1] startup
+[0.666s] [ext: omni.grpc.lib-1.0.0] startup
+[0.670s] [ext: omni.metrics.core-0.0.3] startup
+[0.671s] [ext: omni.datastore-0.0.0] startup
+[0.671s] [ext: omni.gpu_foundation.shadercache.vulkan-1.0.0] startup
+[0.674s] [ext: omni.hsscclient-1.1.4] startup
+[0.675s] [ext: omni.stats-1.0.1] startup
+[0.676s] [ext: omni.ujitso.default-1.0.0] startup
+[0.679s] [ext: omni.gpu_foundation-0.0.0] startup
+[0.896s] [ext: carb.windowing.plugins-1.0.1] startup
+[0.896s] [ext: omni.kit.renderer.init-1.0.1] startup
+
+|---------------------------------------------------------------------------------------------|
+| Driver Version: 580.178.04    | Graphics API: Vulkan
+|=============================================================================================|
+| GPU | Name                             | Active | LDA | GPU Memory | Vendor-ID | LUID       |
+|     |                                  |        |     |            | Device-ID | UUID       |
+|     |                                  |        |     |            | Bus-ID    |            |
+|---------------------------------------------------------------------------------------------|
+| 0   | NVIDIA GeForce RTX 3090          | Yes: 0 |     | 24576   MB | 10de      | 0          |
+|     |                                  |        |     |            | 2204      | 1f2cbfcc.. |
+|     |                                  |        |     |            | 1         |            |
+|=============================================================================================|
+| OS: 22.04.5 LTS (Jammy Jellyfish) ubuntu, Version: 22.04.5, Kernel: 6.8.0-138-generic
+| XServer Vendor: The X.Org Foundation, XServer Version: 12101004 (1.21.1.4)
+| Processor: Intel(R) Core(TM) i9-10900 CPU @ 2.80GHz
+| Cores: 10 | Logical Cores: 20
+|---------------------------------------------------------------------------------------------|
+| Total Memory (MB): 31945 | Free Memory: 19928
+| Total Page/Swap (MB): 2047 | Free Page/Swap: 640
+|---------------------------------------------------------------------------------------------|
+2026-10-08T05:30:48Z [1,411ms] [Warning] [omni.rtx] CPU performance profile is set to powersave. This profile sets the CPU to the lowest frequency reducing performance.
+[1.569s] [ext: omni.kit.pipapi-0.0.0] startup
+[1.571s] [ext: omni.kit.pip_archive-0.0.0] startup
+[1.571s] [ext: isaacsim.pip.newton-0.11.0] startup
+[1.571s] [ext: isaacsim.pip.nv-1.0.2] startup
+[1.572s] [ext: isaacsim.pip.onnx-1.0.1] startup
+[1.572s] [ext: omni.pip.compute-1.9.5] startup
+[1.573s] [ext: omni.isaac.core_archive-5.4.0] startup
+[1.573s] [ext: omni.kit.telemetry-0.5.2] startup
+[1.601s] [ext: omni.kit.loop-isaac-1.6.2] startup
+[1.603s] [ext: omni.kit.test-2.1.1] startup
+[1.679s] [ext: omni.materialx.libs-1.0.9] startup
+[1.689s] [ext: omni.gpucompute.plugins-0.0.0] startup
+[1.689s] [ext: omni.usd.config-1.0.8] startup
+[1.695s] [ext: omni.usd.libs-1.0.3] startup
+[1.791s] [ext: omni.iray.libs-0.0.1] startup
+[1.796s] [ext: omni.mdl-57.0.6] startup
+[1.909s] [ext: omni.mdl.neuraylib-0.2.22] startup
+[1.911s] [ext: omni.kit.usd.mdl-1.1.11] startup
+[2.028s] [ext: omni.appwindow-1.2.2] startup
+[2.030s] [ext: omni.kit.renderer.core-1.3.1] startup
+[3.131s] [ext: omni.kit.renderer.capture-2.0.1] startup
+[3.134s] [ext: omni.kit.renderer.imgui-2.1.0] startup
+[3.186s] [ext: omni.ui-3.3.1] startup
+[3.198s] [ext: omni.kit.mainwindow-1.0.4] startup
+[3.199s] [ext: carb.audio-0.1.0] startup
+[3.201s] [ext: omni.uiaudio-1.0.0] startup
+[3.202s] [ext: omni.kit.uiapp-0.0.0] startup
+[3.202s] [ext: omni.usd.schema.metrics.assembler-110.1.0] startup
+[3.206s] [ext: omni.usd.schema.audio-0.0.1] startup
+[3.209s] [ext: omni.usd_resolver-1.0.0] startup
+[3.212s] [ext: omni.usd.core-1.10.10] startup
+[3.216s] [ext: omni.metropolis.schema-0.0.3] startup
+[3.217s] [ext: isaacsim.anim.robot.schema-0.1.1] startup
+[3.217s] [ext: isaacsim.common-6.2.0] startup
+[3.218s] [ext: omni.usd.schema.anim-0.0.1] startup
+[3.239s] [ext: omni.usd.schema.geospatial-0.0.1] startup
+[3.242s] [ext: omni.usd.schema.omnigraph-1.0.1] startup
+[3.248s] [ext: omni.usd.schema.semantics-0.0.0] startup
+[3.250s] [ext: omni.activity.core-1.0.4] startup
+[3.252s] [ext: omni.cubric-0.1.0] startup
+[3.252s] [ext: omni.graph.exec-0.9.6] startup
+[3.252s] [ext: omni.hydra.scene_delegate-0.3.5] startup
+[3.256s] [ext: usdrt.scenegraph-7.6.3] startup
+[3.289s] [ext: omni.hydra.usdrt_delegate-7.5.2] startup
+[3.295s] [ext: omni.inspect-1.0.2] startup
+[3.297s] [ext: omni.kit.actions.core-1.2.0] startup
+[3.299s] [ext: omni.kit.audiodeviceenum-1.0.2] startup
+[3.300s] [ext: omni.kit.commands-1.5.0] startup
+[3.304s] [ext: omni.kit.exec.core-0.13.6] startup
+[3.306s] [ext: omni.kit.usd_undo-0.1.8] startup
+[3.306s] [ext: omni.kit.window.popup_dialog-2.0.26] startup
+[3.311s] [ext: omni.kit.widget.connection_manager-1.0.3] startup
+[3.318s] [ext: omni.timeline-1.1.0] startup
+[3.320s] [ext: omni.usd-1.18.0] startup
+[3.364s] [ext: omni.graph.core-3.1.5] startup
+[3.368s] [ext: omni.kit.notification_manager-1.0.16] startup
+[3.370s] [ext: isaacsim.core.deprecation_manager-0.4.4] startup
+[3.371s] [ext: isaacsim.replicator.agent.schema-0.1.1] startup
+[3.372s] [ext: isaacsim.robot.schema-7.0.2] startup
+[3.378s] [ext: isaacsim.robot_motion.schema-0.2.2] startup
+[3.379s] [ext: omni.anim.behavior.schema-110.3.0] startup
+[3.383s] [ext: omni.anim.graph.schema-110.3.0] startup
+[3.390s] [ext: omni.anim.navigation.schema-110.3.0] startup
+[3.394s] [ext: omni.behavior.tree.schema-110.3.0] startup
+[3.395s] [ext: omni.isaac.ml_archive-3.4.0] startup
+[3.395s] [ext: omni.kit.asset_converter-6.0.5] startup
+2026-10-08T05:30:50Z [3,371ms] [Warning] [asset_converter_native_bindings._bootstrap] A different OpenUSD (pxr) build was already imported from /home/jumasaet/isaac_sim/extscache/omni.usd.libs-1.0.3+00c488ae.lx64.r.cp312/pxr before usd-convert-asset loaded. The host pxr bindings will remain in use rather than reloading the bundled OpenUSD at /home/jumasaet/isaac_sim/extscache/omni.kit.asset_converter-6.0.5+110.1.1.lx64.r.cp312.u7f4/asset_converter_native_bindings/libs/lib/python/pxr, /home/jumasaet/isaac_sim/extscache/omni.kit.asset_converter-6.0.5+110.1.1.lx64.r.cp312.u7f4/asset_converter_native_bindings/libs/python/pxr. Mixing USD builds in one process can cause ABI and singleton conflicts; prefer importing usd_convert_asset first, or run the converter in a separate process/venv when mixing unrelated USD builds.
+[3.409s] [ext: omni.pip.cloud-1.5.5] startup
+[3.412s] [ext: omni.usd.schema.flow-110.0.0] startup
+[3.413s] [ext: omni.usd.schema.newton-1.4.0] startup
+[3.414s] [ext: omni.usd.schema.mujoco-1.1.4] startup
+[3.415s] [ext: omni.usd.schema.omni_dome_light-1.0.0] startup
+[3.415s] [ext: omni.usd.schema.omni_lens_distortion-1.0.0] startup
+[3.416s] [ext: omni.usd.schema.omni_projectors-1.0.0] startup
+[3.417s] [ext: omni.usd.schema.omni_sensors-0.0.0] startup
+[3.427s] [ext: omni.usd.schema.omniscripting-1.0.1] startup
+[3.431s] [ext: omni.usd.schema.physical_lighting-0.1.0] startup
+[3.436s] [ext: omni.usd.schema.physx-110.3.2] startup
+[3.472s] [ext: omni.usd.schema.render_settings.rtx-1.0.3] startup
+[3.477s] [ext: omni.usd.schema.usd_particle_field-1.0.0] startup
+[3.477s] [ext: isaacsim.core.version-2.2.1] startup
+[3.480s] [ext: omni.kit.menu.core-1.3.0] startup
+[3.481s] [ext: omni.kit.menu.utils-2.2.8] startup
+[3.490s] [ext: isaacsim.app.about-2.3.2] startup
+[3.496s] [ext: isaacsim.asset.transformer-6.1.0] startup
+[3.501s] [ext: omni.scene.optimizer.core-110.2.1] startup
+[3.573s] [ext: isaacsim.asset.importer.utils-1.9.1] startup
+[3.577s] [ext: omni.convexdecomposition-110.3.2] startup
+[3.580s] [ext: omni.physics-110.3.2] startup
+[3.583s] [ext: omni.physx.gpu-110.3.2] startup
+[3.584s] [ext: omni.physx.foundation-110.3.2] startup
+[3.585s] [ext: omni.usdphysics-110.3.2] startup
+[3.587s] [ext: omni.physx.cooking-110.3.2] startup
+[3.590s] [ext: omni.physx-110.3.2] startup
+[3.601s] [ext: omni.physics.physx-110.3.2] startup
+[3.604s] [ext: isaacsim.asset.exporter.urdf-2.2.6] startup
+[3.615s] [ext: omni.kit.clipboard-1.1.1] startup
+[3.616s] [ext: omni.kit.usd.layers-2.7.2] startup
+[3.625s] [ext: omni.kit.widget.context_menu-1.5.0] startup
+[3.628s] [ext: omni.kit.context_menu-1.10.0] startup
+[3.630s] [ext: omni.kit.helper.file_utils-0.1.10] startup
+[3.632s] [ext: omni.kit.widget.nucleus_info-2.0.2] startup
+[3.632s] [ext: omni.kit.search_core-1.0.8] startup
+[3.633s] [ext: omni.kit.widget.path_field-2.0.13] startup
+[3.634s] [ext: omni.kit.widget.browser_bar-2.0.11] startup
+[3.635s] [ext: omni.kit.widget.filebrowser-2.14.0] startup
+[3.641s] [ext: omni.kit.widget.nucleus_connector-2.4.0] startup
+[3.642s] [ext: omni.kit.widget.options_menu-1.1.7] startup
+[3.646s] [ext: omni.kit.widget.options_button-1.0.3] startup
+[3.647s] [ext: omni.kit.widget.search_delegate-1.0.10] startup
+[3.648s] [ext: omni.ui.scene-2.0.4] startup
+[3.653s] [ext: omni.kit.window.filepicker-3.0.14] startup
+[3.674s] [ext: omni.kit.window.file_importer-1.1.22] startup
+[3.676s] [ext: omni.kit.material.library-3.1.7] startup
+[3.683s] [ext: isaacsim.asset.transformer.rules-1.7.18] startup
+[3.697s] [ext: omni.usdex.libs-2.3.0] startup
+[3.707s] [ext: isaacsim.asset.importer.mjcf-3.12.1] startup
+[3.710s] [ext: omni.kit.primitive.mesh-1.1.1] startup
+[3.714s] [ext: omni.kit.stage_template.core-1.1.23] startup
+[3.714s] [ext: omni.kit.stage_templates-2.0.3] startup
+[3.716s] [ext: omni.usd.metrics.assembler-110.1.2] startup
+[3.720s] [ext: omni.warp.core-1.16.0] startup
+[4.069s] [ext: isaacsim.core.experimental.utils-0.23.0] startup
+[4.071s] [ext: isaacsim.asset.importer.urdf-3.11.10] startup
+[4.077s] [ext: omni.physics.stageupdate-110.3.2] startup
+[4.079s] [ext: omni.physics.tensors-110.3.2] startup
+[4.084s] [ext: omni.physx.tensors-110.3.2] startup
+[4.088s] [ext: isaacsim.core.simulation_manager-1.17.1] startup
+[4.104s] [ext: isaacsim.storage.native-1.11.0] startup
+[4.106s] [ext: omni.usd.metrics.assembler.physics-110.3.2] startup
+[4.108s] [ext: isaacsim.core.utils-4.1.9] startup
+[4.111s] [ext: isaacsim.core.prims-0.11.7] startup
+[5.694s] [ext: isaacsim.core.api-5.3.2] startup
+[5.702s] [ext: isaacsim.core.cloner-1.7.5] startup
+[5.704s] [ext: isaacsim.test.docstring-1.3.2] startup
+[5.709s] [ext: isaacsim.core.experimental.prims-1.10.8] startup
+[5.730s] [ext: isaacsim.core.experimental.primdata-0.3.6] startup
+[5.733s] [ext: omni.graph.tools-1.81.0] startup
+[5.765s] [ext: omni.graph-1.142.5] startup
+[5.822s] [ext: isaacsim.core.experimental.actuators-0.1.6] startup
+[5.845s] [ext: isaacsim.core.experimental.materials-0.10.0] startup
+[5.851s] [ext: isaacsim.core.experimental.objects-0.9.0] startup
+[5.958s] [ext: omni.hydra.engine.stats-1.0.5] startup
+[5.961s] [ext: omni.hydra.rtx.shadercache.vulkan-1.0.0] startup
+[5.963s] [ext: omni.index.libs-392300.961.0] startup
+[5.963s] [ext: omni.index-1.0.1] startup
+[5.963s] [ext: omni.ujitso.client-0.0.0] startup
+[5.964s] [ext: omni.usd.schema.playback-1.1.0] startup
+[5.965s] [ext: omni.volume-0.5.2] startup
+[5.971s] [ext: omni.hydra.rtx-1.0.4] startup
+2026-10-08T05:30:53Z [5,962ms] [Warning] [omni.log] Source: omni.hydra was already registered.
+[6.008s] [ext: omni.kit.hydra_texture-1.6.2] startup
+[6.012s] [ext: omni.kit.raycast.query-1.2.0] startup
+[6.019s] [ext: omni.kit.viewport.legacy_gizmos-1.0.24] startup
+[6.022s] [ext: omni.kit.viewport.registry-104.0.6] startup
+[6.023s] [ext: omni.kit.viewport.scene_camera_model-1.0.7] startup
+[6.028s] [ext: omni.kit.widget.viewport-110.0.0] startup
+[6.034s] [ext: omni.kit.window.drop_support-1.0.8] startup
+[6.035s] [ext: omni.kit.viewport.window-110.0.1] startup
+[6.058s] [ext: omni.kit.viewport.utility-2.1.0] startup
+[6.059s] [ext: isaacsim.core.rendering_manager-0.5.1] startup
+[6.077s] [ext: omni.graph.action_core-1.1.9] startup
+[6.080s] [ext: omni.graph.action_nodes_core-2.11.0] startup
+[6.083s] [ext: omni.graph.action_nodes-2.11.0] startup
+[6.110s] [ext: omni.graph.action-2.10.2] startup
+[6.112s] [ext: omni.graph.image.core-0.6.1] startup
+[6.113s] [ext: omni.graph.image.nodes-1.3.2] startup
+[6.114s] [ext: omni.graph.nodes_core-2.11.0] startup
+[6.121s] [ext: omni.graph.nodes-2.12.0] startup
+[6.129s] [ext: omni.kit.hotkeys.core-1.4.0] startup
+[6.130s] [ext: omni.kit.property.adapter.core-1.1.1] startup
+[6.133s] [ext: omni.kit.property.adapter.usd-1.0.6] startup
+[6.135s] [ext: omni.kit.widget.filter-1.1.8] startup
+[6.137s] [ext: omni.kit.widget.highlight_label-1.0.3] startup
+[6.138s] [ext: omni.kit.widget.searchfield-1.1.8] startup
+[6.140s] [ext: omni.kit.window.file_exporter-1.0.38] startup
+[6.142s] [ext: omni.kit.widget.stage-4.6.5] startup
+[6.155s] [ext: omni.kit.window.content_browser_registry-0.0.6] startup
+[6.157s] [ext: omni.kit.window.file-2.0.15] startup
+[6.161s] [ext: omni.kit.window.content_browser-3.1.12] startup
+[6.176s] [ext: omni.kit.window.property-1.15.2] startup
+[6.195s] [ext: omni.kit.property.usd-4.9.14] startup
+[6.211s] [ext: omni.graph.scriptnode-2.10.2] startup
+[6.223s] [ext: omni.kit.widget.searchable_combobox-1.0.7] startup
+[6.225s] [ext: omni.kit.widget.settings-2.0.1] startup
+[6.228s] [ext: omni.kit.window.preferences-1.8.5] startup
+[6.235s] [ext: omni.kit.viewport.menubar.core-110.0.3] startup
+[6.253s] [ext: omni.syntheticdata-0.6.17] startup
+[6.293s] [ext: omni.replicator.nv-1.1.6] startup
+[6.300s] [ext: omni.videoencoding-0.2.1] startup
+[6.303s] [ext: omni.replicator.core-1.13.36] startup
+2026-10-08T05:30:53Z [6,288ms] [Warning] [pxr.Semantics] pxr.Semantics is deprecated - please use Semantics instead
+2026-10-08T05:30:53Z [6,371ms] [Warning] [omni.replicator.core.scripts.extension] No material configuration file, adding configuration to material settings directly.
+[6.593s] [ext: isaacsim.core.nodes-5.10.13] startup
+[6.642s] [ext: isaacsim.core.throttling-2.3.7] startup
+[6.645s] [ext: omni.kit.manipulator.viewport-107.0.1] startup
+[6.647s] [ext: omni.graph.visualization.nodes-2.1.4] startup
+[6.668s] [ext: omni.kit.window.extensions-1.5.16] startup
+[6.676s] [ext: isaacsim.gui.components-1.8.9] startup
+[6.683s] [ext: isaacsim.robot.surface_gripper-3.6.3] startup
+[6.700s] [ext: isaacsim.robot.manipulators-3.4.5] startup
+[6.718s] [ext: isaacsim.robot_motion.lula-4.1.4] startup
+[6.728s] [ext: isaacsim.robot_motion.motion_generation-8.2.9] startup
+[6.738s] [ext: isaacsim.cortex.framework-1.0.20] startup
+[6.741s] [ext: isaacsim.cortex.behaviors-2.0.18] startup
+[6.744s] [ext: isaacsim.examples.base-1.3.4] startup
+[6.749s] [ext: omni.kit.widget.zoombar-1.0.7] startup
+[6.750s] [ext: omni.kit.browser.core-2.3.18] startup
+[6.756s] [ext: omni.kit.browser.folder.core-2.0.3] startup
+[6.762s] [ext: omni.kit.widget.stage_icons-1.0.8] startup
+[6.764s] [ext: omni.kit.window.stage-2.6.1] startup
+[6.769s] [ext: omni.kit.menu.stage-1.2.7] startup
+[6.771s] [ext: omni.kit.usd.collect-3.0.6] startup
+[6.775s] [ext: omni.kit.widget.prompt-1.0.7] startup
+[6.776s] [ext: omni.kit.tool.collect-2.2.19] startup
+[6.779s] [ext: isaacsim.examples.browser-0.3.4] startup
+[6.783s] [ext: omni.kit.search.files-1.0.4] startup
+[6.784s] [ext: omni.kit.widget.calendar-1.0.9] startup
+[6.786s] [ext: omni.kit.widget.extended_searchfield-1.0.31] startup
+[6.799s] [ext: omni.simready.content.browser-0.3.8] startup
+[6.957s] [ext: isaacsim.gui.content_browser-0.5.1] startup
+[6.961s] [ext: omni.kit.selection-0.1.6] startup
+[6.963s] [ext: isaacsim.gui.menu-2.10.12] startup
+[6.976s] [ext: isaacsim.gui.property-1.6.4] startup
+[6.987s] [ext: omni.kit.viewport.actions-110.1.0] startup
+[6.995s] [ext: omni.kit.viewport.menubar.display-110.0.0] startup
+[6.998s] [ext: isaacsim.gui.sensors.icon-2.2.4] startup
+[7.003s] [ext: omni.behavior.scripting.core-110.3.0] startup
+[7.007s] [ext: isaacsim.replicator.behavior-1.6.2] startup
+[7.015s] [ext: isaacsim.replicator.experimental.domain_randomization-1.2.10] startup
+[7.041s] [ext: isaacsim.replicator.domain_randomization-1.2.3] startup
+[7.167s] [ext: isaacsim.replicator.writers-1.5.6] startup
+[7.206s] [ext: isaacsim.robot.experimental.wheeled_robots-0.2.14] startup
+[7.243s] [ext: isaacsim.robot_motion.experimental.motion_generation-7.1.2] startup
+[7.258s] [ext: isaacsim.robot.policy.examples-7.2.0] startup
+[8.056s] [ext: isaacsim.robot.wheeled_robots-5.2.5] startup
+[8.063s] [ext: isaacsim.robot.wheeled_robots.nodes-0.1.12] startup
+[8.093s] [ext: isaacsim.robot_motion.controllers-0.3.2] startup
+[8.109s] [ext: isaacsim.robot_motion.cumotion-1.4.0] startup
+[8.127s] [ext: omni.kit.numpy.common-0.1.3] startup
+[8.129s] [ext: omni.rtx.spg-0.4.0] startup
+[8.135s] [ext: omni.sensors.nv.camera-1.0.0] startup
+[8.142s] [ext: isaacsim.sensors.camera-1.7.13] startup
+[8.184s] [ext: isaacsim.sensors.experimental.physics-3.3.0] startup
+[8.196s] [ext: omni.sensors.net-1.0.1] startup
+[8.199s] [ext: omni.sensors.nv.common-3.0.0] startup
+[8.212s] [ext: omni.sensors.nv.materials-2.0.0] startup
+[8.217s] [ext: omni.sensors.nv.acoustic-3.0.0] startup
+[8.221s] [ext: omni.sensors.nv.ids-2.0.1] startup
+[8.223s] [ext: omni.sensors.nv.lidar-3.0.0] startup
+[8.228s] [ext: omni.sensors.nv.radar-3.0.0] startup
+[8.232s] [ext: isaacsim.sensors.experimental.rtx-1.9.0] startup
+[8.644s] [ext: isaacsim.sensors.physics.nodes-1.6.2] startup
+[8.654s] [ext: isaacsim.util.debug_draw-3.2.6] startup
+[8.662s] [ext: isaacsim.sensors.physx-2.5.7] startup
+[8.675s] [ext: isaacsim.sensors.rtx-15.17.5] startup
+[8.693s] [ext: isaacsim.simulation_app-2.19.0] startup
+[8.694s] [ext: omni.anim.curve.core-1.6.1] startup
+[8.708s] [ext: omni.graph.ui_nodes-2.11.1] startup
+[8.751s] [ext: omni.kit.manipulator.camera-110.1.0] startup
+[8.756s] [ext: omni.kit.manipulator.selector-1.1.4] startup
+[8.758s] [ext: omni.kit.manipulator.transform-107.0.1] startup
+[8.765s] [ext: omni.kit.widget.toolbar-2.1.0] startup
+[8.775s] [ext: omni.kit.manipulator.tool.snap-1.5.15] startup
+[8.782s] [ext: omni.kit.viewport.manipulator.transform-107.0.4] startup
+[8.785s] [ext: omni.kit.manipulator.prim.core-108.0.2] startup
+[8.794s] [ext: omni.kit.manipulator.prim.usd-107.0.3] startup
+[8.796s] [ext: omni.kit.manipulator.prim-108.0.0] startup
+[8.796s] [ext: omni.kit.manipulator.selection-110.0.0] startup
+[8.798s] [ext: omni.kit.menu.create-2.0.2] startup
+[8.801s] [ext: omni.kit.property.audio-1.0.18] startup
+[8.806s] [ext: omni.kit.property.camera-1.0.14] startup
+[8.808s] [ext: omni.kit.property.geometry-2.1.2] startup
+[8.813s] [ext: omni.kit.property.light-1.0.16] startup
+[8.858s] [ext: omni.kit.property.material-1.14.10] startup
+[8.867s] [ext: omni.kit.property.render-1.2.2] startup
+[8.869s] [ext: omni.kit.property.transform-1.6.12] startup
+[8.874s] [ext: omni.kit.property.bundle-1.5.2] startup
+[8.877s] [ext: omni.kit.usdz_export-1.1.1] startup
+[8.881s] [ext: omni.kit.tool.asset_importer-6.0.2] startup
+[8.888s] [ext: omni.kit.ui.actions-1.0.5] startup
+[8.891s] [ext: omni.kit.viewport.menubar.camera-107.0.14] startup
+[8.898s] [ext: omni.kit.viewport.menubar.lighting-107.3.2] startup
+[8.902s] [ext: omni.kit.viewport.menubar.render-110.1.1] startup
+[8.906s] [ext: omni.kit.viewport.menubar.settings-110.0.1] startup
+[8.911s] [ext: omni.kit.window.console-1.1.10] startup
+[8.916s] [ext: omni.kit.window.status_bar-0.1.11] startup
+[8.920s] [ext: omni.kit.window.toolbar-3.0.3] startup
+[8.923s] [ext: omni.ocio-0.1.1] startup
+[8.925s] [ext: omni.physx.commands-110.3.2] startup
+[8.930s] [ext: omni.replicator.replicator_yaml-2.0.12] startup
+[8.945s] [ext: omni.rtx.window.settings-0.8.2] startup
+[8.951s] [ext: omni.rtx.settings.core-0.7.1] startup
+[8.956s] [ext: omni.usd.metrics.assembler.ui-110.1.1] startup
+[8.965s] [ext: semantics.schema.editor-2.0.2] startup
+[8.970s] [ext: semantics.schema.property-2.0.2] startup
+[8.972s] [ext: omni.kit.menu.common-2.0.2] startup
+[8.974s] [ext: isaacsim.exp.base-6.1.0] startup
+[8.974s] [ext: isaacsim.exp.base.python-6.1.0] startup
+[8.976s] Simulation App Starting
+[10.198s] Simulation App Startup Complete
+[10.208s] app ready
+Starting kit application with the following args:  ['/home/jumasaet/isaac_sim/exts/isaacsim.simulation_app/isaacsim/simulation_app/simulation_app.py', '/home/jumasaet/isaac_sim/apps/isaacsim.exp.base.python.kit', '--/app/tokens/exe-path=/home/jumasaet/isaac_sim/kit', '--/persistent/app/viewport/displayOptions=3094', '--/rtx/materialDb/syncLoads=True', '--/rtx/hydra/materialSyncLoads=True', '--/omni/kit/plugin/syncUsdLoads=True', '--/app/renderer/resolution/width=1280', '--/app/renderer/resolution/height=720', '--/app/window/width=1440', '--/app/window/height=900', '--/renderer/multiGpu/enabled=False', '--/app/fastShutdown=True', '--/app/installSignalHandlers=0', '--ext-folder', '/home/jumasaet/isaac_sim/exts', '--ext-folder', '/home/jumasaet/isaac_sim/apps', '--/renderer/activeGpu=0', '--/physics/cudaDevice=0', '--/plugins/carb.tasking.plugin/threadCount=16', '--/plugins/omni.tbb.globalcontrol/maxThreadCount=16', '--portable', '--no-window', '--/app/window/hideUi=1']
+Passing the following args to the base kit application:  ['--/rtx/hydra/supportMultiTickRate=false', '--/rtx/post/aa/op=0', '--/rtx/post/dlss/execMode=0']
+Warp 1.16.0 initialized:
+   CUDA Toolkit 12.9, Driver 13.0
+   Devices:
+     "cpu"      : "x86_64"
+     "cuda:0"   : "NVIDIA GeForce RTX 3090" (24 GiB, sm_86, mempool enabled)
+   Kernel cache:
+     /home/jumasaet/.cache/warp/1.16.0
+Module __main__ 45cd8ac load on device 'cuda:0' took 0.48 ms  (cached)
+=== T:cpu_1 ===
+[T:cpu_1] {"nodes": {"omni.syntheticdata.SdRenderVarPtr": 7, "omni.syntheticdata.SdOnNewRenderProductFrame": 1, "omni.replicator.core.OgnRefTimeGate": 1, "omni.syntheticdata.SdOnNewFrame": 1, "omni.syntheticdata.SdPostRenderVarToHost": 4, "omni.graph.nodes.GpuInteropRenderProductEntry": 1, "omni.replicator.core.InstanceIdSegmentationLegacy": 1, "omni.replicator.nv.InstanceIdSegmentation": 1, "omni.replicator.core.OgnRationalTimeSyncGateOnce": 1, "omni.syntheticdata.SdPostRenderVarTextureToBuffer": 2, "omni.replicator.nv.InstanceIdSegmentationReduction": 1, "omni.syntheticdata.SdPostInstanceMapping": 1, "omni.syntheticdata.SdSimInstanceMapping": 1, "omni.replicator.nv.SemanticSegmentation": 1, "omni.replicator.nv.SemanticSegmentationPostRender": 1}, "resolved": {"distance": "DistanceToCameraSD", "position": "Camera3dPositionSD", "normal": "normals", "instance": "instance_id_segmentation", "semantic
+=== T:none_1 ===
+[T:none_1] {"none": {"step": {"mean": 12.267801109313345, "sd": 0.49575026074622003, "p50": 12.225837097503245, "min": 11.2923450069502, "max": 14.254812034778297, "n": 60}, "read": {"mean": 0.01695384659493963, "sd": 0.003411917936968585, "p50": 0.015941914170980453, "min": 0.012872042134404182, "max": 0.03333296626806259, "n": 60}, "read_mode": "none", "total_mean": 12.284754955908284}, "nodes": {}, "step": 12.27}
+=== T:cuda_1 ===
+2026-10-08T05:30:59Z [12,461ms] [Warning] [omni.rtx] DLSS increasing input dimensions: Render resolution of (320, 256) is below minimal input resolution of 300.
+2026-10-08T05:30:59Z [12,553ms] [Warning] [omni.syntheticdata.plugin] OgnSdPostRenderVarToHost : rendervar copy from texture directly to host buffer is counter-performant. Please use copy from texture to device buffer first.
+2026-10-08T05:30:59Z [12,555ms] [Warning] [omni.syntheticdata.plugin] SdPostRenderVarToHost : invalid input resource for renderVar AmbientOcclusion
+2026-10-08T05:30:59Z [12,704ms] [Warning] [carb] Plugin interface for a client: omni.hydratexture.plugin was already released.
+2026-10-08T05:31:00Z [13,698ms] [Warning] [__main__] IRSIM_MARK T:cpu_1
+2026-10-08T05:31:08Z [21,610ms] [Warning] [__main__] IRSIM_MARK T:none_1
+2026-10-08T05:31:09Z [22,465ms] [Warning] [__main__] IRSIM_MARK T:cuda_1
+2026-10-08T05:31:09Z [22,615ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:09Z [22,632ms] [Warning] [omni.syntheticdata.plugin] SdRenderVarPtr missing valid input renderVar DistanceToCameraSDbuff
+2026-10-08T05:31:09Z [22,638ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:09Z [22,655ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:09Z [22,670ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:09Z [22,683ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:09Z [22,699ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:09Z [22,714ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:09Z [22,727ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:09Z [22,746ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:09Z [22,766ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:09Z [22,779ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:09Z [22,794ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+[T:cuda_1] {"nodes": {"omni.syntheticdata.SdRenderVarPtr": 7, "omni.syntheticdata.SdOnNewRenderProductFrame": 1, "omni.replicator.core.OgnRefTimeGate": 1, "omni.syntheticdata.SdOnNewFrame": 1, "omni.syntheticdata.SdPostRenderVarTextureToBuffer": 5, "omni.graph.nodes.GpuInteropRenderProductEntry": 1, "omni.replicator.core.InstanceIdSegmentationLegacy": 1, "omni.replicator.nv.InstanceIdSegmentation": 1, "omni.replicator.core.OgnRationalTimeSyncGateOnce": 1, "omni.replicator.nv.InstanceIdSegmentationReduction": 1, "omni.syntheticdata.SdPostInstanceMapping": 1, "omni.syntheticdata.SdSimInstanceMapping": 1, "omni.replicator.nv.SemanticSegmentation": 1, "omni.replicator.nv.SemanticSegmentationPostRender": 1}, "resolved": {"distance": "DistanceToCameraSD", "position": "Camera3dPositionSD", "normal": "normals", "instance": "instance_id_segmentation", "semantic": "semantic_segmentation"}, "returns": {"dista
+=== T:cpu_2 ===
+[T:cpu_2] {"nodes": {"omni.syntheticdata.SdRenderVarPtr": 7, "omni.syntheticdata.SdOnNewRenderProductFrame": 1, "omni.replicator.core.OgnRefTimeGate": 1, "omni.syntheticdata.SdOnNewFrame": 1, "omni.syntheticdata.SdPostRenderVarToHost": 4, "omni.graph.nodes.GpuInteropRenderProductEntry": 1, "omni.replicator.core.InstanceIdSegmentationLegacy": 1, "omni.replicator.nv.InstanceIdSegmentation": 1, "omni.replicator.core.OgnRationalTimeSyncGateOnce": 1, "omni.syntheticdata.SdPostRenderVarTextureToBuffer": 2, "omni.replicator.nv.InstanceIdSegmentationReduction": 1, "omni.syntheticdata.SdPostInstanceMapping": 1, "omni.syntheticdata.SdSimInstanceMapping": 1, "omni.replicator.nv.SemanticSegmentation": 1, "omni.replicator.nv.SemanticSegmentationPostRender": 1}, "resolved": {"distance": "DistanceToCameraSD", "position": "Camera3dPositionSD", "normal": "normals", "instance": "instance_id_segmentation", "semantic
+=== T:cuda_2 ===
+2026-10-08T05:31:19Z [32,755ms] [Warning] [__main__] IRSIM_MARK T:cpu_2
+2026-10-08T05:31:27Z [40,555ms] [Warning] [__main__] IRSIM_MARK T:cuda_2
+2026-10-08T05:31:27Z [40,703ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:27Z [40,719ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:27Z [40,737ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:27Z [40,752ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:27Z [40,764ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:27Z [40,779ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:27Z [40,793ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:27Z [40,806ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:27Z [40,822ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:27Z [40,836ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:27Z [40,848ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:28Z [40,863ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+[T:cuda_2] {"nodes": {"omni.syntheticdata.SdRenderVarPtr": 7, "omni.syntheticdata.SdOnNewRenderProductFrame": 1, "omni.replicator.core.OgnRefTimeGate": 1, "omni.syntheticdata.SdOnNewFrame": 1, "omni.syntheticdata.SdPostRenderVarTextureToBuffer": 5, "omni.graph.nodes.GpuInteropRenderProductEntry": 1, "omni.replicator.core.InstanceIdSegmentationLegacy": 1, "omni.replicator.nv.InstanceIdSegmentation": 1, "omni.replicator.core.OgnRationalTimeSyncGateOnce": 1, "omni.replicator.nv.InstanceIdSegmentationReduction": 1, "omni.syntheticdata.SdPostInstanceMapping": 1, "omni.syntheticdata.SdSimInstanceMapping": 1, "omni.replicator.nv.SemanticSegmentation": 1, "omni.replicator.nv.SemanticSegmentationPostRender": 1}, "resolved": {"distance": "DistanceToCameraSD", "position": "Camera3dPositionSD", "normal": "normals", "instance": "instance_id_segmentation", "semantic": "semantic_segmentation"}, "returns": {"dista
+=== T:none_2 ===
+[T:none_2] {"none": {"step": {"mean": 13.245505696007362, "sd": 7.874694718477883, "p50": 12.24938000086695, "min": 11.385648977011442, "max": 73.09385901317, "n": 60}, "read": {"mean": 0.017121366302793223, "sd": 0.002539373215276583, "p50": 0.016689999029040337, "min": 0.013415934517979622, "max": 0.024830922484397888, "n": 60}, "read_mode": "none", "total_mean": 13.262627062310154}, "nodes": {}, "step": 13.25}
+=== D:cpu ===
+[D:cpu] {"updates_per_step": 4.0, "step": 54.5, "sum_of_updates": 54.11, "outside_updates": 0.39, "first_update": 13.68, "later_updates": 13.48}
+=== D:cuda ===
+2026-10-08T05:31:37Z [50,840ms] [Warning] [__main__] IRSIM_MARK T:none_2
+2026-10-08T05:31:38Z [51,735ms] [Warning] [__main__] IRSIM_MARK D:cpu
+2026-10-08T05:31:41Z [54,374ms] [Warning] [__main__] IRSIM_MARK D:cuda
+2026-10-08T05:31:41Z [54,528ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:41Z [54,545ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:41Z [54,560ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:41Z [54,578ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:41Z [54,594ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:41Z [54,607ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:41Z [54,619ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:41Z [54,634ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:41Z [54,646ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:41Z [54,658ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:41Z [54,672ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:41Z [54,688ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:41Z [54,701ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:41Z [54,714ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:41Z [54,726ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:41Z [54,742ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+[D:cuda] {"updates_per_step": 4.0, "step": 54.33, "sum_of_updates": 53.96, "outside_updates": 0.37, "first_update": 13.57, "later_updates": 13.46}
+=== D:none ===
+[D:none] {"updates_per_step": 1.0, "step": 6.71, "sum_of_updates": 6.53, "outside_updates": 0.18, "first_update": 6.53, "later_updates": null}
+=== K:known_value ===
+[K:known_value] {"clipping_range": [0.05000000074505806, 10000.0], "authored_face_distance_m": 0.7, "cuda_copy1_type": {"type": "warp._src.types.array", "device": "cuda:0", "dtype": "float32", "shape": [512, 640], "strides": [2560, 4], "ptr": "0x302000000", "is_contiguous": true, "has_deleter": true, "cuda_array_interface": true}, "cpu_type": {"type": "numpy.ndarray", "dtype": "float32", "shape": [512, 640], "owndata": true, "ptr": "0x61768ecbf050"}, "cpu_centre_m": 0.6499999165534973, "position_aov_centre_xyz": [0.0, -5.960464477539063e-08, -0.6999995708465576], "position_aov_centre_norm": 0.6999995708465602, "range_minus_distance": {"centre": 0.05000025966770938, "min": 0.04999843638487178, "max": 0.050001403435586234, "cos_theta_min": 0.94384295278915, "max_abs_err_vs_near_over_cos": 0.002974991676394645, "max_abs_err_vs_constant_near": 1.5643601862791456e-06}, "host_finite_sum": 1043326.059232533, "
+=== LAG:cuda ===
+2026-10-08T05:31:44Z [57,011ms] [Warning] [__main__] IRSIM_MARK D:none
+2026-10-08T05:31:44Z [57,317ms] [Warning] [__main__] IRSIM_MARK K:known_value
+2026-10-08T05:31:46Z [59,124ms] [Warning] [__main__] IRSIM_MARK LAG:cuda
+2026-10-08T05:31:46Z [59,279ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:46Z [59,293ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:46Z [59,306ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:46Z [59,319ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:46Z [59,336ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:46Z [59,350ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:46Z [59,361ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:46Z [59,373ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:46Z [59,385ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:46Z [59,401ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:46Z [59,415ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:46Z [59,428ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:46Z [59,440ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:46Z [59,452ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:46Z [59,468ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:46Z [59,482ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:46Z [59,494ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:46Z [59,507ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:46Z [59,520ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:31:46Z [59,535ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+   cuda  orch_wait                      65.74 ms  updates 5.00  lag 0 [0,0] stale 0
+   cuda  orch_wait_dt                   66.34 ms  updates 5.00  lag 0 [0,0] stale 0
+   cuda  orch_nowait                    16.66 ms  updates 1.00  lag 4 [4,4] stale 2
+   cuda  orch_nowait_dt                 16.83 ms  updates 1.00  lag 4 [4,4] stale 0
+   cuda  orch_nowait_then_50ms_idle     67.64 ms  updates 1.00  lag 4 [4,4] stale 0
+   cuda  orch_nowait_plus1_update       28.92 ms  updates 2.00  lag 2 [2,2] stale 0
+   cuda  orch_nowait_plus2_updates      41.58 ms  updates 3.00  lag 1 [1,1] stale 0
+   cuda  raw_update                     12.45 ms  updates 1.00  lag 1 [0,166] stale 48
+   cuda  raw_2_updates                  24.39 ms  updates 2.00  lag 0 [0,167] stale 39
+   cuda  raw_3_updates                  37.43 ms  updates 3.00  lag 0 [0,168] stale 29
+   cuda  orch_wait_again                65.83 ms  updates 5.00  lag 0 [0,0] stale 0
+[LAG:cuda] {"offset_m": -0.05000008344650264, "orch_wait": {"advance": {"mean": 65.73652881197631, "sd": 1.7343923234358727, "p50": 65.59884699527174, "min": 63.151670969091356, "max": 70.832195924595, "n": 50}, "updates_per_advance": 5.0, "lag_frames_mode": 0, "lag_min": 0, "lag_max": 0, "stale_reads": 0}, "orch_wait_dt": {"advance": {"mean": 66.33532139007002, "sd": 1.9092145960750222, "p50": 66.47897302173078, "min": 61.46445299964398, "max": 70.30248607043177, "n": 50}, "updates_per_advance": 5.0, "lag_frames_mode": 0, "lag_min": 0, "lag_max": 0, "stale_reads": 0}, "orch_nowait": {"advance": {"mean": 16.65976525982842, "sd": 0.7398143590744681, "p50": 16.494099982082844, "min": 15.443281969055533, "max": 19.352455041371286, "n": 50}, "updates_per_advance": 1.0, "lag_frames_mode": 4, "lag_min": 4, "lag_max": 4, "stale_reads": 2}, "orch_nowait_dt": {"advance": {"mean": 16.828726618550718, "sd": 0
+=== LAG:cpu ===
+   cpu   orch_wait                      67.96 ms  updates 5.00  lag 0 [0,0] stale 0
+   cpu   orch_wait_dt                   67.52 ms  updates 5.00  lag 0 [0,0] stale 0
+   cpu   orch_nowait                    17.96 ms  updates 1.00  lag 4 [4,4] stale 2
+   cpu   orch_nowait_dt                 17.92 ms  updates 1.00  lag 4 [4,4] stale 0
+   cpu   orch_nowait_then_50ms_idle     67.91 ms  updates 1.00  lag 4 [4,4] stale 0
+   cpu   orch_nowait_plus1_update       30.56 ms  updates 2.00  lag 2 [2,2] stale 0
+   cpu   orch_nowait_plus2_updates      43.17 ms  updates 3.00  lag 1 [1,1] stale 0
+   cpu   raw_update                     13.73 ms  updates 1.00  lag 1 [0,5] stale 48
+   cpu   raw_2_updates                  26.05 ms  updates 2.00  lag 0 [0,2] stale 39
+   cpu   raw_3_updates                  38.68 ms  updates 3.00  lag 0 [0,1] stale 29
+   cpu   orch_wait_again                67.23 ms  updates 5.00  lag 0 [0,0] stale 0
+[LAG:cpu] {"offset_m": -0.05000008344650264, "orch_wait": {"advance": {"mean": 67.95898204203695, "sd": 1.8747811334146387, "p50": 67.87528295535594, "min": 64.16843296028674, "max": 72.29213998652995, "n": 50}, "updates_per_advance": 5.0, "lag_frames_mode": 0, "lag_min": 0, "lag_max": 0, "stale_reads": 0}, "orch_wait_dt": {"advance": {"mean": 67.52325547859073, "sd": 1.5033252973181155, "p50": 67.40866298787296, "min": 64.87723009195179, "max": 71.84725895058364, "n": 50}, "updates_per_advance": 5.0, "lag_frames_mode": 0, "lag_min": 0, "lag_max": 0, "stale_reads": 0}, "orch_nowait": {"advance": {"mean": 17.96193101676181, "sd": 0.607314269725056, "p50": 17.990555963478982, "min": 16.861064941622317, "max": 19.469261984340847, "n": 50}, "updates_per_advance": 1.0, "lag_frames_mode": 4, "lag_min": 4, "lag_max": 4, "stale_reads": 2}, "orch_nowait_dt": {"advance": {"mean": 17.92178904172033, "sd": 0.
+=== V:viewport_off ===
+   vp-off cpu   orch_wait                      44.77 ms  updates 5.00  lag 0 [0,0] stale 0
+   vp-off cpu   orch_nowait                    13.49 ms  updates 1.00  lag 4 [4,4] stale 2
+   vp-off cpu   orch_nowait_plus1_update       21.52 ms  updates 2.00  lag 2 [2,2] stale 0
+   vp-off cpu   orch_nowait_plus2_updates      30.09 ms  updates 3.00  lag 1 [1,1] stale 0
+   vp-off cpu   raw_update                     10.50 ms  updates 1.00  lag 1 [0,5] stale 48
+2026-10-08T05:32:14Z [87,423ms] [Warning] [__main__] IRSIM_MARK LAG:cpu
+2026-10-08T05:32:43Z [116,477ms] [Warning] [__main__] IRSIM_MARK V:viewport_off
+2026-10-08T05:32:56Z [129,278ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:32:56Z [129,297ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:32:56Z [129,311ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:32:56Z [129,326ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:32:56Z [129,342ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:32:56Z [129,357ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:32:56Z [129,369ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:32:56Z [129,385ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:32:56Z [129,397ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:32:56Z [129,410ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:32:56Z [129,425ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+2026-10-08T05:32:56Z [129,437ms] [Error] [omni.syntheticdata.plugin] SdPostRenderVarTextureToBuffer : corrupted input renderVar AmbientOcclusion
+   vp-off cuda  orch_wait                      45.24 ms  updates 5.00  lag 0 [0,0] stale 0
+   vp-off cuda  orch_nowait                    11.86 ms  updates 1.00  lag 4 [4,4] stale 2
+   vp-off cuda  orch_nowait_plus1_update       20.12 ms  updates 2.00  lag 2 [2,2] stale 0
+   vp-off cuda  orch_nowait_plus2_updates      27.55 ms  updates 3.00  lag 1 [1,1] stale 0
+   vp-off cuda  raw_update                      7.94 ms  updates 1.00  lag 1 [0,166] stale 48
+[V:viewport_off] {"has_viewport": true, "cpu_on": {"step": {"mean": 67.85531219793484, "sd": 1.6957062249285193, "p50": 67.67461902927607, "min": 64.22534096054733, "max": 72.44641007855535, "n": 30}, "read": {"mean": 3.084317676257342, "sd": 0.12214279508554715, "p50": 3.0634329887107015, "min": 2.91568401735276, "max": 3.479980048723519, "n": 30}, "read_mode": "repo", "total_mean": 70.93962987419218}, "cpu_off": {"step": {"mean": 47.23540956232076, "sd": 11.772902906007872, "p50": 45.14607600867748, "min": 43.1610249215737, "max": 109.3047879403457, "n": 30}, "read": {"mean": 3.0564665716762343, "sd": 0.13589657869836783, "p50": 3.0244000954553485, "min": 2.902903943322599, "max": 3.457572078332305, "n": 30}, "read_mode": "repo", "total_mean": 50.29187613399699}, "cpu_off:orch_wait": {"advance": {"mean": 44.77176451589912, "sd": 1.2073160334355761, "p50": 44.73541700281203, "min": 42.7059109788388, "ma
+=== END ===
+wrote /tmp/irsim_render_cost/hostcopy/out/notick_iso.json
+2026-10-08T05:33:07Z [140,170ms] [Warning] [__main__] IRSIM_MARK END
+2026-10-08T05:33:07Z [140,272ms] [Warning] [carb] Plugin interface for a client: omni.hydratexture.plugin was already released.
+[140.410s] Simulation App Shutting Down

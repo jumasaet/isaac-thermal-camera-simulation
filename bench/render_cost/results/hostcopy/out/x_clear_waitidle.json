@@ -1,0 +1,211 @@
+{
+ "scene": "/tmp/irsim_render_cost/scene_bench.yaml",
+ "n": 100,
+ "disable_viewport": false,
+ "resolution": [
+  640,
+  512
+ ],
+ "kit_args": [
+  "--/app/hydraEngine/waitIdle=true",
+  "--/app/updateOrder/checkForHydraRenderComplete=1000"
+ ],
+ "effective_rendermode": "RealTimePathTracing",
+ "aa_op": 3,
+ "camera_reader_device": "cpu",
+ "resolved": {
+  "distance": "DistanceToCameraSD",
+  "position": "Camera3dPositionSD",
+  "normal": "normals",
+  "instance": "instance_id_segmentation",
+  "semantic": "semantic_segmentation"
+ },
+ "attach_failures": {
+  "occlusion:AmbientOcclusion": "attached but returned no data"
+ },
+ "warp": "1.16.0",
+ "phases": {
+  "X:alternatives": {
+   "vpon:cpu:wait:1": {
+    "step": 76.61115887458436,
+    "step_sd": 21.045132229345384,
+    "read": 3.057564521441236,
+    "get_outputs": 666.2423186353408
+   },
+   "vpon:cpu:nowait:1": {
+    "step": 19.686659012222663,
+    "step_sd": 0.41546877043998337,
+    "read": 2.977755371830426,
+    "get_outputs": 612.5427878723713
+   },
+   "vpon:cpu:nowait+1:1": {
+    "step": 36.05026086734142,
+    "step_sd": 0.8419388483649806,
+    "read": 3.204112406820059,
+    "get_outputs": 610.7205832522595
+   },
+   "vpon:cuda:wait:1": {
+    "step": 74.48858550924342,
+    "step_sd": 21.44963697098439,
+    "read": 4.542053255136125,
+    "get_outputs": 661.8569391284836
+   },
+   "vpon:cuda:nowait:1": {
+    "step": 19.428414496360347,
+    "step_sd": 1.0484323631225803,
+    "read": 4.748823252157308,
+    "get_outputs": 591.5889798779972
+   },
+   "vpon:cuda:nowait+1:1": {
+    "step": 36.09080884780269,
+    "step_sd": 0.6113286878046467,
+    "read": 4.509111866354942,
+    "get_outputs": 609.1103273502085
+   },
+   "vpoff:cpu:wait:1": {
+    "step": 72.87891960004345,
+    "step_sd": 32.214704500540996,
+    "read": 3.0123299948172644,
+    "get_outputs": 670.1333061064361
+   },
+   "vpoff:cpu:nowait:1": {
+    "step": 15.254155499860644,
+    "step_sd": 0.5758754823442539,
+    "read": 3.4621257218532264,
+    "get_outputs": 612.0251960091991
+   },
+   "vpoff:cpu:nowait+1:1": {
+    "step": 34.628414636245,
+    "step_sd": 21.323475819216874,
+    "read": 3.1671641336288303,
+    "get_outputs": 621.7400976165663
+   },
+   "vpoff:cuda:wait:1": {
+    "step": 63.91292350599542,
+    "step_sd": 29.625841635119787,
+    "read": 4.473603374208324,
+    "get_outputs": 653.7740270287031
+   },
+   "vpoff:cuda:nowait:1": {
+    "step": 14.116706224740483,
+    "step_sd": 0.2361120471691869,
+    "read": 4.771433144924231,
+    "get_outputs": 578.3776908938307
+   },
+   "vpoff:cuda:nowait+1:1": {
+    "step": 25.79316752962768,
+    "step_sd": 1.008154397415094,
+    "read": 4.5692465209867805,
+    "get_outputs": 616.1452788801398
+   },
+   "vpon:cpu:wait:2": {
+    "step": 70.2740644919686,
+    "step_sd": 1.5661124110727276,
+    "read": 3.1325936288340017,
+    "get_outputs": 668.3068920247024
+   },
+   "vpon:cpu:nowait:2": {
+    "step": 20.13175624597352,
+    "step_sd": 0.5320642693473835,
+    "read": 3.210998358554207,
+    "get_outputs": 609.3920256389538
+   },
+   "vpon:cpu:nowait+1:2": {
+    "step": 52.18725686427206,
+    "step_sd": 27.162522501652425,
+    "read": 3.266468513174914,
+    "get_outputs": 632.4528315162752
+   },
+   "vpon:cuda:wait:2": {
+    "step": 83.77164986450225,
+    "step_sd": 28.493456200432952,
+    "read": 4.499417875194922,
+    "get_outputs": 672.3967483994784
+   },
+   "vpon:cuda:nowait:2": {
+    "step": 20.049067243235186,
+    "step_sd": 0.3405176084848047,
+    "read": 5.008059262763709,
+    "get_outputs": 589.8107740213163
+   },
+   "vpon:cuda:nowait+1:2": {
+    "step": 44.42369860771578,
+    "step_sd": 21.33974840910351,
+    "read": 4.653338241041638,
+    "get_outputs": 606.3070020172745
+   },
+   "vpoff:cpu:wait:2": {
+    "step": 73.25261511141434,
+    "step_sd": 30.917464138735763,
+    "read": 3.013357025338337,
+    "get_outputs": 656.400934109115
+   },
+   "vpoff:cpu:nowait:2": {
+    "step": 21.958364013698883,
+    "step_sd": 21.169830195635484,
+    "read": 3.5149814939359203,
+    "get_outputs": 595.6817486294312
+   },
+   "vpoff:cpu:nowait+1:2": {
+    "step": 34.40267998666968,
+    "step_sd": 21.2669929881031,
+    "read": 3.079575573792681,
+    "get_outputs": 596.5493651165161
+   },
+   "vpoff:cuda:wait:2": {
+    "step": 64.077210627147,
+    "step_sd": 28.538719445354985,
+    "read": 4.460020747501403,
+    "get_outputs": 652.1717057621572
+   },
+   "vpoff:cuda:nowait:2": {
+    "step": 14.67964838957414,
+    "step_sd": 0.23897283626987317,
+    "read": 5.199071383685805,
+    "get_outputs": 609.627760888543
+   },
+   "vpoff:cuda:nowait+1:2": {
+    "step": 26.461181390914135,
+    "step_sd": 0.5034417560688942,
+    "read": 4.503699965425767,
+    "get_outputs": 622.7692523534643
+   }
+  }
+ },
+ "errors": {},
+ "marks": [
+  {
+   "name": "X:alternatives",
+   "wall": 1791438550.0500715,
+   "cpu_mhz": 4655.0
+  },
+  {
+   "name": "END",
+   "wall": 1791438718.88021,
+   "cpu_mhz": 4610.0
+  }
+ ],
+ "settings": {
+  "/app/asyncRendering": false,
+  "/app/asyncRenderingLowLatency": false,
+  "/omni/replicator/asyncRendering": false,
+  "/rtx/hydra/supportMultiTickRate": true,
+  "/app/runLoops/main/rateLimitEnabled": false,
+  "/app/runLoops/main/rateLimitFrequency": 120,
+  "/app/hydraEngine/waitIdle": true,
+  "/app/vsync": false,
+  "/omni/replicator/captureOnPlay": true,
+  "/omni/replicator/RTSubframes": null,
+  "/exts/omni.syntheticdata/renderVarTextureToBuffer/cudaCopyNoStride": true,
+  "/exts/omni.replicator/optim/useCachedParams": null,
+  "/renderer/multiGpu/enabled": false,
+  "/renderer/activeGpu": 0,
+  "/app/renderer/resolution/width": 1280,
+  "/app/renderer/resolution/height": 720,
+  "/log/file": "/home/jumasaet/isaac_sim/kit/logs/Kit/Isaac-Sim Python/6.1/kit_20261008_144855.log"
+ },
+ "governor": {
+  "scaling_governor": "powersave",
+  "epp": "performance"
+ }
+}

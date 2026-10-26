@@ -1,0 +1,107 @@
+{
+ "cases": {
+  "hot_water_50": {
+   "n_points_cup": 96,
+   "camera_height_above_table_m": 0.0344,
+   "camera_pitch_up_deg": 2.834,
+   "camera_roll_deg": -1.514,
+   "board_distance_along_normal_m": 0.9974,
+   "board_distance_horizontal_m": 1.0143,
+   "cup_front_depth_m": 0.4718,
+   "cup_front_height_m": 0.0387,
+   "cup_axis_horizontal_distance_m": 0.5033,
+   "cup_axis_lateral_m": 0.0757,
+   "_up": [
+    -0.026425652090171663,
+    -0.9984277417300108,
+    0.049434092036974464
+   ],
+   "_base": [
+    -0.07411920029891039,
+    0.06122229543967803,
+    0.5009929372817176
+   ]
+  },
+  "hot_water_95": {
+   "n_points_cup": 25,
+   "camera_height_above_table_m": 0.0373,
+   "camera_pitch_up_deg": 2.407,
+   "camera_roll_deg": -1.455,
+   "board_distance_along_normal_m": 1.0127,
+   "board_distance_horizontal_m": 1.0236,
+   "cup_front_depth_m": 0.9193,
+   "cup_front_height_m": 0.0381,
+   "cup_axis_horizontal_distance_m": 0.9512,
+   "cup_axis_lateral_m": 0.1039,
+   "_up": [
+    -0.02539982518223592,
+    -0.9987945858451359,
+    0.04200266857183321
+   ],
+   "_base": [
+    -0.10194281582287905,
+    0.07982137140300036,
+    0.9488328535891114
+   ]
+  },
+  "cold_water_50": {
+   "n_points_cup": 42,
+   "camera_height_above_table_m": 0.0343,
+   "camera_pitch_up_deg": 2.47,
+   "camera_roll_deg": -0.72,
+   "board_distance_along_normal_m": 1.009,
+   "board_distance_horizontal_m": 1.029,
+   "cup_front_depth_m": 0.4716,
+   "cup_front_height_m": 0.0321,
+   "cup_axis_horizontal_distance_m": 0.5021,
+   "cup_axis_lateral_m": 0.0822,
+   "_up": [
+    -0.012557987623430428,
+    -0.9989916907014477,
+    0.04310335087104991
+   ],
+   "_base": [
+    -0.0815143468282447,
+    0.05691256841672785,
+    0.5001210341018807
+   ]
+  },
+  "cold_water_95": {
+   "n_points_cup": 22,
+   "camera_height_above_table_m": 0.0326,
+   "camera_pitch_up_deg": 2.728,
+   "camera_roll_deg": -0.817,
+   "board_distance_along_normal_m": 1.0102,
+   "board_distance_horizontal_m": 1.0294,
+   "cup_front_depth_m": 0.9251,
+   "cup_front_height_m": 0.044,
+   "cup_axis_horizontal_distance_m": 0.9576,
+   "cup_axis_lateral_m": 0.1181,
+   "_up": [
+    -0.014251350079986872,
+    -0.9987650648891945,
+    0.04759458139096473
+   ],
+   "_base": [
+    -0.1169911113176413,
+    0.07986114704687242,
+    0.9550068218436192
+   ]
+  }
+ },
+ "image_pose": {
+  "camera_height_above_table_m": 0.0323,
+  "camera_pitch_up_deg": 1.213,
+  "row_residuals_px": [
+   0.5,
+   -1.52,
+   -1.94,
+   -2.47,
+   -2.0,
+   3.11,
+   0.87,
+   3.43
+  ],
+  "rms_px": 2.2
+ }
+}

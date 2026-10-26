@@ -1,0 +1,1144 @@
+Timer unit: 0.001 s
+
+Total time: 14.4703 s
+File: /home/jumasaet/isaac-thermal-camera-simulation/src/irsim_isaac/pipeline/ir_camera.py
+Function: IrCamera.get_outputs at line 1104
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+  1104                                               def get_outputs(self, *, step: bool = True, rt_subframes: int = 1) -> Outputs:
+  1105                                                   """One frame, all the way to ``radiance`` / ``apparent_t`` / ``dn16`` / ``display8``.
+  1106                                           
+  1107                                                   The clock advances by one frame period afterwards, so a sequence of calls is a real
+  1108                                                   sequence: the FFC fires on its schedule, the fixed pattern drifts, the bolometer's
+  1109                                                   membrane carries its lag from frame to frame.
+  1110                                                   """
+  1111        30       9064.1    302.1     62.6          planes = self.planes(step=step, rt_subframes=rt_subframes)
+  1112        30          0.1      0.0      0.0          self.state.t_s = self.scene.t0_s + self._t_rel_s
+  1113        30          0.0      0.0      0.0          self._last_frame_t_s = self.state.t_s
+  1114        60       5404.4     90.1     37.3          outputs = run_frame(
+  1115        30          0.3      0.0      0.0              planes, self.config, self.state, self.point_targets(), self.rotor_veils()
+  1116                                                   )
+  1117        30          1.2      0.0      0.0          marked = self.debug_unmapped and self._last is not None and bool(self._last.unmapped.any())
+  1118        30          0.0      0.0      0.0          if marked:
+  1119                                                       assert self._last is not None  # narrowed by `marked`
+  1120                                                       native = self._native_unmapped(self._last.unmapped)
+  1121                                                       # `IG.17`: the radiometric planes are marked too, and this is the half that was
+  1122                                                       # missing. Before it, the marking was a *display* artefact: an unmapped prim was
+  1123                                                       # painted magenta in the picture and handed to the radiometric branch as geometry
+  1124                                                       # with eps = 1 against whatever temperature it happened to carry, which for a prim
+  1125                                                       # with no thermal node is essentially none. `SE.2` measured an undeclared sea at
+  1126                                                       # **200.1 K** -- the band LUT's own lower bound, where an apparent temperature lands
+  1127                                                       # when the radiance under it is nearly zero -- across 72 % of a frame. That is a
+  1128                                                       # number, in kelvin, in range, and it reads as cold water rather than as an error, so
+  1129                                                       # an inspection that checks the mask reports the sea correctly handled.
+  1130                                                       #
+  1131                                                       # NaN rather than a sentinel kelvin: every plausible sentinel (0 K, 200 K, -999) is
+  1132                                                       # either a temperature something will average or a value some consumer clips into
+  1133                                                       # range, and this plane's whole job is to be unusable where the physics is absent.
+  1134                                                       # `dn16` keeps its integer count, because a sensor count has no NaN to carry and the
+  1135                                                       # marking already exists on the two planes that claim physical units.
+  1136                                                       if outputs.radiance is not None:
+  1137                                                           outputs = replace(
+  1138                                                               outputs, radiance=mark_unmapped_radiometry(outputs.radiance, native)
+  1139                                                           )
+  1140                                                       if outputs.apparent_t is not None:
+  1141                                                           outputs = replace(
+  1142                                                               outputs, apparent_t=mark_unmapped_radiometry(outputs.apparent_t, native)
+  1143                                                           )
+  1144                                                       if outputs.display8 is not None:
+  1145                                                           outputs = replace(outputs, display8=overlay_unmapped(outputs.display8, native))
+  1146        30          0.0      0.0      0.0          self._t_rel_s += self.frame_period_s
+  1147        30          0.1      0.0      0.0          return outputs
+
+Total time: 9.00306 s
+File: /home/jumasaet/isaac-thermal-camera-simulation/src/irsim_isaac/pipeline/ir_camera.py
+Function: IrCamera.planes at line 644
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+   644                                               def planes(self, *, step: bool = True, rt_subframes: int = 1) -> Planes:
+   645                                                   """Render one frame and assemble the M0.6 G-buffer from it.
+   646                                           
+   647                                                   Order matters: the renderer is stepped first, then the thermal clock is moved to the time
+   648                                                   that frame represents, so the temperatures written into the plane are the ones for the
+   649                                                   geometry that was just rendered rather than one frame stale.
+   650                                                   """
+   651        30          0.0      0.0      0.0          if self._reader is None:
+   652                                                       raise RuntimeError("call open() first (it needs a running Kit application)")
+   653        30          0.0      0.0      0.0          if step:
+   654                                                       self._reader.step(frames=1, rt_subframes=rt_subframes)
+   655        30          0.1      0.0      0.0          aovs = self._reader.read()
+   656                                           
+   657        60        646.7     10.8      7.2          rays = ray_directions(
+   658        30          0.0      0.0      0.0              aovs.position,
+   659        30          0.0      0.0      0.0              frame=self.position_frame,
+   660        30          0.0      0.0      0.0              camera_position=self._camera_position,
+   661        30          0.0      0.0      0.0              camera_to_world=self._camera_to_world,
+   662                                                   )
+   663        60       1757.0     29.3     19.5          geometry = geometry_planes(
+   664        30          0.0      0.0      0.0              aovs,
+   665        30          0.1      0.0      0.0              up_axis=self._up_axis or "Y",
+   666        30          0.0      0.0      0.0              position_frame=self.position_frame,
+   667        30          0.0      0.0      0.0              camera_position=self._camera_position,
+   668        30          0.0      0.0      0.0              camera_to_world=self._camera_to_world,
+   669                                                   )
+   670        30          0.0      0.0      0.0          if aovs.instance_id is None:  # pragma: no cover - `required` already guarantees it
+   671                                                       raise RuntimeError("the instance-id channel produced no data this frame")
+   672        30          0.1      0.0      0.0          instance_id = np.asarray(aovs.instance_id, dtype=np.uint32)
+   673        30          1.3      0.0      0.0          labels = labels_from_payload(aovs.device_handles.get("instance"))
+   674        30          0.1      0.0      0.0          if self._background_paths:
+   675                                                       paths = labels_to_paths(labels)
+   676                                                       ids = [i for i, path in paths.items() if path in self._background_paths]
+   677                                                       if ids:
+   678                                                           extra = np.isin(instance_id, np.asarray(ids, dtype=instance_id.dtype))
+   679                                                           geometry = replace(
+   680                                                               geometry, sky_mask=np.asarray(geometry.sky_mask | extra, dtype=np.bool_)
+   681                                                           )
+   682                                           
+   683        60        110.2      1.8      1.2          material_id = material_id_plane(
+   684        30          0.0      0.0      0.0              instance_id, labels, self.resolutions, strict=self.strict_materials
+   685                                                   )
+   686        30          0.0      0.0      0.0          axis = self._up_axis or "Y"
+   687        30          0.0      0.0      0.0          up_vector = UP_AXIS_VECTOR[axis]
+   688        30        295.0      9.8      3.3          elevation = elevation_from_rays(rays, up=up_vector)
+   689                                                   # Only used when the bridge carries a cloud field (ADR 0076); cheap enough not to branch.
+   690                                                   # The forward must travel with the up axis: the default (0, 0, -1) is perpendicular to
+   691                                                   # Y-up and *parallel* to Z-up, so passing up alone made every Z-up stage raise.
+   692        30        991.9     33.1     11.0          azimuth = azimuth_from_rays(rays, up=up_vector, forward=FORWARD_AXIS_VECTOR[axis])
+   693                                           
+   694        30          4.3      0.1      0.0          self.bridge.advance_to(self._t_rel_s)
+   695        60         70.5      1.2      0.8          temperature = self.bridge.temperature_plane(
+   696        30          0.0      0.0      0.0              instance_id,
+   697        30          0.0      0.0      0.0              labels,
+   698        30          0.0      0.0      0.0              sky_mask=geometry.sky_mask,
+   699        30          0.0      0.0      0.0              elevation_rad=elevation,
+   700        30          0.0      0.0      0.0              azimuth_rad=azimuth,
+   701        30          0.0      0.0      0.0              strict=self.strict_thermal_nodes,
+   702                                                   )
+   703        30          0.0      0.0      0.0          if self.pointwise is not None:
+   704                                                       # The patch-backed prims take their own cells. The absolute weather clock, not the
+   705                                                       # relative one: a `PlanarThermalField` is spun up on the weather axis and `t0_s` is
+   706                                                       # normally a day into it, so handing it relative time reads a plausible temperature
+   707                                                       # from the wrong hour (the same trap M10.3 pinned for `thermal_surfaces`).
+   708        30          1.0      0.0      0.0              self.pointwise.advance_to(self.scene.t0_s + self._t_rel_s)
+   709        60       1184.7     19.7     13.2              temperature = self.pointwise.apply(
+   710        30          0.0      0.0      0.0                  temperature,
+   711        30          0.0      0.0      0.0                  instance_id,
+   712        30          0.0      0.0      0.0                  labels,
+   713        60        179.4      3.0      2.0                  world_positions(
+   714        30          0.0      0.0      0.0                      aovs.position,
+   715        30          0.0      0.0      0.0                      frame=self.position_frame,
+   716        30          0.0      0.0      0.0                      camera_position=self._camera_position,
+   717        30          0.0      0.0      0.0                      camera_to_world=self._camera_to_world,
+   718                                                           ),
+   719        30          0.0      0.0      0.0                  self.scene.t0_s + self._t_rel_s,
+   720        30          0.0      0.0      0.0                  strict=self.strict_patch_coverage,
+   721        30          1.2      0.0      0.0                  world_from_local=self._world_from_local(),
+   722                                                       )
+   723        30          0.1      0.0      0.0          if self.mesh_pointwise is not None:
+   724                                                       # Same clock and same positions as the planar bridge above, for the same reasons.
+   725                                                       # Computed again rather than shared because a scene almost never has both, and a
+   726                                                       # camera that has neither must not pay for the decode at all.
+   727                                                       self.mesh_pointwise.advance_to(self.scene.t0_s + self._t_rel_s)
+   728                                                       temperature = self.mesh_pointwise.apply(
+   729                                                           temperature,
+   730                                                           instance_id,
+   731                                                           labels,
+   732                                                           world_positions(
+   733                                                               aovs.position,
+   734                                                               frame=self.position_frame,
+   735                                                               camera_position=self._camera_position,
+   736                                                               camera_to_world=self._camera_to_world,
+   737                                                           ),
+   738                                                           self.scene.t0_s + self._t_rel_s,
+   739                                                           strict=self.strict_patch_coverage,
+   740                                                           world_from_local=self._world_from_local(),
+   741                                                       )
+   742                                                   # `to_gbuffer` validates the M0.6 contract; the stages consume the plane dict.
+   743                                                   # An UNMAPPED prim has no emissivity, and `MaterialTable` refuses to invent one
+   744                                                   # (ADR 0047). In debug mode those pixels are handed to stage 1 as blackbody-equivalent --
+   745                                                   # the eps = 1 ADR 0047 specifies, applied to the prim's *own* temperature, which is
+   746                                                   # already in the plane -- and then painted magenta, so they are visibly not physics
+   747                                                   # rather than plausibly wrong. Without debug mode the frame raises instead.
+   748        30          5.5      0.2      0.1          unmapped = np.asarray(unmapped_mask(material_id, geometry.sky_mask), dtype=np.bool_)
+   749        30          0.8      0.0      0.0          if self.debug_unmapped and unmapped.any():
+   750                                                       geometry = replace(
+   751                                                           geometry, sky_mask=np.asarray(geometry.sky_mask | unmapped, dtype=np.bool_)
+   752                                                       )
+   753                                                   # IG.6: the synthesised `motion_px`, which is the only motion this build has. ADR 0014's
+   754                                                   # addendum measured `motion_vectors` sitting at a ~6e-5 floor after a 180 px displacement,
+   755                                                   # so `geometry_planes` never delivers one (IG.5's `UNVERIFIED_CHANNELS`) and M10.1b built
+   756                                                   # the rigid-body synthesis instead -- which then had no caller but its own in-sim test, so
+   757                                                   # ADR 0077's smear has never run on a rendered frame despite M9.8 and M10.1b both being
+   758                                                   # ticked. Sampled once per `planes()` call, which is once per render; it goes in through
+   759                                                   # `GeometryPlanes` rather than into the dict afterwards so the M0.6 contract validates it.
+   760        30       3655.2    121.8     40.6          motion = self._motion_plane(aovs, instance_id, labels)
+   761        30          0.0      0.0      0.0          if motion is not None:
+   762        30          1.8      0.1      0.0              geometry = replace(geometry, motion_px=motion)
+   763        30         62.0      2.1      0.7          planes = to_gbuffer(geometry, temperature_k=temperature, material_id=material_id).to_dict()
+   764                                                   # Each pixel's own ray elevation, so the atmosphere takes its slant path rather than the
+   765                                                   # horizontal one (AT.1). It has been computed a few lines above since M10.18 for the sky
+   766                                                   # temperature; the atmosphere stage simply never received it, and passed 0.0 for every
+   767                                                   # resolved pixel while the point-target path beside it used the target's real elevation.
+   768        30          6.4      0.2      0.1          planes["elevation_rad"] = np.asarray(elevation, dtype=np.float32)
+   769                                                   # The reflective terms ride *outside* the M0.6 contract, the way `radiance_behind` does:
+   770                                                   # they are stage-1 inputs, not geometry, and `GBuffer` refuses keys it does not know.
+   771        30          0.3      0.0      0.0          planes.update(self._illumination_planes(aovs, geometry))
+   772        60          0.7      0.0      0.0          self._last = _Frame(
+   773        30          0.2      0.0      0.0              rgb=self._native_rgb(aovs.rgb),
+   774        30          0.0      0.0      0.0              planes=planes,
+   775        30          0.0      0.0      0.0              instance_id=instance_id,
+   776        30          0.0      0.0      0.0              material_id=material_id,
+   777        30          0.0      0.0      0.0              unmapped=unmapped,
+   778        30          0.0      0.0      0.0              elevation_rad=elevation,
+   779        30         25.8      0.9      0.3              positions_camera=np.asarray(aovs.position, dtype=np.float64),
+   780        30          0.0      0.0      0.0              labels=labels,
+   781                                                   )
+   782        30          0.1      0.0      0.0          return planes
+
+Total time: 8.7437e-05 s
+File: /home/jumasaet/isaac-thermal-camera-simulation/src/irsim_isaac/pipeline/ir_camera.py
+Function: IrCamera._illumination_planes at line 886
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+   886                                               def _illumination_planes(self, aovs: Any, geometry: Any) -> dict[str, NDArray[np.float64]]:
+   887                                                   """``l_sun`` / ``l_night`` for this frame, or nothing when no bundle is attached.
+   888                                           
+   889                                                   The normals are re-oriented to the viewer exactly as ``geometry_planes`` does, and for the
+   890                                                   same reason: a double-sided mesh can store a normal pointing away from the camera, and the
+   891                                                   face that is radiating -- or catching sunlight -- towards the lens is the one facing it.
+   892                                                   Taking the flip twice from one source, rather than reconstructing it, is what keeps the
+   893                                                   solar cosine and ``normal_dot_view`` describing the same surface.
+   894                                                   """
+   895        30          0.1      0.0     60.6          if self.illumination is None:
+   896        30          0.0      0.0     39.4              return {}
+   897                                                   rays = ray_directions(
+   898                                                       aovs.position,
+   899                                                       frame=self.position_frame,
+   900                                                       camera_position=self._camera_position,
+   901                                                       camera_to_world=self._camera_to_world,
+   902                                                   )
+   903                                                   normal_world, _ = orient_to_viewer(aovs.normal, rays)
+   904                                                   # The same three lines `irsim_isaac.visible_sky.dome_for_scene` uses, for the same
+   905                                                   # reason: the sun in the radiometry and the sun casting shadows in the companion visible
+   906                                                   # frame must be one sun, or the two frames disagree about where the light comes from and
+   907                                                   # nobody notices until they are overlaid.
+   908                                                   site = self.scene.spec.site
+   909                                                   when = self.scene.spec.start_utc + timedelta(seconds=float(self._t_rel_s))
+   910                                                   sun = sun_position_utc(site.latitude_deg, site.longitude_deg, when)
+   911                                                   weather = self.scene.weather_at(self._t_rel_s)
+   912                                                   return self.illumination.planes(
+   913                                                       normal_world,
+   914                                                       sun_elevation_deg=float(sun.elevation_deg),
+   915                                                       sun_azimuth_deg=float(sun.azimuth_deg),
+   916                                                       sky_mask=geometry.sky_mask,
+   917                                                       cloud_fraction=float(getattr(weather, "cloud_fraction", 0.0)),
+   918                                                   )
+
+Total time: 3.64689 s
+File: /home/jumasaet/isaac-thermal-camera-simulation/src/irsim_isaac/pipeline/motion_isaac.py
+Function: MotionTracker.motion_px at line 152
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+   152                                               def motion_px(
+   153                                                   self,
+   154                                                   positions_camera: Any,
+   155                                                   instance_id: Any,
+   156                                                   id_to_labels: Mapping[Any, Any] | None,
+   157                                                   intrinsics: Intrinsics,
+   158                                                   distortion: DistortionSpec,
+   159                                               ) -> NDArray[np.float32]:
+   160                                                   """The G-buffer's ``motion_px`` for this frame; zeros until two frames have been sampled."""
+   161        30          0.1      0.0      0.0          ids = np.asarray(instance_id)
+   162        30          0.1      0.0      0.0          if not self.ready:
+   163                                                       return np.zeros((*ids.shape[:2], 2), dtype=np.float32)
+   164        30          0.0      0.0      0.0          assert self._prev_camera is not None and self._cur_camera is not None
+   165        30          4.8      0.2      0.1          prev, cur = self.transform_stacks(id_to_labels)
+   166        60       3634.7     60.6     99.7          return image_plane_motion(
+   167        30          0.0      0.0      0.0              positions_camera,
+   168        30          7.0      0.2      0.2              ids.astype(np.int64),
+   169        30          0.0      0.0      0.0              prev,
+   170        30          0.0      0.0      0.0              cur,
+   171        30          0.0      0.0      0.0              self._prev_camera,
+   172        30          0.0      0.0      0.0              self._cur_camera,
+   173        30          0.0      0.0      0.0              intrinsics,
+   174        30          0.0      0.0      0.0              distortion,
+   175                                                   )
+
+Total time: 3.62853 s
+File: /home/jumasaet/isaac-thermal-camera-simulation/src/irsim/optics/motion.py
+Function: image_plane_motion at line 61
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    61                                           def image_plane_motion(
+    62                                               points_camera_usd: Any,
+    63                                               object_id: Any,
+    64                                               object_to_world_prev: Any,
+    65                                               object_to_world_cur: Any,
+    66                                               camera_to_world_prev: Any,
+    67                                               camera_to_world_cur: Any,
+    68                                               intrinsics: Intrinsics,
+    69                                               distortion: DistortionSpec,
+    70                                           ) -> NDArray[np.float32]:
+    71                                               """``motion_px``: (H, W, 2) float32 px/frame, x right and **y down**, per the G-buffer contract.
+    72                                           
+    73                                               ``points_camera_usd`` is the per-pixel surface position in **USD camera space** (+Y up, −Z
+    74                                               forward) at the current frame -- what ``Camera3dPositionSD`` delivers (ADR 0014 addendum). It
+    75                                               may carry more than three components: on this build the position AOV arrives as ``(H, W, 4)``
+    76                                               with a padded fourth, and the first three are taken, which is the same rule the rest of the
+    77                                               adapter applies to every float AOV.
+    78                                               ``object_id`` indexes the two transform stacks, exactly as the instance id indexes the thermal
+    79                                               bridge's temperature table; index :data:`BACKGROUND_OBJECT_ID` is the background and its entry
+    80                                               is ignored.
+    81                                           
+    82                                               The displacement is *backwards-looking* -- where this surface point was one frame ago -- which
+    83                                               is the convention the moving-edge fixture uses and the sign a smear kernel wants: a feature
+    84                                               moving right has a positive x velocity.
+    85                                           
+    86                                               Points behind either camera come back as zero rather than NaN. A surface that was off-screen
+    87                                               or behind the lens a frame ago has no defined displacement, and a NaN there would propagate
+    88                                               through a convolution and take the whole frame with it.
+    89                                               """
+    90        30         31.7      1.1      0.9      p_cam = np.asarray(points_camera_usd, dtype=np.float64)
+    91        30          0.1      0.0      0.0      if p_cam.ndim != 3 or p_cam.shape[2] < 3:
+    92                                                   raise ValueError(f"points must be (H, W, >=3), got {p_cam.shape}")
+    93        30          0.1      0.0      0.0      p_cam = p_cam[:, :, :3]
+    94        30          0.1      0.0      0.0      ids = np.asarray(object_id)
+    95        30          0.9      0.0      0.0      if not np.issubdtype(ids.dtype, np.integer):
+    96                                                   raise TypeError(f"object_id must be an integer plane, got {ids.dtype}")
+    97        30          0.1      0.0      0.0      if ids.shape != p_cam.shape[:2]:
+    98                                                   raise ValueError(f"object_id {ids.shape} does not match points {p_cam.shape[:2]}")
+    99                                           
+   100        30          0.1      0.0      0.0      prev_stack = np.asarray(object_to_world_prev, dtype=np.float64)
+   101        30          0.1      0.0      0.0      cur_stack = np.asarray(object_to_world_cur, dtype=np.float64)
+   102        30          0.1      0.0      0.0      if prev_stack.shape != cur_stack.shape or prev_stack.ndim != 3:
+   103                                                   raise ValueError("the two transform stacks must be the same (N, 4, 4)")
+   104        30         14.4      0.5      0.4      clipped = np.clip(ids, 0, prev_stack.shape[0] - 1)
+   105                                           
+   106        30          0.1      0.0      0.0      cam_cur = np.asarray(camera_to_world_cur, dtype=np.float64)
+   107        30          0.1      0.0      0.0      cam_prev = np.asarray(camera_to_world_prev, dtype=np.float64)
+   108        30          3.7      0.1      0.1      world_to_cam_prev = np.linalg.inv(cam_prev)
+   109                                           
+   110                                               # Geometry: carry each surface point to world, back into its object's frame, forward through
+   111                                               # that object's previous pose, then into the previous camera. For the background there is no
+   112                                               # object, so the point is treated as a direction at infinity and only the rotations apply.
+   113        30        188.8      6.3      5.2      p_world = transform_points(p_cam, cam_cur)
+   114        30        299.1     10.0      8.2      to_local = np.linalg.inv(cur_stack)[clipped]
+   115        30        433.5     14.5     11.9      p_local = np.einsum("hwj,hwjk->hwk", p_world, to_local[..., :3, :3]) + to_local[..., 3, :3]
+   116        30          0.0      0.0      0.0      p_world_prev = (
+   117        60        736.8     12.3     20.3          np.einsum("hwj,hwjk->hwk", p_local, prev_stack[clipped][..., :3, :3])
+   118        30        284.7      9.5      7.8          + prev_stack[clipped][..., 3, :3]
+   119                                               )
+   120        30        229.5      7.7      6.3      p_cam_prev = transform_points(p_world_prev, world_to_cam_prev)
+   121                                           
+   122        30          6.7      0.2      0.2      background = ids == BACKGROUND_OBJECT_ID
+   123        30          1.1      0.0      0.0      if background.any():
+   124                                                   # A direction, not a point: rotate the current ray into world and back out through the
+   125                                                   # previous camera's rotation. Translation is dropped because a point at infinity does not
+   126                                                   # parallax, and `project_usd` is scale-invariant so a direction projects like a point.
+   127        30        162.2      5.4      4.5          direction = transform_points(p_cam, _rotation_only(cam_cur))
+   128        60         69.9      1.2      1.9          p_cam_prev = np.where(
+   129        30          0.1      0.0      0.0              background[..., None],
+   130        30        155.7      5.2      4.3              transform_points(direction, _rotation_only(world_to_cam_prev)),
+   131        30          0.0      0.0      0.0              p_cam_prev,
+   132                                                   )
+   133                                           
+   134        30        470.2     15.7     13.0      u_cur, v_cur = project_usd(p_cam, intrinsics, distortion)
+   135        30        406.4     13.5     11.2      u_prev, v_prev = project_usd(p_cam_prev, intrinsics, distortion)
+   136        30         43.5      1.5      1.2      motion = np.stack([u_cur - u_prev, v_cur - v_prev], axis=-1)
+   137        30         88.8      3.0      2.4      return np.nan_to_num(motion, nan=0.0, posinf=0.0, neginf=0.0).astype(np.float32)
+
+Total time: 0.734213 s
+File: /home/jumasaet/isaac-thermal-camera-simulation/src/irsim/optics/motion.py
+Function: transform_points at line 46
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    46                                           def transform_points(points: Any, matrix: Any) -> NDArray[np.float64]:
+    47                                               """Apply a USD 4x4 to ``(..., 3)`` points. Row-vector convention: ``p' = p @ M``.
+    48                                           
+    49                                               USD matrices are row-vector — a point is a row and multiplies on the left — which is the
+    50                                               opposite of the column convention most graphics maths is written in. Getting it backwards
+    51                                               transposes every rotation and still produces plausible, wrong motion, so the convention lives
+    52                                               in one function rather than at each call site.
+    53                                               """
+    54       120          0.4      0.0      0.1      p = np.asarray(points, dtype=np.float64)
+    55       120          0.2      0.0      0.0      m = np.asarray(matrix, dtype=np.float64)
+    56       120          0.3      0.0      0.0      if m.shape[-2:] != (4, 4):
+    57                                                   raise ValueError(f"expected a 4x4 transform, got {m.shape}")
+    58       120        733.3      6.1     99.9      return np.asarray(p @ m[..., :3, :3] + m[..., 3, :3])
+
+Total time: 0.574909 s
+File: /home/jumasaet/isaac-thermal-camera-simulation/src/irsim/optics/projection.py
+Function: _rational_polynomial at line 202
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+   202                                           def _rational_polynomial(
+   203                                               x: NDArray[np.float64], y: NDArray[np.float64], c: dict[str, float]
+   204                                           ) -> tuple[NDArray[np.float64], NDArray[np.float64]]:
+   205                                               """OpenCV's rational-polynomial radial + tangential + thin-prism distortion (§8.4)."""
+   206        60         48.3      0.8      8.4      r2 = x * x + y * y
+   207        60          9.9      0.2      1.7      r4 = r2 * r2
+   208        60         27.7      0.5      4.8      r6 = r4 * r2
+   209       120        112.0      0.9     19.5      radial = (1.0 + c["k1"] * r2 + c["k2"] * r4 + c["k3"] * r6) / (
+   210        60         95.0      1.6     16.5          1.0 + c["k4"] * r2 + c["k5"] * r4 + c["k6"] * r6
+   211                                               )
+   212        60          0.0      0.0      0.0      xd = (
+   213       300         48.7      0.2      8.5          x * radial
+   214        60         22.3      0.4      3.9          + 2.0 * c["p1"] * x * y
+   215        60         29.8      0.5      5.2          + c["p2"] * (r2 + 2.0 * x * x)
+   216        60          8.8      0.1      1.5          + c["s1"] * r2
+   217        60          9.8      0.2      1.7          + c["s2"] * r4
+   218                                               )
+   219        60          0.0      0.0      0.0      yd = (
+   220       300         49.0      0.2      8.5          y * radial
+   221        60         75.7      1.3     13.2          + c["p1"] * (r2 + 2.0 * y * y)
+   222        60         18.0      0.3      3.1          + 2.0 * c["p2"] * x * y
+   223        60          8.9      0.1      1.6          + c["s3"] * r2
+   224        60         10.8      0.2      1.9          + c["s4"] * r4
+   225                                               )
+   226        60          0.3      0.0      0.0      return xd, yd
+
+Total time: 1.75622 s
+File: /home/jumasaet/isaac-thermal-camera-simulation/src/irsim_isaac/pipeline/gbuffer_isaac.py
+Function: geometry_planes at line 362
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+   362                                           def geometry_planes(
+   363                                               aovs: RawAovs,
+   364                                               *,
+   365                                               up_axis: str = "Y",
+   366                                               position_frame: PositionFrame = "world",
+   367                                               camera_position: Any = None,
+   368                                               camera_to_world: Any = None,
+   369                                               motion_convention: MotionConvention | None = None,
+   370                                               default_occlusion: float = 1.0,
+   371                                           ) -> GeometryPlanes:
+   372                                               """Turn one frame of raw AOVs into the geometry half of the G-buffer (ADR 0014, ADR 0045).
+   373                                           
+   374                                               Sky pixels -- where the renderer hit nothing and ``DistanceToCameraSD`` is ``inf`` -- get
+   375                                               ``distance_m = 0`` so a consumer that ignores ``sky_mask`` still sees tau = 1, and neutral
+   376                                               cosines; the kernels treat them as blackbody-equivalent from the sky model (M10.18), so the
+   377                                               values under the mask are placeholders, not physics.
+   378                                           
+   379                                               ``default_occlusion`` is used when the build returns no ambient-occlusion AOV, making
+   380                                               ``V_s = (1 + n.up)/2``: the unoccluded sky fraction of a tilted plane. That is exact for the
+   381                                               open-sky aerial scenes of phase 1 and optimistic for a cluttered ground scene.
+   382                                               """
+   383        30          0.1      0.0      0.0      if up_axis not in UP_AXIS_VECTOR:
+   384                                                   raise ValueError(f"up_axis must be one of {sorted(UP_AXIS_VECTOR)}, got {up_axis!r}")
+   385        30          0.2      0.0      0.0      up = np.asarray(UP_AXIS_VECTOR[up_axis], dtype=np.float64)
+   386                                           
+   387        30          6.8      0.2      0.4      distance = _as_f64_plane("distance_m", aovs.distance_m, None)
+   388        30          5.2      0.2      0.3      sky = ~np.isfinite(distance)
+   389        30          0.1      0.0      0.0      if aovs.instance_id is not None:
+   390                                                   # Background id 0 is the other half of the same fact (ADR 0014); either marks sky.
+   391        30          0.1      0.0      0.0          ids = np.asarray(aovs.instance_id)
+   392        30          0.1      0.0      0.0          if ids.shape != distance.shape:
+   393                                                       raise ValueError(f"instance_id has shape {ids.shape}, expected {distance.shape}")
+   394        30          3.4      0.1      0.2          sky |= ids == 0
+   395        30         16.2      0.5      0.9      if np.any(distance[~sky] < 0.0):
+   396                                                   raise ValueError("distance_m has negative values on geometry pixels")
+   397                                           
+   398        60        658.5     11.0     37.5      ray = ray_directions(
+   399        30          0.0      0.0      0.0          aovs.position,
+   400        30          0.0      0.0      0.0          frame=position_frame,
+   401        30          0.0      0.0      0.0          camera_position=camera_position,
+   402        30          0.0      0.0      0.0          camera_to_world=camera_to_world,
+   403                                               )
+   404        30        681.4     22.7     38.8      normal, n_view = orient_to_viewer(aovs.normal, ray)
+   405        30        219.3      7.3     12.5      n_up = np.sum(normal * up, axis=2)
+   406                                           
+   407        30          0.1      0.0      0.0      if aovs.occlusion is None:
+   408        30          5.4      0.2      0.3          occlusion = np.full(distance.shape, float(default_occlusion), dtype=np.float64)
+   409                                               else:
+   410                                                   occ = np.asarray(aovs.occlusion)
+   411                                                   occ = occ[:, :, 0] if occ.ndim == 3 else occ
+   412                                                   occlusion = np.clip(_as_f64_plane("occlusion", occ, None), 0.0, 1.0)
+   413                                           
+   414        30         48.3      1.6      2.7      v_s = sky_view_factor(np.clip(n_up, -1.0, 1.0), occlusion)
+   415                                           
+   416        30         49.7      1.7      2.8      distance = np.where(sky, 0.0, np.nan_to_num(distance, posinf=0.0, neginf=0.0))
+   417        30         16.5      0.5      0.9      n_view = np.where(sky, _SKY_NORMAL_DOT_VIEW, np.clip(n_view, 0.0, 1.0))
+   418        30         15.2      0.5      0.9      n_up = np.where(sky, _SKY_NORMAL_DOT_UP, np.clip(n_up, -1.0, 1.0))
+   419        30          8.8      0.3      0.5      v_s = np.where(sky, _SKY_SKY_VIEW_FACTOR, v_s)
+   420                                           
+   421        30          0.0      0.0      0.0      motion = None
+   422        30          0.0      0.0      0.0      if aovs.motion is not None:
+   423                                                   if motion_convention is None:
+   424                                                       raise ValueError(
+   425                                                           "a motion AOV was supplied with no motion_convention. There is no safe default: "
+   426                                                           "the three conventions differ by a factor of the resolution and by the sign of y, "
+   427                                                           "and Replicator's documentation gives both signs opposite to this project's "
+   428                                                           "contract, so a guess produces smear in the wrong direction rather than an error "
+   429                                                           "(IG.5). Name the convention, or use irsim.optics.motion's synthesised plane."
+   430                                                       )
+   431                                                   # `.shape` is `tuple[int, ...]`; the plane is 2-D by construction and the callee wants
+   432                                                   # that stated, so it is narrowed here rather than widened there.
+   433                                                   plane_shape = (int(distance.shape[0]), int(distance.shape[1]))
+   434                                                   motion = motion_px_per_frame(aovs.motion, convention=motion_convention, shape=plane_shape)
+   435                                                   motion = np.where(sky[..., None], np.float32(0.0), motion).astype(np.float32)
+   436                                           
+   437        60          0.7      0.0      0.0      return GeometryPlanes(
+   438        30          4.9      0.2      0.3          distance_m=distance.astype(np.float32),
+   439        30          5.4      0.2      0.3          normal_dot_view=n_view.astype(np.float32),
+   440        30          5.3      0.2      0.3          normal_dot_up=n_up.astype(np.float32),
+   441        30          4.4      0.1      0.3          sky_view_factor=v_s.astype(np.float32),
+   442        30          0.0      0.0      0.0          sky_mask=sky,
+   443        30          0.0      0.0      0.0          motion_px=motion,
+   444        30          0.1      0.0      0.0          semantic_id=None if aovs.semantic_id is None else np.asarray(aovs.semantic_id, np.uint32),
+   445        30          0.1      0.0      0.0          instance_id=None if aovs.instance_id is None else np.asarray(aovs.instance_id, np.uint32),
+   446                                               )
+
+Total time: 1.30443 s
+File: /home/jumasaet/isaac-thermal-camera-simulation/src/irsim_isaac/pipeline/gbuffer_isaac.py
+Function: ray_directions at line 285
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+   285                                           def ray_directions(
+   286                                               position: Any,
+   287                                               *,
+   288                                               frame: PositionFrame,
+   289                                               camera_position: Any = None,
+   290                                               camera_to_world: Any = None,
+   291                                           ) -> NDArray[np.float64]:
+   292                                               """Unit vector from the camera to each surface point, in **world** axes.
+   293                                           
+   294                                               ``frame="world"``: the AOV holds world positions and ``camera_position`` is subtracted.
+   295                                               ``frame="camera"``: the AOV holds camera-space positions, whose direction is already the ray;
+   296                                               it is rotated into world axes by ``camera_to_world`` so it can be dotted with a world normal.
+   297                                               Degenerate rays (a point at the camera, or a sky pixel whose position is 0/inf) come back as
+   298                                               ``(0, 0, 0)`` and are masked out by the caller.
+   299                                               """
+   300        60         99.5      1.7      7.6      pos = _as_f64_plane("position", position, 3)
+   301        60          0.1      0.0      0.0      if frame == "world":
+   302                                                   if camera_position is None:
+   303                                                       raise ValueError("frame='world' needs camera_position")
+   304                                                   cam = np.asarray(camera_position, dtype=np.float64).reshape(3)
+   305                                                   vec = pos - cam
+   306        60          0.0      0.0      0.0      elif frame == "camera":
+   307        60          0.0      0.0      0.0          vec = pos
+   308        60          0.0      0.0      0.0          if camera_to_world is not None:
+   309        60          0.2      0.0      0.0              rot = np.asarray(camera_to_world, dtype=np.float64)
+   310        60          0.1      0.0      0.0              if rot.shape == (4, 4):
+   311                                                           rot = rot[:3, :3]
+   312        60          0.1      0.0      0.0              if rot.shape != (3, 3):
+   313                                                           raise ValueError(f"camera_to_world must be 3x3 or 4x4, got {rot.shape}")
+   314        60        116.7      1.9      8.9              vec = vec @ rot.T
+   315                                               else:  # pragma: no cover - Literal is checked by mypy
+   316                                                   raise ValueError(f"unknown position frame {frame!r}")
+   317        60        294.9      4.9     22.6      finite = np.asarray(np.isfinite(vec).all(axis=2))
+   318        60        160.3      2.7     12.3      vec = np.where(finite[..., None], vec, 0.0)
+   319        60        373.1      6.2     28.6      norm = np.linalg.norm(vec, axis=2, keepdims=True)
+   320        60        259.4      4.3     19.9      return np.asarray(np.divide(vec, norm, out=np.zeros_like(vec), where=norm > 0.0))
+
+Total time: 0.68099 s
+File: /home/jumasaet/isaac-thermal-camera-simulation/src/irsim_isaac/pipeline/gbuffer_isaac.py
+Function: orient_to_viewer at line 323
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+   323                                           def orient_to_viewer(
+   324                                               normal: Any, ray_dir: NDArray[np.float64]
+   325                                           ) -> tuple[NDArray[np.float64], NDArray[np.float64]]:
+   326                                               """Unit normals flipped into the viewing hemisphere, with ``cos(theta) = n . (-d)``.
+   327                                           
+   328                                               Returns ``(normal, normal_dot_view)``. The cosine is non-negative by construction; a normal
+   329                                               that is exactly perpendicular to the ray (a silhouette pixel) gives 0.
+   330                                               """
+   331        30         49.7      1.7      7.3      n = _as_f64_plane("normal", normal, 3)
+   332        30        189.1      6.3     27.8      norm = np.linalg.norm(n, axis=2, keepdims=True)
+   333        30        130.0      4.3     19.1      n = np.divide(n, norm, out=np.zeros_like(n), where=norm > 0.0)
+   334        30        190.0      6.3     27.9      cos_theta = -np.sum(n * ray_dir, axis=2)
+   335        30          2.5      0.1      0.4      flip = cos_theta < 0.0
+   336        30        112.5      3.8     16.5      n = np.where(flip[..., None], -n, n)
+   337        30          7.3      0.2      1.1      return n, np.abs(cos_theta)
+
+Total time: 0.991219 s
+File: /home/jumasaet/isaac-thermal-camera-simulation/src/irsim/atmosphere/cloud.py
+Function: sky_angles at line 356
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+   356                                           def sky_angles(
+   357                                               direction: Any,
+   358                                               up: Any = (0.0, 1.0, 0.0),
+   359                                               forward: Any = (0.0, 0.0, -1.0),
+   360                                           ) -> tuple[NDArray[np.float64], NDArray[np.float64]]:
+   361                                               """``(elevation, azimuth)`` in radians for ``(..., 3)`` unit directions in stage axes.
+   362                                           
+   363                                               The one definition of these two angles, because **two consumers have to agree exactly**: the
+   364                                               infrared background samples the cloud field along each pixel's ray, and the visible dome bakes
+   365                                               the same field into a texture. If their conventions differed by so much as a sign the two
+   366                                               halves of one frame pair would show cloud in different parts of the sky, each internally
+   367                                               consistent and plausible.
+   368                                           
+   369                                               Elevation is measured from the horizon toward ``up``; azimuth runs from ``forward`` toward
+   370                                               ``cross(forward, up)`` and wraps into [0, 2pi). Only stability matters for the sampling -- the
+   371                                               same world direction must give the same pair every time -- not that zero lands on any
+   372                                               particular bearing.
+   373                                               """
+   374        30          0.1      0.0      0.0      d = np.asarray(direction, dtype=np.float64)
+   375        30          0.1      0.0      0.0      if d.shape[-1] != 3:
+   376                                                   raise ValueError(f"directions must be (..., 3), got {d.shape}")
+   377        30          0.2      0.0      0.0      u = np.asarray(up, dtype=np.float64).reshape(3)
+   378        30          1.0      0.0      0.1      u = u / np.linalg.norm(u)
+   379        30          0.1      0.0      0.0      f = np.asarray(forward, dtype=np.float64).reshape(3)
+   380        30          0.3      0.0      0.0      f = f - np.dot(f, u) * u
+   381        30          0.7      0.0      0.1      norm = float(np.linalg.norm(f))
+   382        30          0.0      0.0      0.0      if norm == 0.0:
+   383                                                   raise ValueError("forward must not be parallel to up")
+   384        30          0.1      0.0      0.0      f = f / norm
+   385        30          7.7      0.3      0.8      right = np.cross(f, u)
+   386        30        290.1      9.7     29.3      elevation = np.arcsin(np.clip(np.sum(d * u, axis=-1), -1.0, 1.0))
+   387        30        690.7     23.0     69.7      azimuth = np.mod(np.arctan2(np.sum(d * right, axis=-1), np.sum(d * f, axis=-1)), 2.0 * np.pi)
+   388        30          0.1      0.0      0.0      return np.asarray(elevation), np.asarray(azimuth)
+
+Total time: 0.294758 s
+File: /home/jumasaet/isaac-thermal-camera-simulation/src/irsim_isaac/pipeline/aerial_bridge.py
+Function: elevation_from_rays at line 107
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+   107                                           def elevation_from_rays(ray_dirs: Any, up: Any = (0.0, 1.0, 0.0)) -> NDArray[np.float64]:
+   108                                               """Elevation angle (radians) of each per-pixel ray above the horizon.
+   109                                           
+   110                                               ``ray_dirs`` are the unit vectors :func:`irsim_isaac.pipeline.gbuffer_isaac.ray_directions`
+   111                                               produces -- pointing **away** from the camera -- so a ray aimed at the zenith gives +pi/2 and
+   112                                               one aimed at the ground -pi/2. The sky model is a function of this angle (ADR 0044), which is
+   113                                               why the sky is evaluated per pixel rather than as one number for the frame: across a 50 degree
+   114                                               field the clear-sky apparent temperature changes by tens of kelvin.
+   115                                               """
+   116        30          0.1      0.0      0.0      d = np.asarray(ray_dirs, dtype=np.float64)
+   117        30          0.0      0.0      0.0      if d.ndim != 3 or d.shape[2] != 3:
+   118                                                   raise ValueError(f"ray_dirs must be (H, W, 3), got {d.shape}")
+   119        30          0.2      0.0      0.1      u = np.asarray(up, dtype=np.float64).reshape(3)
+   120        30          1.1      0.0      0.4      norm = float(np.linalg.norm(u))
+   121        30          0.0      0.0      0.0      if norm == 0.0:
+   122                                                   raise ValueError("up must be a non-zero vector")
+   123        30        293.3      9.8     99.5      return np.asarray(np.arcsin(np.clip(np.sum(d * (u / norm), axis=2), -1.0, 1.0)))
+
+Total time: 1.18171 s
+File: /home/jumasaet/isaac-thermal-camera-simulation/src/irsim_isaac/pipeline/point_bridge.py
+Function: PointwiseTemperature.apply at line 199
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+   199                                               def apply(
+   200                                                   self,
+   201                                                   plane: Any,
+   202                                                   instance_ids: Any,
+   203                                                   id_to_labels: Mapping[Any, Any] | None,
+   204                                                   positions_world: Any,
+   205                                                   t_s: float,
+   206                                                   *,
+   207                                                   strict: bool = True,
+   208                                                   world_from_local: Mapping[str, Any] | None = None,
+   209                                               ) -> NDArray[np.float32]:
+   210                                                   """Return ``plane`` with every bound prim's pixels replaced by its field's own values.
+   211                                           
+   212                                                   Untouched when no bound prim is on screen, which is what makes attaching this to an
+   213                                                   existing scene a no-op until a patch is authored for something in it.
+   214                                                   """
+   215        30          3.0      0.1      0.3          out = np.array(plane, dtype=np.float32, copy=True)
+   216        30          0.0      0.0      0.0          ids = np.asarray(instance_ids)
+   217        30          0.5      0.0      0.0          if not np.issubdtype(ids.dtype, np.integer):
+   218                                                       raise TypeError(f"instance_ids must be an integer plane, got {ids.dtype}")
+   219        30          0.1      0.0      0.0          if ids.shape != out.shape:
+   220                                                       raise ValueError(f"instance_ids {ids.shape} does not match the plane {out.shape}")
+   221        30          0.1      0.0      0.0          points = np.asarray(positions_world, dtype=np.float64)
+   222        30          0.1      0.0      0.0          if points.shape != (*out.shape, 3):
+   223                                                       raise ValueError(f"positions_world {points.shape} does not match the plane {out.shape}")
+   224                                           
+   225        30          0.5      0.0      0.0          paths = labels_to_paths(id_to_labels)
+   226                                                   # PT.19: without a stage prim list, the frame's labels are the only authority on whether
+   227                                                   # a bound path exists at all. A binding absent from them is then a misspelling or a prim
+   228                                                   # off screen, and the frame cannot tell which: it raises under `strict` and warns
+   229                                                   # otherwise, naming the path. With `known_paths` the typo was caught at construction
+   230                                                   # and an absent path is a prim off screen -- recorded as coverage 0, nothing more.
+   231        30          0.0      0.0      0.0          if self.known_paths is None:
+   232                                                       present = set(paths.values())
+   233                                                       missing = sorted(p for p in self._by_path if p not in present)
+   234                                                       if missing:
+   235                                                           message = (
+   236                                                               f"bound prim path(s) {missing} are absent from this frame's idToLabels, whose "
+   237                                                               f"prim paths are {sorted(present)}. Either the path is misspelt or the prim is "
+   238                                                               "off screen; pass `known_paths` from the stage to tell the two apart."
+   239                                                           )
+   240                                                           if strict:
+   241                                                               raise ValueError(message)
+   242                                                           warnings.warn(message, stacklevel=2)
+   243        30          0.1      0.0      0.0          coverage = dict.fromkeys(self._by_path, 0)
+   244       120          0.2      0.0      0.0          for ident, path in paths.items():
+   245        90          0.1      0.0      0.0              if ident == BACKGROUND_INSTANCE_ID:
+   246                                                           continue
+   247        90          0.2      0.0      0.0              fields = self._by_path.get(path)
+   248        90          0.1      0.0      0.0              if not fields:
+   249                                                           continue
+   250        90          8.4      0.1      0.7              mask = ids == ident
+   251        90          1.5      0.0      0.1              if not mask.any():
+   252                                                           continue
+   253        90        205.5      2.3     17.4              selected = points[mask]
+   254        90          0.9      0.0      0.1              filled = np.zeros(selected.shape[0], dtype=bool)
+   255        90          1.4      0.0      0.1              values = np.zeros(selected.shape[0], dtype=np.float32)
+   256       180          0.2      0.0      0.0              for field in fields:
+   257        90          1.0      0.0      0.1                  pending = ~filled
+   258        90          1.0      0.0      0.1                  if not pending.any():
+   259                                                               break
+   260                                                           # A patch authored in a prim's own frame rides that prim (PT.5). The points are
+   261                                                           # world; the patch is not; so the points come back through the prim's transform
+   262                                                           # before they meet the grid.
+   263        90        144.6      1.6     12.2                  query = _into_frame(field.patch.frame, selected[pending], world_from_local)
+   264        90        715.9      8.0     60.6                  sampled = field.sample_at(t_s, query)
+   265        90          2.6      0.0      0.2                  hit = np.isfinite(sampled)
+   266        90         22.7      0.3      1.9                  idx = np.flatnonzero(pending)[hit]
+   267        90         26.2      0.3      2.2                  values[idx] = sampled[hit]
+   268        90         15.0      0.2      1.3                  filled[idx] = True
+   269        90          2.0      0.0      0.2              if not filled.all() and strict:
+   270                                                           raise ValueError(
+   271                                                               f"{int((~filled).sum())} pixels of {path!r} fall outside every patch bound to "
+   272                                                               "it. A patch authored smaller than its geometry renders part of a surface as "
+   273                                                               "a field and part as a flat value, with a seam that looks like physics; widen "
+   274                                                               "the patch or its thickness_m rather than letting them take a fallback."
+   275                                                           )
+   276        90          1.0      0.0      0.1              if not filled.all():
+   277                                                           # Non-strict: keep the per-instance value, which is what the pixel had before.
+   278                                                           values[~filled] = out[mask][~filled]
+   279        90         20.6      0.2      1.7              out[mask] = values
+   280        90          6.1      0.1      0.5              coverage[path] = int(filled.sum())
+   281        30          0.1      0.0      0.0          self.last_coverage = coverage
+   282        30          0.1      0.0      0.0          return out
+
+Total time: 0.706307 s
+File: /home/jumasaet/isaac-thermal-camera-simulation/src/irsim/thermal/surface_field.py
+Function: PlanarPatch.sample at line 185
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+   185                                               def sample(
+   186                                                   self, values: Any, points: Any, *, fill: float = float("nan")
+   187                                               ) -> NDArray[np.float64]:
+   188                                                   """Bilinear sample of a ``(n_cells,)`` cell array at arbitrary points.
+   189                                           
+   190                                                   Exact at cell centres and linear between them, so the surface carries no cell staircase
+   191                                                   at the resolutions a camera resolves. Points outside the slab get ``fill``, which is NaN
+   192                                                   by default *because* NaN propagates: a patch silently returning its edge value for
+   193                                                   everything behind it is the failure this fill exists to make loud.
+   194                                                   """
+   195        90          0.5      0.0      0.1          flat = np.asarray(values, dtype=np.float64).reshape(-1)
+   196        90          0.4      0.0      0.1          if flat.size != self.n_cells:
+   197                                                       raise ValueError(f"values has {flat.size} cells, patch has {self.n_cells}")
+   198        90          0.4      0.0      0.1          grid = flat.reshape(self.shape)
+   199                                           
+   200        90        181.4      2.0     25.7          uvw = self.local_coords(points)
+   201        90         59.5      0.7      8.4          inside = self.contains_local(uvw)  # GT.7: not `contains(points)`, which recomputes uvw
+   202                                                   # Continuous cell coordinate: 0.0 at the centre of cell 0, 1.0 at the centre of cell 1.
+   203        90         21.9      0.2      3.1          cu = np.clip(uvw[..., 0] / self.du_m - 0.5, 0.0, self.n_u - 1.0)
+   204        90         20.4      0.2      2.9          cv = np.clip(uvw[..., 1] / self.dv_m - 0.5, 0.0, self.n_v - 1.0)
+   205        90         12.4      0.1      1.8          u0 = np.floor(cu).astype(np.intp)
+   206        90         11.8      0.1      1.7          v0 = np.floor(cv).astype(np.intp)
+   207        90         13.9      0.2      2.0          u1 = np.minimum(u0 + 1, self.n_u - 1)
+   208        90         15.9      0.2      2.3          v1 = np.minimum(v0 + 1, self.n_v - 1)
+   209        90         14.1      0.2      2.0          fu = cu - u0
+   210        90         21.7      0.2      3.1          fv = cv - v0
+   211        90          0.1      0.0      0.0          out = (
+   212       360        111.2      0.3     15.7              grid[v0, u0] * (1.0 - fu) * (1.0 - fv)
+   213        90         81.8      0.9     11.6              + grid[v0, u1] * fu * (1.0 - fv)
+   214        90         67.6      0.8      9.6              + grid[v1, u0] * (1.0 - fu) * fv
+   215        90         60.6      0.7      8.6              + grid[v1, u1] * fu * fv
+   216                                                   )
+   217        90         10.7      0.1      1.5          return np.asarray(np.where(inside, out, fill))
+
+Total time: 5.40352 s
+File: /home/jumasaet/isaac-thermal-camera-simulation/src/irsim/pipeline/frame.py
+Function: run_frame at line 194
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+   194                                           def run_frame(
+   195                                               planes: Planes,
+   196                                               config: PipelineConfig,
+   197                                               state: PipelineState,
+   198                                               point_targets: Sequence[PointTarget] = (),
+   199                                               rotor_veils: Sequence[RotorVeil] = (),
+   200                                               plumes: Sequence[ExhaustPlume] = (),
+   201                                           ) -> Outputs:
+   202                                               """One frame through stages 1-6 (stage 2 is the identity without an Atmosphere).
+   203                                               Advances ``state.frame_index``."""
+   204        30          0.0      0.0      0.0      sensor = config.sensor.sensor
+   205        30          0.0      0.0      0.0      lut = config.lut
+   206        30          0.3      0.0      0.0      q = config.quantity
+   207        30          0.1      0.0      0.0      h, w = sensor.fpa_shape
+   208        30          0.0      0.0      0.0      k = config.supersample
+   209        30          0.1      0.0      0.0      t = np.asarray(planes["temperature_k"])
+   210        30          0.1      0.0      0.0      if t.shape != (h * k, w * k):
+   211                                                   raise ValueError(
+   212                                                       f"G-buffer {t.shape} is not the {k}x supersampled detector grid {(h * k, w * k)}; "
+   213                                                       "set optics.supersample_factor to match the render"
+   214                                                   )
+   215                                           
+   216                                               # stage 1 (k× grid): emission, always, plus whatever the band's regime lets illuminate it
+   217        60        328.5      5.5      6.1      radiance_ss = band_radiance(
+   218        30          0.0      0.0      0.0          t,
+   219        30          0.0      0.0      0.0          planes["material_id"],
+   220        30          0.0      0.0      0.0          config.materials,
+   221        30          0.0      0.0      0.0          lut,
+   222        30          0.0      0.0      0.0          q,
+   223        30          0.1      0.0      0.0          sky_mask=planes.get("sky_mask"),
+   224        30          0.0      0.0      0.0          l_behind=planes.get("radiance_behind"),
+   225        30        182.7      6.1      3.4          illumination=stage_illumination(planes, config, state),
+   226        30          0.1      0.0      0.0          normal_dot_view=planes.get("normal_dot_view"),
+   227                                               )
+   228                                               # stage 2 (k× grid): per-ray atmosphere; sky pixels pass through (ADR 0050)
+   229        30          0.1      0.0      0.0      if isinstance(config.atmosphere, LayeredAtmosphere):
+   230        60       2128.4     35.5     39.4          radiance_ss = apply_layered_gbuffer(
+   231        30          0.0      0.0      0.0              config.atmosphere,
+   232        30          1.4      0.0      0.0              sensor.band.band_id,
+   233        30          0.0      0.0      0.0              state.t_s,
+   234        30          0.0      0.0      0.0              radiance_ss,
+   235        30          0.1      0.0      0.0              np.asarray(planes["distance_m"]),
+   236        30          0.0      0.0      0.0              q,
+   237        30          0.1      0.0      0.0              sky_mask=planes.get("sky_mask"),
+   238                                                   )
+   239                                               elif config.atmosphere is not None:
+   240                                                   atm_state = config.atmosphere.state(state.t_s)
+   241                                                   l_air = float(lut.lookup(np.float64(atm_state.t_air_k), q)[()])
+   242                                                   radiance_ss = apply_atmosphere_gbuffer(
+   243                                                       radiance_ss,
+   244                                                       planes["distance_m"],
+   245                                                       atm_state.gamma_per_m[sensor.band.band_id],
+   246                                                       l_air,
+   247                                                       sky_mask=planes.get("sky_mask"),
+   248                                                       tau_override=config.tau_override,
+   249                                                   )
+   250                                               # stage 2b: analytic point targets below one native pixel (MS.6), before the PSF and box
+   251        30          0.0      0.0      0.0      if point_targets:
+   252                                                   radiance_ss = inject_point_targets(
+   253                                                       radiance_ss,
+   254                                                       point_targets,
+   255                                                       sensor,
+   256                                                       config.atmosphere,
+   257                                                       sensor.band.band_id,
+   258                                                       state.t_s,
+   259                                                       lut,
+   260                                                       q,
+   261                                                       k,
+   262                                                   )
+   263                                               # stage 2c: rotor discs as time-averaged veils (ADR 0081). After the point targets because a
+   264                                               # blade can pass in front of one, and before the PSF for the same reason stage 2b is.
+   265        30          0.0      0.0      0.0      if rotor_veils:
+   266                                                   radiance_ss = inject_rotor_veils(
+   267                                                       radiance_ss, rotor_veils, config.atmosphere, sensor.band.band_id, state.t_s, lut, q
+   268                                                   )
+   269                                               # stage 2d: exhaust plumes as per-pixel gas slabs (`PH.6`). Last of the stage-2 overlays: a
+   270                                               # plume is semi-transparent, so what it multiplies has to be everything already standing
+   271                                               # behind it -- the scene, a point target through it, a rotor blade in it.
+   272        30          0.0      0.0      0.0      if plumes:
+   273                                                   if config.response is None:
+   274                                                       raise ValueError(
+   275                                                           "a plume needs the camera's R(λ) to integrate B_b(T_g) above the LUT's 1000 K "
+   276                                                           "ceiling; build the config with PipelineConfig.from_sensor so it loads one"
+   277                                                       )
+   278                                                   radiance_ss = inject_plumes(
+   279                                                       radiance_ss,
+   280                                                       plumes,
+   281                                                       Intrinsics.from_sensor(sensor, k),
+   282                                                       sensor.optics.distortion,
+   283                                                       config.response,
+   284                                                       config.gas_tables,
+   285                                                       planes.get("distance_m"),
+   286                                                       config.atmosphere,
+   287                                                       sensor.band.band_id,
+   288                                                       state.t_s,
+   289                                                       lut,
+   290                                                       q,
+   291                                                   )
+   292                                               # stage 2e: the gain state's intrascene ceiling (`PH.8`). Last thing in scene-radiance units
+   293                                               # and the first place a fire stops being radiometry and starts being a camera problem. In
+   294                                               # radiance and never in kelvin: what arrives is ε L_B(T) + (1 − ε) L_env plus the path, which
+   295                                               # is not L_B of anything, so a ceiling on temperature would rail a low-emissivity flame that
+   296                                               # does not rail and miss a cold reflector that does (ADR 0116).
+   297        30          0.1      0.0      0.0      ceiling_k = sensor.fpa.gain_ceiling_k
+   298        30          0.0      0.0      0.0      if ceiling_k is not None:
+   299                                                   radiance_ss = clip_to_gain_ceiling(radiance_ss, gain_ceiling_radiance(ceiling_k, lut, q))
+   300                                               # The M9 chain owns the thermal nodes and the drift, so it clocks first: stage 3 needs the
+   301                                               # housing temperature it produces (M9.3), and stage 5 needs the pattern it advanced (M9.4).
+   302        30          0.1      0.0      0.0      t_fpa_k = state.housing_temp_k
+   303        30          0.1      0.0      0.0      if config.chain is not None:
+   304                                                   housing_k, t_fpa_k = config.chain.begin_frame(state.t_s, state.frame_index)
+   305                                                   state.housing_temp_k = housing_k
+   306                                               # stage 3
+   307        30          3.5      0.1      0.1      lb_housing_now = float(lut.lookup(state.housing_temp_k, q)[()])
+   308                                               # `OC.5`: one kernel for the frame, chosen from the median range of the geometry actually in
+   309                                               # it. `config.defocus_bank` is None unless the camera names a defocus model, and then this is
+   310                                               # `config.psf` exactly as before. The G-buffer's `distance_m` is already on the k× grid -- the
+   311                                               # same grid the convolution runs on -- because the render product is created supersampled.
+   312        30          0.0      0.0      0.0      psf = config.psf
+   313        30          0.1      0.0      0.0      if config.defocus_bank is not None:
+   314                                                   focus_m = _resolve_focus(planes, sensor, config, state, radiance_ss, k)
+   315                                                   state.focus_distance_m = focus_m
+   316                                                   state.defocus_w020_um = scene_defocus_um(
+   317                                                       planes["distance_m"],
+   318                                                       sensor.optics.focal_length_mm,
+   319                                                       sensor.optics.f_number,
+   320                                                       focus_m,
+   321                                                       planes.get("sky_mask"),
+   322                                                   )
+   323                                                   if sensor.optics.mtf.defocus_apply == "layered":
+   324                                                       # `OC.6`: each depth gets its own kernel and the layers composite back to front, so
+   325                                                       # `apply_optics` must not blur again -- the convolution has already happened, on the
+   326                                                       # same k× grid and still before the box filter, which is the order that matters.
+   327                                                       # `OC.7`: if the G-buffer says what is behind the geometry -- which a sky or sea
+   328                                                       # background can, because their radiance is a function of ray direction the adapter
+   329                                                       # already evaluates -- the occlusion gap is filled with the truth instead of with
+   330                                                       # `OC.6`'s normalisation. The plane is an apparent temperature, like every other
+   331                                                       # quantity that crosses this boundary, and is converted here with the frame's own LUT.
+   332                                                       background = planes.get("background_t_k")
+   333                                                       background_l = None if background is None else lut.lookup(np.asarray(background), q)
+   334                                                       radiance_ss = layered_defocus(
+   335                                                           radiance_ss,
+   336                                                           planes["distance_m"],
+   337                                                           config.defocus_bank,
+   338                                                           sensor.optics.focal_length_mm,
+   339                                                           sensor.optics.f_number,
+   340                                                           focus_m,
+   341                                                           planes.get("sky_mask"),
+   342                                                           background_radiance=background_l,
+   343                                                       )
+   344                                                       psf = None
+   345                                                   else:
+   346                                                       psf = config.defocus_bank.kernel_for(state.defocus_w020_um)
+   347        30       1253.9     41.8     23.2      flux = apply_optics(radiance_ss, sensor, lb_housing_now, supersample=k, psf=psf)
+   348                                               # stages 4-5 (detector noise, correlated noise)
+   349        30        434.1     14.5      8.0      signal = _detector_signal(flux, config, state)
+   350                                               # §11.1's post-ADC half, when a chain is attached: defects, replacement, the NUC residual, the
+   351                                               # temporal filter (identity, ADR 0058) and the FFC freeze. Everything downstream -- including
+   352                                               # the radiometric branch -- reads the corrected plane, so a frozen frame is stale in every
+   353                                               # output at once rather than only in the picture.
+   354        30          0.0      0.0      0.0      report = None
+   355        30          0.0      0.0      0.0      if config.chain is not None and config.chain.needs_shutter_frame(state.frame_index):
+   356                                                   # §11.2 (SC.18): the shutter closes. It sits beside the focal plane, so it is at T_FPA;
+   357                                                   # the housing it is seen against is this frame's. Noiseless, because the camera averages
+   358                                                   # the shutter frames it calibrates on.
+   359                                                   lb_shutter = float(lut.lookup(t_fpa_k, q)[()])
+   360                                                   shutter_dn = config.detector.noiseless_signal_dn(
+   361                                                       shutter_flux(sensor, lb_shutter, lb_housing_now)
+   362                                                   )
+   363                                                   config.chain.record_shutter(shutter_dn, config.flat_field)
+   364        30          0.0      0.0      0.0      if config.chain is not None:
+   365                                                   signal, report = config.chain.finish_frame(
+   366                                                       signal, dn_max_for_bits(sensor.fpa.bit_depth), state.frame_index, t_fpa_k
+   367                                                   )
+   368        30         27.2      0.9      0.5      dn16 = quantise(signal, sensor.fpa.bit_depth)
+   369                                               # stage 6: radiometric branch inverts with the *calibration* housing level (ADR 0021)
+   370        30          3.2      0.1      0.1      lb_housing_cal = float(lut.lookup(config.t_housing_cal_k, q)[()])
+   371        30          0.0      0.0      0.0      outputs = sensor.outputs
+   372        30          0.0      0.0      0.0      radiance = apparent_t = None
+   373        30          0.0      0.0      0.0      if outputs.radiance_linear or outputs.apparent_temperature:
+   374        30        117.7      3.9      2.2          scene = _scene_radiance_from_signal(signal, config, lb_housing_cal)
+   375        30          0.0      0.0      0.0          if outputs.radiance_linear:
+   376        30          0.0      0.0      0.0              radiance = scene
+   377        30          0.0      0.0      0.0          if outputs.apparent_temperature:
+   378        30        441.1     14.7      8.2              apparent_t = apparent_temperature(scene, lut, q)
+   379        30          0.0      0.0      0.0      display8 = None
+   380        30          0.0      0.0      0.0      isp_hash = None
+   381        30          0.0      0.0      0.0      if outputs.display_8:
+   382                                                   # §11.2's flat field, on the display branch alone (M9.12). The raw `dn16` above and the
+   383                                                   # radiometric outputs keep the un-corrected ADC plane, because `invert_optics` already
+   384                                                   # divides cos⁴ out per pixel -- correcting both would remove the same term twice. What a
+   385                                                   # viewer sees is what the camera's own ISP shows, which on any real core is flat-fielded.
+   386        30          0.0      0.0      0.0          display_dn = dn16
+   387                                                   # SC.18: after a shutter event the camera shows through the offset it measured there
+   388        30          0.1      0.0      0.0          flat = config.flat_field
+   389        30          0.1      0.0      0.0          if config.chain is not None and config.chain.display_nuc is not None:
+   390                                                       flat = config.chain.display_nuc
+   391        30          0.0      0.0      0.0          if flat is not None:
+   392                                                       display_dn = quantise(flat.apply(dn16), sensor.fpa.bit_depth)
+   393        30        478.8     16.0      8.9          display = run_display_branch(display_dn, sensor.isp, sensor.fpa.bit_depth)
+   394        30          0.0      0.0      0.0          display8, isp_hash = display.display8, display.isp_hash
+   395        30          0.1      0.0      0.0      state.advance()
+   396        60          0.6      0.0      0.0      return Outputs(
+   397        30          0.0      0.0      0.0          radiance=radiance,
+   398        30          0.0      0.0      0.0          apparent_t=apparent_t,
+   399        30          0.0      0.0      0.0          dn16=dn16 if outputs.dn_16 else None,
+   400        30          0.0      0.0      0.0          display8=display8,
+   401        30          0.0      0.0      0.0          signal_dn=signal,
+   402        30          0.0      0.0      0.0          flux=flux,
+   403        30          0.0      0.0      0.0          isp_hash=isp_hash,
+   404        30          0.0      0.0      0.0          report=report,
+   405                                               )
+
+Total time: 2.1151 s
+File: /home/jumasaet/isaac-thermal-camera-simulation/src/irsim/atmosphere/layered.py
+Function: LayeredAtmosphere.apply at line 901
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+   901                                               def apply(
+   902                                                   self,
+   903                                                   band: str,
+   904                                                   t_s: float,
+   905                                                   l_band: Any,
+   906                                                   distance_m: Any,
+   907                                                   elevation_rad: float = 0.0,
+   908                                                   quantity: Quantity = "lb",
+   909                                               ) -> NDArray[np.floating]:
+   910                                                   """L' = τ L + L_path per pixel; horizontal paths use the closed form (any shape), a
+   911                                                   slant path with a scalar distance uses the quadrature."""
+   912        30          0.1      0.0      0.0          lb = np.asarray(l_band)
+   913        30          0.0      0.0      0.0          if lb.dtype == np.float16:
+   914                                                       raise TypeError("l_band is float16 (non-negotiable #2)")
+   915        30         34.7      1.2      1.6          es = self.exponential_sum(band, t_s)
+   916        30          5.4      0.2      0.3          d = np.asarray(distance_m, dtype=np.float64)
+   917        30        887.8     29.6     42.0          tau = es.transmittance(d, elevation_rad)
+   918                                                   path: NDArray[np.float64] | float
+   919        30          0.1      0.0      0.0          if math.sin(elevation_rad) <= 0.0:
+   920        30         16.3      0.5      0.8              lb_air = self.air_radiance(band, t_s, quantity)
+   921        30       1100.9     36.7     52.1              tau_k = np.exp(-es.optical_depths(d, 0.0))
+   922        60          0.2      0.0      0.0              path = np.asarray(
+   923        30         46.2      1.5      2.2                  np.tensordot(es.weights, 1.0 - tau_k, axes=1) * lb_air, dtype=np.float64
+   924                                                       )
+   925                                                   else:
+   926                                                       if d.shape != ():
+   927                                                           raise ValueError(
+   928                                                               "slant-path apply takes a scalar distance (per-pixel slant paths: MS.8)"
+   929                                                           )
+   930                                                       path = es.path_radiance(
+   931                                                           float(d), elevation_rad, self._lb_of_height(band, t_s, quantity)
+   932                                                       )
+   933        30         17.9      0.6      0.8          out = tau * lb.astype(np.float64) + path
+   934        60          4.5      0.1      0.2          return np.asarray(
+   935        30          0.9      0.0      0.0              out, dtype=lb.dtype if np.issubdtype(lb.dtype, np.floating) else np.float64
+   936                                                   )
+
+Total time: 0.887476 s
+File: /home/jumasaet/isaac-thermal-camera-simulation/src/irsim/atmosphere/layered.py
+Function: ExponentialSum.transmittance at line 337
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+   337                                               def transmittance(self, distance_m: Any, elevation_rad: Any = 0.0) -> NDArray[np.float64]:
+   338        30        608.4     20.3     68.6          od = self.optical_depths(distance_m, elevation_rad)
+   339        60          0.9      0.0      0.1          with np.errstate(over="ignore", invalid="ignore"):
+   340        30        198.2      6.6     22.3              tau = np.tensordot(self.weights, np.exp(-od), axes=1)
+   341        60          3.2      0.1      0.4          d, el = np.broadcast_arrays(
+   342        30          0.2      0.0      0.0              np.asarray(distance_m, dtype=np.float64), np.asarray(elevation_rad, dtype=np.float64)
+   343                                                   )
+   344                                                   # An infinite *horizontal* path is opaque; an infinite upward one is not, because the
+   345                                                   # column saturates at H/sin(theta). The mask is therefore per pixel, not a scalar branch.
+   346        30         76.4      2.5      8.6          tau = np.where(np.isinf(d) & (np.sin(el) <= 0.0), 0.0, tau)
+   347        30          0.1      0.0      0.0          return np.asarray(tau, dtype=np.float64)
+
+Total time: 1.46167 s
+File: /home/jumasaet/isaac-thermal-camera-simulation/src/irsim/atmosphere/layered.py
+Function: ExponentialSum.optical_depths at line 320
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+   320                                               def optical_depths(self, distance_m: Any, elevation_rad: Any = 0.0) -> NDArray[np.float64]:
+   321                                                   """Per class optical depth along the ray, shape ``(n_terms, *broadcast shape)``.
+   322                                           
+   323                                                   ``elevation_rad`` broadcasts against ``distance_m``, so a frame is one call (AT.1).
+   324                                                   """
+   325       120          5.2      0.0      0.4          d, el = np.broadcast_arrays(
+   326        60          0.2      0.0      0.0              np.asarray(distance_m, dtype=np.float64), np.asarray(elevation_rad, dtype=np.float64)
+   327                                                   )
+   328        60        345.8      5.8     23.7          col_aer = np.asarray(column_length(d, el, self.aerosol_scale_height_m), dtype=np.float64)
+   329                                                   # 0 * inf (a zero extinction on an infinite horizontal path) is 0, not NaN
+   330        60          9.9      0.2      0.7          aer = _scaled(self.gamma_aerosol, col_aer)
+   331        60          0.9      0.0      0.1          out = np.empty((self.n_terms, *d.shape))
+   332       240          0.6      0.0      0.0          for k in range(self.n_terms):
+   333       180       1013.7      5.6     69.3              col = column_length(d, el, float(self.scale_heights_m[k]))
+   334       180         85.4      0.5      5.8              out[k] = _scaled(float(self.gamma_0[k]), np.asarray(col, dtype=np.float64)) + aer
+   335        60          0.1      0.0      0.0          return out
+
+Total time: 1.35713 s
+File: /home/jumasaet/isaac-thermal-camera-simulation/src/irsim/atmosphere/layered.py
+Function: column_length at line 271
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+   271                                           def column_length(distance_m: Any, elevation_rad: Any, scale_height_m: float) -> Any:
+   272                                               """∫₀^d e^{−s sinθ/H} ds on a flat-earth ray: d at θ = 0, else H/sinθ (1 − e^{−d sinθ/H}).
+   273                                           
+   274                                               ``elevation_rad`` broadcasts against ``distance_m`` (AT.1), so one call answers a whole frame
+   275                                               whose pixels each look along their own ray. It used to be a scalar, and the pipeline passed
+   276                                               **0.0 unconditionally** -- every resolved pixel got surface-density extinction over its whole
+   277                                               slant range, while the unresolved point-target path beside it used the target's real elevation.
+   278                                           
+   279                                               A ray at or below the horizon keeps the horizontal form: the flat-earth column is then ``d``,
+   280                                               and the descending branch is the sea's business (ADR 0078), not this model's.
+   281                                               """
+   282       240          0.6      0.0      0.0      d = np.asarray(distance_m, dtype=np.float64)
+   283       240        351.9      1.5     25.9      st = np.sin(np.asarray(elevation_rad, dtype=np.float64))
+   284       240         23.5      0.1      1.7      up = st > 0.0
+   285                                               # `np.where` evaluates both branches, so the divide is guarded rather than masked afterwards:
+   286                                               # a zero sine would raise and a negative one would return a negative column.
+   287       240         74.2      0.3      5.5      safe = np.where(up, st, 1.0)
+   288       480          8.1      0.0      0.6      with np.errstate(over="ignore", invalid="ignore"):
+   289       240        799.1      3.3     58.9          slant = scale_height_m / safe * (1.0 - np.exp(-d * safe / scale_height_m))
+   290       240         99.8      0.4      7.4      return np.asarray(np.where(up, slant, np.broadcast_to(d, np.shape(slant))))
+
+Total time: 1.14325 s
+File: /home/jumasaet/isaac-thermal-camera-simulation/src/irsim/optics/psf.py
+Function: apply_psf at line 76
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    76                                           def apply_psf(image_ss: object, kernel: FloatArray) -> NDArray[np.floating]:
+    77                                               """Convolve a (H, W) image with the kernel by FFT (edge-replicated padding); dtype preserved."""
+    78        30          0.1      0.0      0.0      x = np.asarray(image_ss)
+    79        30          0.1      0.0      0.0      if x.dtype == np.float16:
+    80                                                   raise TypeError("image is float16 (non-negotiable #2)")
+    81        30          0.6      0.0      0.0      if not np.issubdtype(x.dtype, np.floating):
+    82                                                   raise TypeError("image must be a float array")
+    83        30          0.0      0.0      0.0      if x.ndim != 2:
+    84                                                   raise ValueError("apply_psf works on one (H, W) plane")
+    85        30          0.1      0.0      0.0      k = np.asarray(kernel, dtype=np.float64)
+    86        30          0.1      0.0      0.0      if k.ndim != 2 or k.shape[0] % 2 == 0 or k.shape[1] % 2 == 0:
+    87                                                   raise ValueError("kernel must be 2-D with odd sides")
+    88        30          0.0      0.0      0.0      ry, rx = k.shape[0] // 2, k.shape[1] // 2
+    89        30         26.5      0.9      2.3      padded = np.pad(x.astype(np.float64), ((ry, ry), (rx, rx)), mode="edge")
+    90        30          0.0      0.0      0.0      h, w = padded.shape
+    91                                               # place the kernel centre on the origin of the padded grid (circular convolution then equals
+    92                                               # the linear one inside the crop because the padding is at least the kernel radius)
+    93        30          2.8      0.1      0.2      kern = np.zeros((h, w), dtype=np.float64)
+    94        30          0.1      0.0      0.0      kern[: k.shape[0], : k.shape[1]] = k
+    95                                               # np.roll is shape-preserving, but numpy 2.x types it as widening the shape parameter
+    96                                               # from (int, int) to (int, ...), so the 2-D type is restated rather than lost.
+    97        30         11.1      0.4      1.0      kern = np.asarray(np.roll(kern, (-ry, -rx), axis=(0, 1)), dtype=np.float64).reshape(h, w)
+    98        30        372.5     12.4     32.6      fk = np.fft.rfft2(kern)
+    99        30        722.3     24.1     63.2      out = np.fft.irfft2(np.fft.rfft2(padded) * fk, s=(h, w))
+   100        30          0.2      0.0      0.0      out = out[ry : ry + x.shape[0], rx : rx + x.shape[1]]
+   101        30          6.9      0.2      0.6      return np.asarray(out, dtype=x.dtype)
+
+Total time: 0.172552 s
+File: /home/jumasaet/isaac-thermal-camera-simulation/src/irsim/pipeline/environment.py
+Function: environment_radiance at line 66
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    66                                           def environment_radiance(
+    67                                               sky: SkyModel,
+    68                                               lut: BandLUT,
+    69                                               t_s: float,
+    70                                               sky_view: NDArray[np.floating],
+    71                                               quantity: Quantity = "lb",
+    72                                           ) -> NDArray[np.float32]:
+    73                                               """L_env per pixel = V_s L_sky,eff(V_s) + (1 − V_s) L_B(T_ground), float32."""
+    74        30          6.5      0.2      3.8      v = np.asarray(sky_view, dtype=np.float64)
+    75        30          0.1      0.0      0.0      if v.dtype == np.float16:  # pragma: no cover - asarray above widens; kept for clarity
+    76                                                   raise TypeError("sky_view_factor is float16")
+    77        30          9.9      0.3      5.8      if np.any((v < 0.0) | (v > 1.0)):
+    78                                                   raise ValueError("sky_view_factor must lie in [0, 1]")
+    79        30        120.9      4.0     70.0      l_sky = sky.effective_radiance_from_sky_view(t_s, v)
+    80        30          8.8      0.3      5.1      l_ground = float(lut.lookup(np.float64(ground_temperature_k(sky, t_s)), quantity)[()])
+    81        30         26.4      0.9     15.3      return np.asarray(v * l_sky + (1.0 - v) * l_ground, dtype=np.float32)
+

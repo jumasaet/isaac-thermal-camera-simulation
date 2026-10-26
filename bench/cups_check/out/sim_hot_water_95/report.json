@@ -1,0 +1,42 @@
+{
+ "case": "hot_water_95",
+ "sensor_yaml": "bench/camera_check/cellplus_ctc007_lwir_cups.yaml",
+ "t_surface_c": 58.0,
+ "t_air_c": 22.0,
+ "paper_eps_lwir": 0.93,
+ "camera_position": [
+  0.0,
+  0.0,
+  0.0323
+ ],
+ "camera_look": [
+  -0.9997759060560157,
+  0.0,
+  0.021169262383767325
+ ],
+ "cup_axis_m": [
+  -0.9512,
+  -0.1039,
+  0.0
+ ],
+ "board_distance_m": 1.0236,
+ "hfov_deg": 54.080499394486715,
+ "vfov_deg": 41.89448896613136,
+ "render_product_w_h": [
+  2560,
+  1920
+ ],
+ "water_roi_pixels": 399,
+ "cup_scene_apparent_t_c": 55.763,
+ "cup_apparent_t_c": 55.697,
+ "board_scene_apparent_t_c": 22.0,
+ "board_apparent_t_c": 21.813,
+ "silhouette": {
+  "top_row": 217.25,
+  "bottom_row": 257.75,
+  "height_px": 40.5,
+  "width_top10_px": 44.75,
+  "width_bottom10_px": 34.0,
+  "centre_col": 264.38
+ }
+}

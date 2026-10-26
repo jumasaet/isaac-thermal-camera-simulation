@@ -1,0 +1,143 @@
+pair_iso_1 exit=0
+[pass A0 plain] get_outputs 557.5 ms +-25.4
+[pass A1 sync] get_outputs 557.5 ms, reader.step 80.8, reader.read 3.7
+[pass P cProfile] get_outputs 550.4 ms under the profiler
+[pass L lines] get_outputs 565.1 ms under line_profiler
+[pass S spans] get_outputs 559.3 ms
+      383.30 incl     86.74 excl      1.0 calls  irsim_isaac.pipeline.ir_camera:IrCamera.planes
+      175.91 incl      5.02 excl      1.0 calls  irsim.pipeline.frame:run_frame
+      120.99 incl      0.53 excl      1.0 calls  irsim_isaac.pipeline.ir_camera:IrCamera._motion_plane
+      120.45 incl    120.45 excl      1.0 calls  irsim.optics.motion:image_plane_motion
+       69.09 incl     69.09 excl      1.0 calls  irsim.pipeline.atmosphere:apply_layered_gbuffer
+       57.87 incl     13.70 excl      1.0 calls  irsim_isaac.pipeline.gbuffer_isaac:geometry_planes
+       43.14 incl     43.14 excl      2.0 calls  irsim_isaac.pipeline.gbuffer_isaac:ray_directions
+       41.79 incl     41.79 excl      1.0 calls  irsim.optics.stage:apply_optics
+       39.37 incl     39.37 excl      1.0 calls  irsim_isaac.pipeline.point_bridge:PointwiseTemperature.apply
+       33.10 incl     33.10 excl      1.0 calls  irsim_isaac.pipeline.aerial_bridge:azimuth_from_rays
+       22.61 incl     22.61 excl      1.0 calls  irsim_isaac.pipeline.gbuffer_isaac:orient_to_viewer
+       16.15 incl     16.15 excl      1.0 calls  irsim.isp.display:run_display_branch
+       14.58 incl     14.58 excl      1.0 calls  irsim.isp.radiometric:apparent_temperature
+       13.12 incl     13.12 excl      1.0 calls  irsim.pipeline.frame:_detector_signal
+       10.78 incl     10.78 excl      1.0 calls  irsim.pipeline.radiance:band_radiance
+       10.10 incl     10.10 excl      1.0 calls  irsim_isaac.pipeline.aerial_bridge:elevation_from_rays
+        6.03 incl      6.03 excl      1.0 calls  irsim_isaac.pipeline.point_bridge:world_positions
+        5.38 incl      0.27 excl      1.0 calls  irsim.pipeline.radiance:stage_illumination
+        5.10 incl      5.10 excl      1.0 calls  irsim.pipeline.environment:environment_radiance
+        3.60 incl      3.60 excl      1.0 calls  irsim_isaac.pipeline.material_ids:material_id_plane
+        2.03 incl      2.03 excl      1.0 calls  @camera.bridge.temperature_plane
+        1.79 incl      1.79 excl      1.0 calls  irsim_isaac.pipeline.gbuffer_isaac:to_gbuffer
+        0.08 incl      0.08 excl      1.0 calls  @camera.bridge.advance_to
+        0.02 incl      0.02 excl      1.0 calls  irsim_isaac.pipeline.material_ids:labels_from_payload
+        0.00 incl      0.00 excl      1.0 calls  irsim_isaac.pipeline.ir_camera:IrCamera._native_rgb
+        0.00 incl      0.00 excl      1.0 calls  irsim_isaac.pipeline.ir_camera:IrCamera.point_targets
+        0.00 incl      0.00 excl      1.0 calls  irsim_isaac.pipeline.ir_camera:IrCamera._illumination_planes
+[pass A2 plain (wrappers in place)] get_outputs 565.8 ms +-18.9
+pair_clear_1 exit=0
+[pass A0 plain] get_outputs 1145.0 ms +-52.8
+[pass A1 sync] get_outputs 1144.3 ms, reader.step 82.7, reader.read 3.3
+[pass P cProfile] get_outputs 1195.2 ms under the profiler
+[pass L lines] get_outputs 1380.7 ms under line_profiler
+[pass S spans] get_outputs 1119.5 ms
+      775.89 incl      4.19 excl      1.0 calls  irsim.pipeline.frame:run_frame
+      632.26 incl      0.24 excl      1.0 calls  irsim.pipeline.radiance:stage_illumination
+      632.03 incl      6.06 excl      1.0 calls  irsim.pipeline.environment:environment_radiance
+      625.96 incl      1.51 excl      1.0 calls  irsim.atmosphere.sky:SkyModel._clear_lut
+      592.04 incl    592.04 excl    181.0 calls  irsim.atmosphere.layered:LayeredAtmosphere.sky_radiance
+      343.50 incl     85.95 excl      1.0 calls  irsim_isaac.pipeline.ir_camera:IrCamera.planes
+      110.46 incl      0.49 excl      1.0 calls  irsim_isaac.pipeline.ir_camera:IrCamera._motion_plane
+      109.98 incl    109.98 excl      1.0 calls  irsim.optics.motion:image_plane_motion
+       57.42 incl     57.42 excl      1.0 calls  irsim.pipeline.atmosphere:apply_layered_gbuffer
+       48.99 incl     11.70 excl      1.0 calls  irsim_isaac.pipeline.gbuffer_isaac:geometry_planes
+       36.01 incl     36.01 excl      2.0 calls  irsim_isaac.pipeline.gbuffer_isaac:ray_directions
+       34.55 incl     34.55 excl      1.0 calls  irsim.optics.stage:apply_optics
+       33.02 incl     33.02 excl      1.0 calls  irsim_isaac.pipeline.point_bridge:PointwiseTemperature.apply
+       32.42 incl     32.42 excl      1.0 calls  irsim.atmosphere.sky:SkyModel._tilt_lut
+       27.49 incl     27.49 excl      1.0 calls  irsim_isaac.pipeline.aerial_bridge:azimuth_from_rays
+       19.18 incl     19.18 excl      1.0 calls  irsim_isaac.pipeline.gbuffer_isaac:orient_to_viewer
+       14.33 incl     14.33 excl      1.0 calls  irsim.isp.display:run_display_branch
+       12.91 incl     12.91 excl      1.0 calls  irsim.isp.radiometric:apparent_temperature
+       11.08 incl     11.08 excl      1.0 calls  irsim.pipeline.frame:_detector_signal
+        9.16 incl      9.16 excl      1.0 calls  irsim.pipeline.radiance:band_radiance
+        8.22 incl      8.22 excl      1.0 calls  irsim_isaac.pipeline.aerial_bridge:elevation_from_rays
+        4.82 incl      4.82 excl      1.0 calls  irsim_isaac.pipeline.point_bridge:world_positions
+        3.05 incl      3.05 excl      1.0 calls  irsim_isaac.pipeline.material_ids:material_id_plane
+        1.78 incl      1.78 excl      1.0 calls  irsim_isaac.pipeline.gbuffer_isaac:to_gbuffer
+        1.74 incl      1.74 excl      1.0 calls  @camera.bridge.temperature_plane
+        0.06 incl      0.06 excl      1.0 calls  @camera.bridge.advance_to
+        0.02 incl      0.02 excl      1.0 calls  irsim_isaac.pipeline.material_ids:labels_from_payload
+        0.00 incl      0.00 excl      1.0 calls  irsim_isaac.pipeline.ir_camera:IrCamera._illumination_planes
+        0.00 incl      0.00 excl      1.0 calls  irsim_isaac.pipeline.ir_camera:IrCamera.point_targets
+        0.00 incl      0.00 excl      1.0 calls  irsim_isaac.pipeline.ir_camera:IrCamera._native_rgb
+[pass A2 plain (wrappers in place)] get_outputs 1127.1 ms +-29.2
+pair_iso_2 exit=0
+[pass A0 plain] get_outputs 552.3 ms +-27.0
+[pass A1 sync] get_outputs 552.8 ms, reader.step 81.1, reader.read 3.7
+[pass P cProfile] get_outputs 550.1 ms under the profiler
+[pass L lines] get_outputs 562.1 ms under line_profiler
+[pass S spans] get_outputs 557.4 ms
+      378.49 incl     85.57 excl      1.0 calls  irsim_isaac.pipeline.ir_camera:IrCamera.planes
+      178.83 incl      4.91 excl      1.0 calls  irsim.pipeline.frame:run_frame
+      121.51 incl      0.56 excl      1.0 calls  irsim_isaac.pipeline.ir_camera:IrCamera._motion_plane
+      120.95 incl    120.95 excl      1.0 calls  irsim.optics.motion:image_plane_motion
+       69.98 incl     69.98 excl      1.0 calls  irsim.pipeline.atmosphere:apply_layered_gbuffer
+       56.70 incl     13.33 excl      1.0 calls  irsim_isaac.pipeline.gbuffer_isaac:geometry_planes
+       42.92 incl     42.92 excl      1.0 calls  irsim.optics.stage:apply_optics
+       42.42 incl     42.42 excl      2.0 calls  irsim_isaac.pipeline.gbuffer_isaac:ray_directions
+       38.85 incl     38.85 excl      1.0 calls  irsim_isaac.pipeline.point_bridge:PointwiseTemperature.apply
+       31.95 incl     31.95 excl      1.0 calls  irsim_isaac.pipeline.aerial_bridge:azimuth_from_rays
+       22.18 incl     22.18 excl      1.0 calls  irsim_isaac.pipeline.gbuffer_isaac:orient_to_viewer
+       16.84 incl     16.84 excl      1.0 calls  irsim.isp.display:run_display_branch
+       15.03 incl     15.03 excl      1.0 calls  irsim.isp.radiometric:apparent_temperature
+       13.31 incl     13.31 excl      1.0 calls  irsim.pipeline.frame:_detector_signal
+       10.60 incl     10.60 excl      1.0 calls  irsim.pipeline.radiance:band_radiance
+        9.57 incl      9.57 excl      1.0 calls  irsim_isaac.pipeline.aerial_bridge:elevation_from_rays
+        5.70 incl      5.70 excl      1.0 calls  irsim_isaac.pipeline.point_bridge:world_positions
+        5.25 incl      0.27 excl      1.0 calls  irsim.pipeline.radiance:stage_illumination
+        4.98 incl      4.98 excl      1.0 calls  irsim.pipeline.environment:environment_radiance
+        3.55 incl      3.55 excl      1.0 calls  irsim_isaac.pipeline.material_ids:material_id_plane
+        1.95 incl      1.95 excl      1.0 calls  @camera.bridge.temperature_plane
+        1.79 incl      1.79 excl      1.0 calls  irsim_isaac.pipeline.gbuffer_isaac:to_gbuffer
+        0.07 incl      0.07 excl      1.0 calls  @camera.bridge.advance_to
+        0.02 incl      0.02 excl      1.0 calls  irsim_isaac.pipeline.material_ids:labels_from_payload
+        0.00 incl      0.00 excl      1.0 calls  irsim_isaac.pipeline.ir_camera:IrCamera._native_rgb
+        0.00 incl      0.00 excl      1.0 calls  irsim_isaac.pipeline.ir_camera:IrCamera._illumination_planes
+        0.00 incl      0.00 excl      1.0 calls  irsim_isaac.pipeline.ir_camera:IrCamera.point_targets
+[pass A2 plain (wrappers in place)] get_outputs 546.3 ms +-28.1
+pair_clear_2 exit=0
+[pass A0 plain] get_outputs 1124.3 ms +-26.4
+[pass A1 sync] get_outputs 1129.7 ms, reader.step 81.3, reader.read 3.2
+[pass P cProfile] get_outputs 1188.9 ms under the profiler
+[pass L lines] get_outputs 1383.9 ms under line_profiler
+[pass S spans] get_outputs 1130.5 ms
+      779.88 incl      4.20 excl      1.0 calls  irsim.pipeline.frame:run_frame
+      638.57 incl      0.24 excl      1.0 calls  irsim.pipeline.radiance:stage_illumination
+      638.33 incl      6.13 excl      1.0 calls  irsim.pipeline.environment:environment_radiance
+      632.20 incl      1.55 excl      1.0 calls  irsim.atmosphere.sky:SkyModel._clear_lut
+      598.46 incl    598.46 excl    181.0 calls  irsim.atmosphere.layered:LayeredAtmosphere.sky_radiance
+      350.52 incl     90.07 excl      1.0 calls  irsim_isaac.pipeline.ir_camera:IrCamera.planes
+      110.63 incl      0.51 excl      1.0 calls  irsim_isaac.pipeline.ir_camera:IrCamera._motion_plane
+      110.12 incl    110.12 excl      1.0 calls  irsim.optics.motion:image_plane_motion
+       56.62 incl     56.62 excl      1.0 calls  irsim.pipeline.atmosphere:apply_layered_gbuffer
+       49.24 incl     11.96 excl      1.0 calls  irsim_isaac.pipeline.gbuffer_isaac:geometry_planes
+       36.26 incl     36.26 excl      2.0 calls  irsim_isaac.pipeline.gbuffer_isaac:ray_directions
+       33.98 incl     33.98 excl      1.0 calls  irsim_isaac.pipeline.point_bridge:PointwiseTemperature.apply
+       33.64 incl     33.64 excl      1.0 calls  irsim.optics.stage:apply_optics
+       32.19 incl     32.19 excl      1.0 calls  irsim.atmosphere.sky:SkyModel._tilt_lut
+       28.20 incl     28.20 excl      1.0 calls  irsim_isaac.pipeline.aerial_bridge:azimuth_from_rays
+       19.13 incl     19.13 excl      1.0 calls  irsim_isaac.pipeline.gbuffer_isaac:orient_to_viewer
+       14.02 incl     14.02 excl      1.0 calls  irsim.isp.display:run_display_branch
+       12.71 incl     12.71 excl      1.0 calls  irsim.isp.radiometric:apparent_temperature
+       10.93 incl     10.93 excl      1.0 calls  irsim.pipeline.frame:_detector_signal
+        9.19 incl      9.19 excl      1.0 calls  irsim.pipeline.radiance:band_radiance
+        8.54 incl      8.54 excl      1.0 calls  irsim_isaac.pipeline.aerial_bridge:elevation_from_rays
+        5.15 incl      5.15 excl      1.0 calls  irsim_isaac.pipeline.point_bridge:world_positions
+        3.04 incl      3.04 excl      1.0 calls  irsim_isaac.pipeline.material_ids:material_id_plane
+        1.79 incl      1.79 excl      1.0 calls  irsim_isaac.pipeline.gbuffer_isaac:to_gbuffer
+        1.69 incl      1.69 excl      1.0 calls  @camera.bridge.temperature_plane
+        0.06 incl      0.06 excl      1.0 calls  @camera.bridge.advance_to
+        0.02 incl      0.02 excl      1.0 calls  irsim_isaac.pipeline.material_ids:labels_from_payload
+        0.00 incl      0.00 excl      1.0 calls  irsim_isaac.pipeline.ir_camera:IrCamera._illumination_planes
+        0.00 incl      0.00 excl      1.0 calls  irsim_isaac.pipeline.ir_camera:IrCamera.point_targets
+        0.00 incl      0.00 excl      1.0 calls  irsim_isaac.pipeline.ir_camera:IrCamera._native_rgb
+[pass A2 plain (wrappers in place)] get_outputs 1120.3 ms +-31.9
+=== pair done ===

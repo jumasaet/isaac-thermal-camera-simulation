@@ -1,0 +1,276 @@
+{
+ "A_pairs": {
+  "n_pairs": 1143,
+  "n_tube_events_|dhot|>2000px": 5,
+  "corr_dbg_vs_dhot_all": 0.02570853618537327,
+  "slope_counts_per_1000_hot_px": 0.24120754037379646,
+  "events_median_dbg": 0.0,
+  "events_mean_abs_dbg": 0.6,
+  "quiet_pairs_mean_abs_dbg": 0.5861159929701231,
+  "events_enter_mean_dbg": -0.5,
+  "events_leave_mean_dbg": 0.0,
+  "events": [
+   {
+    "k": 1022,
+    "dhot_px": 2570,
+    "hot_before": 6395,
+    "hot_after": 8965,
+    "dbg_counts": 1.0,
+    "bg_motion_counts": 4.0
+   },
+   {
+    "k": 1033,
+    "dhot_px": 2111,
+    "hot_before": 11207,
+    "hot_after": 13318,
+    "dbg_counts": -2.0,
+    "bg_motion_counts": 7.0
+   },
+   {
+    "k": 1048,
+    "dhot_px": -2399,
+    "hot_before": 14319,
+    "hot_after": 11920,
+    "dbg_counts": 0.0,
+    "bg_motion_counts": 3.0
+   },
+   {
+    "k": 1095,
+    "dhot_px": -3488,
+    "hot_before": 12515,
+    "hot_after": 9027,
+    "dbg_counts": 0.0,
+    "bg_motion_counts": 3.0
+   },
+   {
+    "k": 1099,
+    "dhot_px": -2117,
+    "hot_before": 8082,
+    "hot_after": 5965,
+    "dbg_counts": 0.0,
+    "bg_motion_counts": 4.0
+   }
+  ],
+  "calm_events": {
+   "n": 4,
+   "mean_dbg": 0.25,
+   "max_abs_dbg": 1.0
+  }
+ },
+ "B_static": [
+  {
+   "from": 377,
+   "to": 389,
+   "t0_s": 37.89868783950806,
+   "len": 13,
+   "roi80_mean_range_counts": 2.5421874999992724,
+   "roi80_frame_to_frame_abs_counts": 0.40777343749990297,
+   "frame_mean_range_counts": 1.3822656249994907,
+   "pixel_temporal_sigma_counts_median": 4.112389722447622,
+   "max_count_range": 283.0
+  },
+  {
+   "from": 650,
+   "to": 663,
+   "t0_s": 65.20178556442261,
+   "len": 14,
+   "roi80_mean_range_counts": 15.928593749998981,
+   "roi80_frame_to_frame_abs_counts": 1.5253245192305678,
+   "frame_mean_range_counts": 8.420729166668025,
+   "pixel_temporal_sigma_counts_median": 4.261449037108636,
+   "max_count_range": 88.0
+  }
+ ],
+ "C_cali_board": {
+  "frames": [
+   {
+    "file": "000004_1792581050.427013391.npy",
+    "cold_fraction": 0.182,
+    "wall_mode": 15389,
+    "median": 15393.0
+   },
+   {
+    "file": "000107_1792577734.472400515.npy",
+    "cold_fraction": 0.3412,
+    "wall_mode": 15540,
+    "median": 15459.0
+   },
+   {
+    "file": "000179_1792577741.655801806.npy",
+    "cold_fraction": 0.2552,
+    "wall_mode": 15484,
+    "median": 15469.0
+   },
+   {
+    "file": "000196_1792577743.370795242.npy",
+    "cold_fraction": 0.1857,
+    "wall_mode": 15467,
+    "median": 15467.0
+   },
+   {
+    "file": "000200_1792581070.028185852.npy",
+    "cold_fraction": 0.2039,
+    "wall_mode": 15367,
+    "median": 15372.0
+   },
+   {
+    "file": "000217_1792577745.471137794.npy",
+    "cold_fraction": 0.1848,
+    "wall_mode": 15442,
+    "median": 15443.0
+   },
+   {
+    "file": "000280_1792581078.026389427.npy",
+    "cold_fraction": 0.2142,
+    "wall_mode": 15415,
+    "median": 15358.0
+   },
+   {
+    "file": "000322_1792581082.327464872.npy",
+    "cold_fraction": 0.2015,
+    "wall_mode": 15421,
+    "median": 15359.0
+   },
+   {
+    "file": "000397_1792581089.828468137.npy",
+    "cold_fraction": 0.2418,
+    "wall_mode": 15368,
+    "median": 15341.0
+   },
+   {
+    "file": "000414_1792577765.967423689.npy",
+    "cold_fraction": 0.3123,
+    "wall_mode": 15535,
+    "median": 15449.0
+   },
+   {
+    "file": "000463_1792581096.627290540.npy",
+    "cold_fraction": 0.2263,
+    "wall_mode": 15375,
+    "median": 15367.0
+   },
+   {
+    "file": "000610_1792577786.070697832.npy",
+    "cold_fraction": 0.2929,
+    "wall_mode": 15446,
+    "median": 15452.0
+   },
+   {
+    "file": "000631_1792581114.026556579.npy",
+    "cold_fraction": 0.251,
+    "wall_mode": 15417,
+    "median": 15360.0
+   },
+   {
+    "file": "000639_1792577788.971762260.npy",
+    "cold_fraction": 0.3167,
+    "wall_mode": 15480,
+    "median": 15448.0
+   },
+   {
+    "file": "000710_1792577796.471724588.npy",
+    "cold_fraction": 0.1539,
+    "wall_mode": 15450,
+    "median": 15469.0
+   },
+   {
+    "file": "000724_1792581123.330026697.npy",
+    "cold_fraction": 0.1335,
+    "wall_mode": 15374,
+    "median": 15397.0
+   },
+   {
+    "file": "000739_1792577799.371027209.npy",
+    "cold_fraction": 0.1258,
+    "wall_mode": 15444,
+    "median": 15459.0
+   },
+   {
+    "file": "000805_1792577806.070323553.npy",
+    "cold_fraction": 0.1088,
+    "wall_mode": 15440,
+    "median": 15458.0
+   },
+   {
+    "file": "000811_1792581132.027041104.npy",
+    "cold_fraction": 0.0603,
+    "wall_mode": 15368,
+    "median": 15395.0
+   },
+   {
+    "file": "000859_1792577812.370189135.npy",
+    "cold_fraction": 0.129,
+    "wall_mode": 15431,
+    "median": 15440.0
+   },
+   {
+    "file": "000907_1792577817.571910914.npy",
+    "cold_fraction": 0.1183,
+    "wall_mode": 15416,
+    "median": 15431.0
+   },
+   {
+    "file": "000938_1792581144.732947800.npy",
+    "cold_fraction": 0.084,
+    "wall_mode": 15354,
+    "median": 15384.0
+   },
+   {
+    "file": "000973_1792577824.170550449.npy",
+    "cold_fraction": 0.1226,
+    "wall_mode": 15412,
+    "median": 15447.0
+   },
+   {
+    "file": "001064_1792577833.371205947.npy",
+    "cold_fraction": 0.0649,
+    "wall_mode": 15407,
+    "median": 15431.0
+   },
+   {
+    "file": "001104_1792581161.325344084.npy",
+    "cold_fraction": 0.1184,
+    "wall_mode": 15349,
+    "median": 15351.0
+   },
+   {
+    "file": "001144_1792577841.664242427.npy",
+    "cold_fraction": 0.0533,
+    "wall_mode": 15397,
+    "median": 15417.0
+   },
+   {
+    "file": "001259_1792577853.666513335.npy",
+    "cold_fraction": 0.0533,
+    "wall_mode": 15446,
+    "median": 15483.0
+   }
+  ],
+  "per_session": {
+   "session_A_t=...7734-7853": {
+    "n": 16,
+    "wall_mode_range": [
+     15397,
+     15540
+    ],
+    "cold_fraction_range": [
+     0.05328776041666667,
+     0.3411946614583333
+    ],
+    "corr_wall_vs_cold_fraction": 0.8359380647977077
+   },
+   "session_B_t=...1050-1161": {
+    "n": 11,
+    "wall_mode_range": [
+     15349,
+     15421
+    ],
+    "cold_fraction_range": [
+     0.060302734375,
+     0.2510123697916667
+    ],
+    "corr_wall_vs_cold_fraction": 0.5830203121310298
+   }
+  }
+ }
+}

@@ -1,0 +1,18 @@
+........................................................................ [ 16%]
+.......................................................s................ [ 33%]
+........................................................................ [ 50%]
+........................................................................ [ 66%]
+........................................................................ [ 83%]
+.......................................................................  [100%]
+=============================== warnings summary ===============================
+tests/unit/test_engine_node.py::test_the_bonnet_over_the_block_keeps_warming_after_key_off
+  /home/jumasaet/isaac-thermal-camera-simulation/src/irsim_isaac/car_demo.py:902: UserWarning: view factors summed to 1.4118 > 1 on 24 cell(s) -- radiator footprints overlap; rescaling proportionally to conserve energy (docs/decisions/0090-clamped-view-factors-for-nested-radiators.md)
+    clamped_views = clamp_view_factor_sum(raw_views)
+
+tests/unit/test_radial_profile.py::test_a_rendered_sky_bowls_the_way_the_housing_moved[-1.5--1]
+tests/unit/test_radial_profile.py::test_a_rendered_sky_bowls_the_way_the_housing_moved[1.5-1]
+  /home/jumasaet/isaac-thermal-camera-simulation/src/irsim/atmosphere/layered.py:849: UserWarning: LayeredAtmosphere has no spectral response for band 'lwir', so its spectral-class weights come from a nominal top-hat rather than from the camera -- and since AT.10 its spectral *classes* too, since they are derived from the band's own span. Pass responses= (irsim.radiometry.lut_files.load_band_response_for_config) -- measured on the shipped InSb MWIR response, this is a 6.8x error in the h2o_wing class weight.
+    weights = self.weights(band)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+430 passed, 1 skipped, 3 warnings in 181.02s (0:03:01)

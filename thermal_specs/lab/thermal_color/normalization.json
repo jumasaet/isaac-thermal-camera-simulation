@@ -1,0 +1,12 @@
+{
+  "source": "thermal/*.npy",
+  "frames": 1146,
+  "method": "global percentile clip, linear to uint8 (0-255)",
+  "p_low": 1,
+  "p_high": 99,
+  "v_low": 15096,
+  "v_high": 15500,
+  "global_min": 14969,
+  "global_max": 16963,
+  "formula": "png = round(clip((raw - v_low)/(v_high - v_low), 0, 1) * 255)"
+}

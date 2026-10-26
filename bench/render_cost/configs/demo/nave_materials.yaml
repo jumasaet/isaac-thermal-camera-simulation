@@ -1,0 +1,10 @@
+# Material termico (nombre de configs/materials/) por prim. Se escribe en el atributo USD
+# `thermal:material`, que es el override que lee el MaterialResolver del repo (ADR 0047).
+# Cambiar una linea aqui, o `--set-material Ball=bare_aluminium` en el runner.
+Floor: concrete            # eps_lwir 0.92  -- solera de nave
+Wall: concrete             # eps_lwir 0.92  -- muro
+HotPipe: rusted_steel      # eps_lwir 0.85  -- unico acero sin pintar de la libreria (oxidado)
+Anomaly: rusted_steel      # eps_lwir 0.85  -- carcasa de equipo, acero
+Crate_01: abs_plastic_white  # eps_lwir 0.95 -- la libreria no tiene madera ni carton
+Crate_02: abs_plastic_white  # eps_lwir 0.95
+Ball: rubber_tyre          # eps_lwir 0.95  -- esfera de goma

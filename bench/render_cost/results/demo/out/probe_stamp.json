@@ -1,0 +1,60 @@
+{
+ "nowait+sync": {
+  "frame_ms": 14.513933065940032,
+  "lag_by_content": {
+   "1": 110
+  },
+  "lag_by_stamp": {
+   "1": 110
+  },
+  "stamp_agrees_with_content": "110/110",
+  "content_unmatched": 0,
+  "stamp_unmatched": 0,
+  "repeated_reads": 0,
+  "disagreements": []
+ },
+ "nowait tight": {
+  "frame_ms": 11.453489670318298,
+  "lag_by_content": {
+   "1": 2,
+   "2": 108
+  },
+  "lag_by_stamp": {
+   "1": 2,
+   "2": 108
+  },
+  "stamp_agrees_with_content": "110/110",
+  "content_unmatched": 0,
+  "stamp_unmatched": 0,
+  "repeated_reads": 2,
+  "disagreements": []
+ },
+ "nowait+2ms sleep": {
+  "frame_ms": 13.035398259208621,
+  "lag_by_content": {
+   "1": 110
+  },
+  "lag_by_stamp": {
+   "1": 110
+  },
+  "stamp_agrees_with_content": "110/110",
+  "content_unmatched": 0,
+  "stamp_unmatched": 0,
+  "repeated_reads": 0,
+  "disagreements": []
+ },
+ "wait": {
+  "frame_ms": 45.511672008697964,
+  "lag_by_content": {
+   "0": 110
+  },
+  "lag_by_stamp": {
+   "0": 110
+  },
+  "stamp_agrees_with_content": "110/110",
+  "content_unmatched": 0,
+  "stamp_unmatched": 0,
+  "repeated_reads": 0,
+  "disagreements": []
+ }
+}

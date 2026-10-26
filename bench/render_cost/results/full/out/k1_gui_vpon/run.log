@@ -1,0 +1,406 @@
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1791688704.895754 2191627 descriptor_database.cc:633] File already exists in database: grpc/health/v1/health.proto
+W0000 00:00:1791688704.895785 2191627 message.cc:301] Protobuf GeneratedMessageFactory: File is already registered: grpc/health/v1/health.proto
+2026-10-11T03:18:24Z [Info] [carb] Logging to file: /home/jumasaet/isaac_sim/kit/logs/Kit/Isaac-Sim Python/6.1/kit_20261011_121824.log
+[0.074s] [ext: omni.assets.plugins-0.0.0] startup
+[0.076s] [ext: omni.blobkey-1.1.2] startup
+[0.076s] [ext: omni.kit.async_engine-0.0.3] startup
+[0.638s] [ext: omni.client.lib-1.1.1] startup
+[0.649s] [ext: omni.client-1.3.0] startup
+[0.653s] [ext: omni.protobuf.lib-1.0.1] startup
+[0.654s] [ext: omni.grpc.lib-1.0.0] startup
+[0.658s] [ext: omni.metrics.core-0.0.3] startup
+[0.658s] [ext: omni.datastore-0.0.0] startup
+[0.659s] [ext: omni.gpu_foundation.shadercache.vulkan-1.0.0] startup
+[0.662s] [ext: omni.hsscclient-1.1.4] startup
+[0.662s] [ext: omni.stats-1.0.1] startup
+[0.663s] [ext: omni.ujitso.default-1.0.0] startup
+[0.666s] [ext: omni.gpu_foundation-0.0.0] startup
+[0.883s] [ext: carb.windowing.plugins-1.0.1] startup
+[0.891s] [ext: omni.kit.renderer.init-1.0.1] startup
+
+|---------------------------------------------------------------------------------------------|
+| Driver Version: 580.178.04    | Graphics API: Vulkan
+|=============================================================================================|
+| GPU | Name                             | Active | LDA | GPU Memory | Vendor-ID | LUID       |
+|     |                                  |        |     |            | Device-ID | UUID       |
+|     |                                  |        |     |            | Bus-ID    |            |
+|---------------------------------------------------------------------------------------------|
+| 0   | NVIDIA GeForce RTX 3090          | Yes: 0 |     | 24576   MB | 10de      | 0          |
+|     |                                  |        |     |            | 2204      | 1f2cbfcc.. |
+|     |                                  |        |     |            | 1         |            |
+|=============================================================================================|
+| OS: 22.04.5 LTS (Jammy Jellyfish) ubuntu, Version: 22.04.5, Kernel: 6.8.0-138-generic
+| XServer Vendor: The X.Org Foundation, XServer Version: 12101004 (1.21.1.4)
+| Processor: Intel(R) Core(TM) i9-10900 CPU @ 2.80GHz
+| Cores: 10 | Logical Cores: 20
+|---------------------------------------------------------------------------------------------|
+| Total Memory (MB): 31945 | Free Memory: 21151
+| Total Page/Swap (MB): 2047 | Free Page/Swap: 16
+|---------------------------------------------------------------------------------------------|
+2026-10-11T03:18:25Z [1,434ms] [Warning] [omni.rtx] CPU performance profile is set to powersave. This profile sets the CPU to the lowest frequency reducing performance.
+[1.591s] [ext: omni.kit.pipapi-0.0.0] startup
+[1.593s] [ext: omni.kit.pip_archive-0.0.0] startup
+[1.593s] [ext: isaacsim.pip.newton-0.11.0] startup
+[1.593s] [ext: isaacsim.pip.nv-1.0.2] startup
+[1.594s] [ext: isaacsim.pip.onnx-1.0.1] startup
+[1.594s] [ext: omni.pip.compute-1.9.5] startup
+[1.595s] [ext: omni.isaac.core_archive-5.4.0] startup
+[1.596s] [ext: omni.kit.telemetry-0.5.2] startup
+[1.624s] [ext: omni.kit.loop-isaac-1.6.2] startup
+[1.625s] [ext: omni.kit.test-2.1.1] startup
+[1.713s] [ext: omni.materialx.libs-1.0.9] startup
+[1.722s] [ext: omni.gpucompute.plugins-0.0.0] startup
+[1.722s] [ext: omni.usd.config-1.0.8] startup
+[1.728s] [ext: omni.usd.libs-1.0.3] startup
+[1.830s] [ext: omni.iray.libs-0.0.1] startup
+[1.834s] [ext: omni.mdl-57.0.6] startup
+[1.869s] [ext: omni.mdl.neuraylib-0.2.22] startup
+[1.872s] [ext: omni.kit.usd.mdl-1.1.11] startup
+[2.001s] [ext: omni.appwindow-1.2.2] startup
+[2.282s] [ext: omni.kit.renderer.core-1.3.1] startup
+[3.194s] [ext: omni.kit.renderer.capture-2.0.1] startup
+[3.196s] [ext: omni.kit.renderer.imgui-2.1.0] startup
+[3.248s] [ext: omni.ui-3.3.1] startup
+[3.260s] [ext: omni.kit.mainwindow-1.0.4] startup
+[3.262s] [ext: carb.audio-0.1.0] startup
+[3.264s] [ext: omni.uiaudio-1.0.0] startup
+[3.265s] [ext: omni.kit.uiapp-0.0.0] startup
+[3.265s] [ext: omni.usd.schema.metrics.assembler-110.1.0] startup
+[3.269s] [ext: omni.usd.schema.audio-0.0.1] startup
+[3.273s] [ext: omni.usd_resolver-1.0.0] startup
+[3.277s] [ext: omni.usd.core-1.10.10] startup
+[3.281s] [ext: omni.metropolis.schema-0.0.3] startup
+[3.282s] [ext: isaacsim.anim.robot.schema-0.1.1] startup
+[3.283s] [ext: isaacsim.common-6.2.0] startup
+[3.284s] [ext: omni.usd.schema.anim-0.0.1] startup
+[3.307s] [ext: omni.usd.schema.geospatial-0.0.1] startup
+[3.310s] [ext: omni.usd.schema.omnigraph-1.0.1] startup
+[3.317s] [ext: omni.usd.schema.semantics-0.0.0] startup
+[3.319s] [ext: omni.activity.core-1.0.4] startup
+[3.321s] [ext: omni.cubric-0.1.0] startup
+[3.321s] [ext: omni.graph.exec-0.9.6] startup
+[3.321s] [ext: omni.hydra.scene_delegate-0.3.5] startup
+[3.326s] [ext: usdrt.scenegraph-7.6.3] startup
+[3.367s] [ext: omni.hydra.usdrt_delegate-7.5.2] startup
+[3.374s] [ext: omni.inspect-1.0.2] startup
+[3.376s] [ext: omni.kit.actions.core-1.2.0] startup
+[3.378s] [ext: omni.kit.audiodeviceenum-1.0.2] startup
+[3.379s] [ext: omni.kit.commands-1.5.0] startup
+[3.383s] [ext: omni.kit.exec.core-0.13.6] startup
+[3.385s] [ext: omni.kit.usd_undo-0.1.8] startup
+[3.385s] [ext: omni.kit.window.popup_dialog-2.0.26] startup
+[3.390s] [ext: omni.kit.widget.connection_manager-1.0.3] startup
+[3.398s] [ext: omni.timeline-1.1.0] startup
+[3.400s] [ext: omni.usd-1.18.0] startup
+[3.444s] [ext: omni.graph.core-3.1.5] startup
+[3.447s] [ext: omni.kit.notification_manager-1.0.16] startup
+[3.449s] [ext: isaacsim.core.deprecation_manager-0.4.4] startup
+[3.450s] [ext: isaacsim.replicator.agent.schema-0.1.1] startup
+[3.452s] [ext: isaacsim.robot.schema-7.0.2] startup
+[3.457s] [ext: isaacsim.robot_motion.schema-0.2.2] startup
+[3.458s] [ext: omni.anim.behavior.schema-110.3.0] startup
+[3.463s] [ext: omni.anim.graph.schema-110.3.0] startup
+[3.470s] [ext: omni.anim.navigation.schema-110.3.0] startup
+[3.474s] [ext: omni.behavior.tree.schema-110.3.0] startup
+[3.475s] [ext: omni.isaac.ml_archive-3.4.0] startup
+[3.475s] [ext: omni.kit.asset_converter-6.0.5] startup
+2026-10-11T03:18:27Z [3,450ms] [Warning] [asset_converter_native_bindings._bootstrap] A different OpenUSD (pxr) build was already imported from /home/jumasaet/isaac_sim/extscache/omni.anim.graph.schema-110.3.0+110.3.0.lx64.r.cp312.u7f4/pxr before usd-convert-asset loaded. The host pxr bindings will remain in use rather than reloading the bundled OpenUSD at /home/jumasaet/isaac_sim/extscache/omni.kit.asset_converter-6.0.5+110.1.1.lx64.r.cp312.u7f4/asset_converter_native_bindings/libs/lib/python/pxr, /home/jumasaet/isaac_sim/extscache/omni.kit.asset_converter-6.0.5+110.1.1.lx64.r.cp312.u7f4/asset_converter_native_bindings/libs/python/pxr. Mixing USD builds in one process can cause ABI and singleton conflicts; prefer importing usd_convert_asset first, or run the converter in a separate process/venv when mixing unrelated USD builds.
+[3.490s] [ext: omni.pip.cloud-1.5.5] startup
+[3.493s] [ext: omni.usd.schema.flow-110.0.0] startup
+[3.494s] [ext: omni.usd.schema.newton-1.4.0] startup
+[3.495s] [ext: omni.usd.schema.mujoco-1.1.4] startup
+[3.496s] [ext: omni.usd.schema.omni_dome_light-1.0.0] startup
+[3.497s] [ext: omni.usd.schema.omni_lens_distortion-1.0.0] startup
+[3.498s] [ext: omni.usd.schema.omni_projectors-1.0.0] startup
+[3.498s] [ext: omni.usd.schema.omni_sensors-0.0.0] startup
+[3.509s] [ext: omni.usd.schema.omniscripting-1.0.1] startup
+[3.514s] [ext: omni.usd.schema.physical_lighting-0.1.0] startup
+[3.518s] [ext: omni.usd.schema.physx-110.3.2] startup
+[3.565s] [ext: omni.usd.schema.render_settings.rtx-1.0.3] startup
+[3.569s] [ext: omni.usd.schema.usd_particle_field-1.0.0] startup
+[3.570s] [ext: isaacsim.core.version-2.2.1] startup
+[3.573s] [ext: omni.kit.menu.core-1.3.0] startup
+[3.574s] [ext: omni.kit.menu.utils-2.2.8] startup
+[3.583s] [ext: isaacsim.app.about-2.3.2] startup
+[3.590s] [ext: isaacsim.asset.transformer-6.1.0] startup
+[3.594s] [ext: omni.scene.optimizer.core-110.2.1] startup
+[3.669s] [ext: isaacsim.asset.importer.utils-1.9.1] startup
+[3.673s] [ext: omni.convexdecomposition-110.3.2] startup
+[3.676s] [ext: omni.physics-110.3.2] startup
+[3.680s] [ext: omni.physx.gpu-110.3.2] startup
+[3.680s] [ext: omni.physx.foundation-110.3.2] startup
+[3.682s] [ext: omni.usdphysics-110.3.2] startup
+[3.684s] [ext: omni.physx.cooking-110.3.2] startup
+[3.687s] [ext: omni.physx-110.3.2] startup
+[3.699s] [ext: omni.physics.physx-110.3.2] startup
+[3.701s] [ext: isaacsim.asset.exporter.urdf-2.2.6] startup
+[3.713s] [ext: omni.kit.clipboard-1.1.1] startup
+[3.714s] [ext: omni.kit.usd.layers-2.7.2] startup
+[3.723s] [ext: omni.kit.widget.context_menu-1.5.0] startup
+[3.726s] [ext: omni.kit.context_menu-1.10.0] startup
+[3.727s] [ext: omni.kit.helper.file_utils-0.1.10] startup
+[3.729s] [ext: omni.kit.widget.nucleus_info-2.0.2] startup
+[3.730s] [ext: omni.kit.search_core-1.0.8] startup
+[3.731s] [ext: omni.kit.widget.path_field-2.0.13] startup
+[3.732s] [ext: omni.kit.widget.browser_bar-2.0.11] startup
+[3.733s] [ext: omni.kit.widget.filebrowser-2.14.0] startup
+[3.739s] [ext: omni.kit.widget.nucleus_connector-2.4.0] startup
+[3.740s] [ext: omni.kit.widget.options_menu-1.1.7] startup
+[3.744s] [ext: omni.kit.widget.options_button-1.0.3] startup
+[3.744s] [ext: omni.kit.widget.search_delegate-1.0.10] startup
+[3.746s] [ext: omni.ui.scene-2.0.4] startup
+[3.751s] [ext: omni.kit.window.filepicker-3.0.14] startup
+[3.773s] [ext: omni.kit.window.file_importer-1.1.22] startup
+[3.774s] [ext: omni.kit.material.library-3.1.7] startup
+[3.781s] [ext: isaacsim.asset.transformer.rules-1.7.18] startup
+[3.795s] [ext: omni.usdex.libs-2.3.0] startup
+[3.806s] [ext: isaacsim.asset.importer.mjcf-3.12.1] startup
+[3.808s] [ext: omni.kit.primitive.mesh-1.1.1] startup
+[3.812s] [ext: omni.kit.stage_template.core-1.1.23] startup
+[3.813s] [ext: omni.kit.stage_templates-2.0.3] startup
+[3.815s] [ext: omni.usd.metrics.assembler-110.1.2] startup
+[3.818s] [ext: omni.warp.core-1.16.0] startup
+[4.172s] [ext: isaacsim.core.experimental.utils-0.23.0] startup
+[4.173s] [ext: isaacsim.asset.importer.urdf-3.11.10] startup
+[4.179s] [ext: omni.physics.stageupdate-110.3.2] startup
+[4.181s] [ext: omni.physics.tensors-110.3.2] startup
+[4.187s] [ext: omni.physx.tensors-110.3.2] startup
+[4.191s] [ext: isaacsim.core.simulation_manager-1.17.1] startup
+[4.207s] [ext: isaacsim.storage.native-1.11.0] startup
+[4.209s] [ext: omni.usd.metrics.assembler.physics-110.3.2] startup
+[4.211s] [ext: isaacsim.core.utils-4.1.9] startup
+[4.214s] [ext: isaacsim.core.prims-0.11.7] startup
+[5.827s] [ext: isaacsim.core.api-5.3.2] startup
+[5.836s] [ext: isaacsim.core.cloner-1.7.5] startup
+[5.838s] [ext: isaacsim.test.docstring-1.3.2] startup
+[5.844s] [ext: isaacsim.core.experimental.prims-1.10.8] startup
+[5.866s] [ext: isaacsim.core.experimental.primdata-0.3.6] startup
+[5.868s] [ext: omni.graph.tools-1.81.0] startup
+[5.902s] [ext: omni.graph-1.142.5] startup
+[5.962s] [ext: isaacsim.core.experimental.actuators-0.1.6] startup
+[5.984s] [ext: isaacsim.core.experimental.materials-0.10.0] startup
+[5.990s] [ext: isaacsim.core.experimental.objects-0.9.0] startup
+[6.099s] [ext: omni.hydra.engine.stats-1.0.5] startup
+[6.102s] [ext: omni.hydra.rtx.shadercache.vulkan-1.0.0] startup
+[6.104s] [ext: omni.index.libs-392300.961.0] startup
+[6.104s] [ext: omni.index-1.0.1] startup
+[6.105s] [ext: omni.ujitso.client-0.0.0] startup
+[6.105s] [ext: omni.usd.schema.playback-1.1.0] startup
+[6.106s] [ext: omni.volume-0.5.2] startup
+[6.112s] [ext: omni.hydra.rtx-1.0.4] startup
+2026-10-11T03:18:30Z [6,102ms] [Warning] [omni.log] Source: omni.hydra was already registered.
+[6.150s] [ext: omni.kit.hydra_texture-1.6.2] startup
+[6.155s] [ext: omni.kit.raycast.query-1.2.0] startup
+[6.161s] [ext: omni.kit.viewport.legacy_gizmos-1.0.24] startup
+[6.164s] [ext: omni.kit.viewport.registry-104.0.6] startup
+[6.166s] [ext: omni.kit.viewport.scene_camera_model-1.0.7] startup
+[6.171s] [ext: omni.kit.widget.viewport-110.0.0] startup
+[6.177s] [ext: omni.kit.window.drop_support-1.0.8] startup
+[6.178s] [ext: omni.kit.viewport.window-110.0.1] startup
+[6.202s] [ext: omni.kit.viewport.utility-2.1.0] startup
+[6.204s] [ext: isaacsim.core.rendering_manager-0.5.1] startup
+[6.222s] [ext: omni.graph.action_core-1.1.9] startup
+[6.225s] [ext: omni.graph.action_nodes_core-2.11.0] startup
+[6.229s] [ext: omni.graph.action_nodes-2.11.0] startup
+[6.257s] [ext: omni.graph.action-2.10.2] startup
+[6.259s] [ext: omni.graph.image.core-0.6.1] startup
+[6.260s] [ext: omni.graph.image.nodes-1.3.2] startup
+[6.261s] [ext: omni.graph.nodes_core-2.11.0] startup
+[6.269s] [ext: omni.graph.nodes-2.12.0] startup
+[6.276s] [ext: omni.kit.hotkeys.core-1.4.0] startup
+[6.278s] [ext: omni.kit.property.adapter.core-1.1.1] startup
+[6.282s] [ext: omni.kit.property.adapter.usd-1.0.6] startup
+[6.284s] [ext: omni.kit.widget.filter-1.1.8] startup
+[6.286s] [ext: omni.kit.widget.highlight_label-1.0.3] startup
+[6.287s] [ext: omni.kit.widget.searchfield-1.1.8] startup
+[6.289s] [ext: omni.kit.window.file_exporter-1.0.38] startup
+[6.291s] [ext: omni.kit.widget.stage-4.6.5] startup
+[6.304s] [ext: omni.kit.window.content_browser_registry-0.0.6] startup
+[6.306s] [ext: omni.kit.window.file-2.0.15] startup
+[6.310s] [ext: omni.kit.window.content_browser-3.1.12] startup
+[6.325s] [ext: omni.kit.window.property-1.15.2] startup
+[6.343s] [ext: omni.kit.property.usd-4.9.14] startup
+[6.358s] [ext: omni.graph.scriptnode-2.10.2] startup
+[6.371s] [ext: omni.kit.widget.searchable_combobox-1.0.7] startup
+[6.372s] [ext: omni.kit.widget.settings-2.0.1] startup
+[6.375s] [ext: omni.kit.window.preferences-1.8.5] startup
+[6.383s] [ext: omni.kit.viewport.menubar.core-110.0.3] startup
+[6.401s] [ext: omni.syntheticdata-0.6.17] startup
+[6.446s] [ext: omni.replicator.nv-1.1.6] startup
+[6.453s] [ext: omni.videoencoding-0.2.1] startup
+[6.456s] [ext: omni.replicator.core-1.13.36] startup
+2026-10-11T03:18:30Z [6,441ms] [Warning] [pxr.Semantics] pxr.Semantics is deprecated - please use Semantics instead
+2026-10-11T03:18:30Z [6,523ms] [Warning] [omni.replicator.core.scripts.extension] No material configuration file, adding configuration to material settings directly.
+[6.736s] [ext: isaacsim.core.nodes-5.10.13] startup
+[6.784s] [ext: isaacsim.core.throttling-2.3.7] startup
+[6.787s] [ext: omni.kit.manipulator.viewport-107.0.1] startup
+[6.789s] [ext: omni.graph.visualization.nodes-2.1.4] startup
+[6.810s] [ext: omni.kit.window.extensions-1.5.16] startup
+[6.818s] [ext: isaacsim.gui.components-1.8.9] startup
+[6.825s] [ext: isaacsim.robot.surface_gripper-3.6.3] startup
+[6.842s] [ext: isaacsim.robot.manipulators-3.4.5] startup
+[6.859s] [ext: isaacsim.robot_motion.lula-4.1.4] startup
+[6.868s] [ext: isaacsim.robot_motion.motion_generation-8.2.9] startup
+[6.877s] [ext: isaacsim.cortex.framework-1.0.20] startup
+[6.880s] [ext: isaacsim.cortex.behaviors-2.0.18] startup
+[6.883s] [ext: isaacsim.examples.base-1.3.4] startup
+[6.888s] [ext: omni.kit.widget.zoombar-1.0.7] startup
+[6.889s] [ext: omni.kit.browser.core-2.3.18] startup
+[6.894s] [ext: omni.kit.browser.folder.core-2.0.3] startup
+[6.901s] [ext: omni.kit.widget.stage_icons-1.0.8] startup
+[6.902s] [ext: omni.kit.window.stage-2.6.1] startup
+[6.907s] [ext: omni.kit.menu.stage-1.2.7] startup
+[6.909s] [ext: omni.kit.usd.collect-3.0.6] startup
+[6.912s] [ext: omni.kit.widget.prompt-1.0.7] startup
+[6.914s] [ext: omni.kit.tool.collect-2.2.19] startup
+[6.916s] [ext: isaacsim.examples.browser-0.3.4] startup
+[6.920s] [ext: omni.kit.search.files-1.0.4] startup
+[6.921s] [ext: omni.kit.widget.calendar-1.0.9] startup
+[6.923s] [ext: omni.kit.widget.extended_searchfield-1.0.31] startup
+[6.935s] [ext: omni.simready.content.browser-0.3.8] startup
+[7.087s] [ext: isaacsim.gui.content_browser-0.5.1] startup
+[7.091s] [ext: omni.kit.selection-0.1.6] startup
+[7.093s] [ext: isaacsim.gui.menu-2.10.12] startup
+[7.106s] [ext: isaacsim.gui.property-1.6.4] startup
+[7.116s] [ext: omni.kit.viewport.actions-110.1.0] startup
+[7.124s] [ext: omni.kit.viewport.menubar.display-110.0.0] startup
+[7.126s] [ext: isaacsim.gui.sensors.icon-2.2.4] startup
+[7.131s] [ext: omni.behavior.scripting.core-110.3.0] startup
+[7.136s] [ext: isaacsim.replicator.behavior-1.6.2] startup
+[7.144s] [ext: isaacsim.replicator.experimental.domain_randomization-1.2.10] startup
+[7.168s] [ext: isaacsim.replicator.domain_randomization-1.2.3] startup
+[7.290s] [ext: isaacsim.replicator.writers-1.5.6] startup
+[7.328s] [ext: isaacsim.robot.experimental.wheeled_robots-0.2.14] startup
+[7.364s] [ext: isaacsim.robot_motion.experimental.motion_generation-7.1.2] startup
+[7.378s] [ext: isaacsim.robot.policy.examples-7.2.0] startup
+[8.245s] [ext: isaacsim.robot.wheeled_robots-5.2.5] startup
+[8.252s] [ext: isaacsim.robot.wheeled_robots.nodes-0.1.12] startup
+[8.287s] [ext: isaacsim.robot_motion.controllers-0.3.2] startup
+[8.304s] [ext: isaacsim.robot_motion.cumotion-1.4.0] startup
+[8.321s] [ext: omni.kit.numpy.common-0.1.3] startup
+[8.323s] [ext: omni.rtx.spg-0.4.0] startup
+[8.329s] [ext: omni.sensors.nv.camera-1.0.0] startup
+[8.336s] [ext: isaacsim.sensors.camera-1.7.13] startup
+[8.378s] [ext: isaacsim.sensors.experimental.physics-3.3.0] startup
+[8.391s] [ext: omni.sensors.net-1.0.1] startup
+[8.394s] [ext: omni.sensors.nv.common-3.0.0] startup
+[8.408s] [ext: omni.sensors.nv.materials-2.0.0] startup
+[8.412s] [ext: omni.sensors.nv.acoustic-3.0.0] startup
+[8.416s] [ext: omni.sensors.nv.ids-2.0.1] startup
+[8.419s] [ext: omni.sensors.nv.lidar-3.0.0] startup
+[8.424s] [ext: omni.sensors.nv.radar-3.0.0] startup
+[8.428s] [ext: isaacsim.sensors.experimental.rtx-1.9.0] startup
+[8.825s] [ext: isaacsim.sensors.physics.nodes-1.6.2] startup
+[8.835s] [ext: isaacsim.util.debug_draw-3.2.6] startup
+[8.843s] [ext: isaacsim.sensors.physx-2.5.7] startup
+[8.855s] [ext: isaacsim.sensors.rtx-15.17.5] startup
+[8.873s] [ext: isaacsim.simulation_app-2.19.0] startup
+[8.874s] [ext: omni.anim.curve.core-1.6.1] startup
+[8.889s] [ext: omni.graph.ui_nodes-2.11.1] startup
+[8.927s] [ext: omni.kit.manipulator.camera-110.1.0] startup
+[8.932s] [ext: omni.kit.manipulator.selector-1.1.4] startup
+[8.934s] [ext: omni.kit.manipulator.transform-107.0.1] startup
+[8.941s] [ext: omni.kit.widget.toolbar-2.1.0] startup
+[8.950s] [ext: omni.kit.manipulator.tool.snap-1.5.15] startup
+[8.956s] [ext: omni.kit.viewport.manipulator.transform-107.0.4] startup
+[8.959s] [ext: omni.kit.manipulator.prim.core-108.0.2] startup
+[8.967s] [ext: omni.kit.manipulator.prim.usd-107.0.3] startup
+[8.969s] [ext: omni.kit.manipulator.prim-108.0.0] startup
+[8.969s] [ext: omni.kit.manipulator.selection-110.0.0] startup
+[8.971s] [ext: omni.kit.menu.create-2.0.2] startup
+[8.974s] [ext: omni.kit.property.audio-1.0.18] startup
+[8.979s] [ext: omni.kit.property.camera-1.0.14] startup
+[8.981s] [ext: omni.kit.property.geometry-2.1.2] startup
+[8.986s] [ext: omni.kit.property.light-1.0.16] startup
+[9.031s] [ext: omni.kit.property.material-1.14.10] startup
+[9.040s] [ext: omni.kit.property.render-1.2.2] startup
+[9.042s] [ext: omni.kit.property.transform-1.6.12] startup
+[9.047s] [ext: omni.kit.property.bundle-1.5.2] startup
+[9.050s] [ext: omni.kit.usdz_export-1.1.1] startup
+[9.054s] [ext: omni.kit.tool.asset_importer-6.0.2] startup
+[9.062s] [ext: omni.kit.ui.actions-1.0.5] startup
+[9.064s] [ext: omni.kit.viewport.menubar.camera-107.0.14] startup
+[9.071s] [ext: omni.kit.viewport.menubar.lighting-107.3.2] startup
+[9.075s] [ext: omni.kit.viewport.menubar.render-110.1.1] startup
+[9.079s] [ext: omni.kit.viewport.menubar.settings-110.0.1] startup
+[9.084s] [ext: omni.kit.window.console-1.1.10] startup
+[9.090s] [ext: omni.kit.window.status_bar-0.1.11] startup
+[9.093s] [ext: omni.kit.window.toolbar-3.0.3] startup
+[9.097s] [ext: omni.ocio-0.1.1] startup
+[9.098s] [ext: omni.physx.commands-110.3.2] startup
+[9.103s] [ext: omni.replicator.replicator_yaml-2.0.12] startup
+[9.120s] [ext: omni.rtx.window.settings-0.8.2] startup
+[9.127s] [ext: omni.rtx.settings.core-0.7.1] startup
+[9.132s] [ext: omni.usd.metrics.assembler.ui-110.1.1] startup
+[9.141s] [ext: semantics.schema.editor-2.0.2] startup
+[9.146s] [ext: semantics.schema.property-2.0.2] startup
+[9.148s] [ext: omni.kit.menu.common-2.0.2] startup
+[9.150s] [ext: isaacsim.exp.base-6.1.0] startup
+[9.150s] [ext: isaacsim.exp.base.python-6.1.0] startup
+[9.152s] Simulation App Starting
+[10.517s] Simulation App Startup Complete
+[10.530s] app ready
+Starting kit application with the following args:  ['/home/jumasaet/isaac_sim/exts/isaacsim.simulation_app/isaacsim/simulation_app/simulation_app.py', '/home/jumasaet/isaac_sim/apps/isaacsim.exp.base.python.kit', '--/app/tokens/exe-path=/home/jumasaet/isaac_sim/kit', '--/persistent/app/viewport/displayOptions=3094', '--/rtx/materialDb/syncLoads=True', '--/rtx/hydra/materialSyncLoads=True', '--/omni/kit/plugin/syncUsdLoads=True', '--/app/renderer/resolution/width=1280', '--/app/renderer/resolution/height=720', '--/app/window/width=1440', '--/app/window/height=900', '--/renderer/multiGpu/enabled=False', '--/app/fastShutdown=True', '--/app/installSignalHandlers=0', '--ext-folder', '/home/jumasaet/isaac_sim/exts', '--ext-folder', '/home/jumasaet/isaac_sim/apps', '--/renderer/activeGpu=0', '--/physics/cudaDevice=0', '--/plugins/carb.tasking.plugin/threadCount=16', '--/plugins/omni.tbb.globalcontrol/maxThreadCount=16', '--portable']
+Passing the following args to the base kit application:  ['--/rtx/post/aa/op=0', '--/rtx/post/dlss/execMode=0']
+Warp 1.16.0 initialized:
+   CUDA Toolkit 12.9, Driver 13.0
+   Devices:
+     "cpu"      : "x86_64"
+     "cuda:0"   : "NVIDIA GeForce RTX 3090" (24 GiB, sm_86, mempool enabled)
+   Kernel cache:
+     /home/jumasaet/.cache/warp/1.16.0
+[k1_gui_vpon] gui True viewport flag True -> updates_enabled True | rendermode RealTimePathTracing | epp performance | k 1 render product 640x512 | optics repo psf [15, 15] | rgb True | sigma_tvh 8.898 DN, 178.0 DN/K
+Module lite 47a816b load on device 'cuda:0' took 0.60 ms  (cached)
+Module irsim_isaac.pipeline.warp_stages bf9233d load on device 'cuda:0' took 1.63 ms  (cached)
+[k1_gui_vpon s12      linear   #1 timed  ]   45.2 fps (min 39.5 max 48.5 sd 1.7) |  22.11 ms (p95 24.21 max 25.32) = pose 0.71 + render 12.54 + get 1.94 + fresh 0.11 + tables 1.80 + s12 4.68 + gpu 0.00 + sync 0.00 + cpu 0.00 + out 0.33 |  | lag {'1': 120} anomalies 0
+Module __main__ e16ca2f load on device 'cuda:0' took 19.67 ms  (cached)
+[k1_gui_vpon 12       linear   #1 timed  ]   45.3 fps (min 40.5 max 47.7 sd 0.9) |  22.09 ms (p95 22.76 max 24.69) = pose 0.67 + render 12.08 + get 1.84 + fresh 0.11 + tables 1.70 + s12 4.91 + gpu 0.00 + sync 0.00 + cpu 0.00 + out 0.79 |  | lag {'1': 120} anomalies 0
+[k1_gui_vpon g        linear   #1 timed  ]   42.9 fps (min 12.0 max 46.2 sd 3.2) |  23.34 ms (p95 24.37 max 83.15) = pose 0.68 + render 12.66 + get 1.86 + fresh 0.11 + tables 1.73 + s12 0.64 + gpu 3.60 + sync 1.30 + cpu 0.00 + out 0.77 | s3_optics=0.34 s4_detector=0.17 s5_noise=0.13 adc=0.07 s6_agc_table=2.61 s6_lut_dde=0.17 s6_palette=0.08 | lag {'1': 120} anomalies 0
+Module fullgpu 2f35301 load on device 'cuda:0' took 6.87 ms  (cached)
+[k1_gui_vpon g_ff     linear   #1 timed  ]   43.8 fps (min 38.4 max 46.0 sd 1.2) |  22.81 ms (p95 23.71 max 26.04) = pose 0.69 + render 12.11 + get 1.86 + fresh 0.11 + tables 1.72 + s12 0.63 + gpu 3.64 + sync 1.26 + cpu 0.00 + out 0.80 | s3_optics=0.34 s4_detector=0.17 s5_noise=0.12 adc=0.07 flat_field=0.09 s6_agc_table=2.57 s6_lut_dde=0.17 s6_palette=0.08 | lag {'1': 120} anomalies 0
+[k1_gui_vpon g_m9     linear   #1 timed  ]   42.0 fps (min 35.7 max 45.1 sd 1.0) |  23.80 ms (p95 24.47 max 28.01) = pose 0.69 + render 12.19 + get 1.85 + fresh 0.11 + tables 1.72 + s12 0.62 + gpu 5.85 + sync 0.03 + cpu 0.00 + out 0.75 | m9_clock=0.12 m9_drift=0.29 m9_rts=0.10 s3_optics=0.33 s4_detector=0.17 s5_noise=0.12 m9_defects=0.11 m9_replace=1.36 m9_residual=0.10 m9_ffc=0.07 adc=0.08 s6_agc_table=2.71 s6_lut_dde=0.17 s6_palette=0.08 | lag {'1': 120} anomalies 0
+[k1_gui_vpon g_m9_ff  linear   #1 timed  ]   41.9 fps (min 35.6 max 44.2 sd 1.3) |  23.89 ms (p95 24.97 max 28.09) = pose 0.69 + render 12.16 + get 1.88 + fresh 0.11 + tables 1.71 + s12 0.63 + gpu 5.84 + sync 0.02 + cpu 0.00 + out 0.86 | m9_clock=0.12 m9_drift=0.29 m9_rts=0.10 s3_optics=0.34 s4_detector=0.18 s5_noise=0.12 m9_defects=0.11 m9_replace=1.36 m9_residual=0.10 m9_ffc=0.07 adc=0.08 flat_field=0.09 s6_agc_table=2.60 s6_lut_dde=0.17 s6_palette=0.08 | lag {'1': 120} anomalies 0
+[k1_gui_vpon s12      circular #1 timed  ]   45.9 fps (min 39.7 max 48.8 sd 1.5) |  21.79 ms (p95 23.55 max 25.16) = pose 0.87 + render 12.08 + get 1.86 + fresh 0.11 + tables 1.74 + s12 4.83 + gpu 0.00 + sync 0.00 + cpu 0.00 + out 0.31 |  | lag {'1': 120} anomalies 0
+[k1_gui_vpon 12       circular #1 timed  ]   45.0 fps (min 36.8 max 48.3 sd 1.4) |  22.23 ms (p95 22.93 max 27.18) = pose 0.86 + render 12.09 + get 1.82 + fresh 0.11 + tables 1.70 + s12 4.85 + gpu 0.00 + sync 0.00 + cpu 0.00 + out 0.78 |  | lag {'1': 120} anomalies 0
+[k1_gui_vpon g        circular #1 timed  ]   43.4 fps (min 37.4 max 45.8 sd 1.0) |  23.03 ms (p95 23.88 max 26.71) = pose 0.89 + render 12.26 + get 1.85 + fresh 0.11 + tables 1.70 + s12 0.62 + gpu 3.50 + sync 1.34 + cpu 0.00 + out 0.76 | s3_optics=0.33 s4_detector=0.17 s5_noise=0.12 adc=0.07 s6_agc_table=2.53 s6_lut_dde=0.17 s6_palette=0.07 | lag {'1': 120} anomalies 0
+[k1_gui_vpon g_ff     circular #1 timed  ]   42.8 fps (min 12.0 max 46.8 sd 3.1) |  23.34 ms (p95 23.55 max 83.06) = pose 0.87 + render 12.56 + get 1.83 + fresh 0.11 + tables 1.71 + s12 0.62 + gpu 3.68 + sync 1.21 + cpu 0.00 + out 0.75 | s3_optics=0.34 s4_detector=0.17 s5_noise=0.12 adc=0.07 flat_field=0.09 s6_agc_table=2.61 s6_lut_dde=0.17 s6_palette=0.08 | lag {'1': 120} anomalies 0
+[k1_gui_vpon g_m9     circular #1 timed  ]   42.1 fps (min 37.4 max 44.0 sd 1.0) |  23.75 ms (p95 24.60 max 26.76) = pose 0.87 + render 12.03 + get 1.84 + fresh 0.11 + tables 1.71 + s12 0.62 + gpu 5.80 + sync 0.02 + cpu 0.00 + out 0.74 | m9_clock=0.12 m9_drift=0.28 m9_rts=0.10 s3_optics=0.33 s4_detector=0.17 s5_noise=0.12 m9_defects=0.11 m9_replace=1.33 m9_residual=0.10 m9_ffc=0.07 adc=0.08 s6_agc_table=2.70 s6_lut_dde=0.17 s6_palette=0.08 | lag {'1': 120} anomalies 0
+[k1_gui_vpon g_m9_ff  circular #1 timed  ]   41.6 fps (min 34.8 max 43.9 sd 1.7) |  24.04 ms (p95 26.69 max 28.74) = pose 0.88 + render 12.14 + get 1.87 + fresh 0.11 + tables 1.75 + s12 0.64 + gpu 5.85 + sync 0.02 + cpu 0.00 + out 0.78 | m9_clock=0.12 m9_drift=0.29 m9_rts=0.11 s3_optics=0.34 s4_detector=0.17 s5_noise=0.12 m9_defects=0.11 m9_replace=1.36 m9_residual=0.11 m9_ffc=0.07 adc=0.08 flat_field=0.10 s6_agc_table=2.56 s6_lut_dde=0.17 s6_palette=0.08 | lag {'1': 120} anomalies 0
+[k1_gui_vpon s12      linear   #2 timed  ]   46.4 fps (min 35.5 max 48.7 sd 1.6) |  21.56 ms (p95 22.62 max 28.18) = pose 0.66 + render 12.13 + get 1.85 + fresh 0.11 + tables 1.75 + s12 4.76 + gpu 0.00 + sync 0.00 + cpu 0.00 + out 0.31 |  | lag {'1': 120} anomalies 0
+[k1_gui_vpon 12       linear   #2 timed  ]   44.7 fps (min 36.7 max 47.6 sd 1.3) |  22.38 ms (p95 23.21 max 27.28) = pose 0.70 + render 12.45 + get 1.86 + fresh 0.11 + tables 1.72 + s12 4.73 + gpu 0.00 + sync 0.00 + cpu 0.00 + out 0.81 |  | lag {'1': 120} anomalies 0
+[k1_gui_vpon g        linear   #2 timed  ]   43.9 fps (min 37.4 max 47.2 sd 1.8) |  22.79 ms (p95 25.26 max 26.71) = pose 0.68 + render 12.14 + get 1.88 + fresh 0.11 + tables 1.76 + s12 0.64 + gpu 3.52 + sync 1.30 + cpu 0.00 + out 0.76 | s3_optics=0.35 s4_detector=0.17 s5_noise=0.13 adc=0.07 s6_agc_table=2.51 s6_lut_dde=0.18 s6_palette=0.08 | lag {'1': 120} anomalies 0
+[k1_gui_vpon g_ff     linear   #2 timed  ]   44.4 fps (min 41.8 max 46.5 sd 0.9) |  22.51 ms (p95 23.13 max 23.95) = pose 0.67 + render 11.94 + get 1.82 + fresh 0.11 + tables 1.69 + s12 0.62 + gpu 3.67 + sync 1.24 + cpu 0.00 + out 0.75 | s3_optics=0.33 s4_detector=0.18 s5_noise=0.12 adc=0.07 flat_field=0.09 s6_agc_table=2.61 s6_lut_dde=0.17 s6_palette=0.07 | lag {'1': 120} anomalies 0
+[k1_gui_vpon g_m9     linear   #2 timed  ]   41.8 fps (min 33.9 max 44.3 sd 1.6) |  23.90 ms (p95 25.23 max 29.49) = pose 0.69 + render 12.24 + get 1.88 + fresh 0.11 + tables 1.74 + s12 0.63 + gpu 5.81 + sync 0.02 + cpu 0.00 + out 0.78 | m9_clock=0.12 m9_drift=0.29 m9_rts=0.10 s3_optics=0.34 s4_detector=0.17 s5_noise=0.12 m9_defects=0.11 m9_replace=1.35 m9_residual=0.11 m9_ffc=0.07 adc=0.08 s6_agc_table=2.67 s6_lut_dde=0.18 s6_palette=0.08 | lag {'1': 120} anomalies 0
+[k1_gui_vpon g_m9_ff  linear   #2 timed  ]   42.3 fps (min 35.8 max 44.8 sd 1.1) |  23.65 ms (p95 24.51 max 27.91) = pose 0.67 + render 12.18 + get 1.84 + fresh 0.11 + tables 1.71 + s12 0.61 + gpu 5.74 + sync 0.02 + cpu 0.00 + out 0.76 | m9_clock=0.11 m9_drift=0.28 m9_rts=0.10 s3_optics=0.33 s4_detector=0.16 s5_noise=0.12 m9_defects=0.11 m9_replace=1.31 m9_residual=0.10 m9_ffc=0.07 adc=0.08 flat_field=0.09 s6_agc_table=2.59 s6_lut_dde=0.17 s6_palette=0.08 | lag {'1': 120} anomalies 0
+[k1_gui_vpon audit g_m9_ff linear] {"frames_closest_to_own_pose": 101, "n": 120, "closest_hist": {"-2": 4, "-1": 14, "0": 101, "1": 1, "2": 0}, "mse_own_pose": 2140.3341084798176, "mse_neighbour_pose": 2440.77702738444, "worst_ratio_own_over_best_neighbour": 1.0108135357849561}
+[k1_gui_vpon s12      circular #2 timed  ]   45.2 fps (min 12.1 max 49.6 sd 3.3) |  22.13 ms (p95 22.33 max 82.31) = pose 0.84 + render 12.45 + get 1.81 + fresh 0.11 + tables 1.74 + s12 4.87 + gpu 0.00 + sync 0.00 + cpu 0.00 + out 0.31 |  | lag {'1': 120} anomalies 0
+[k1_gui_vpon 12       circular #2 timed  ]   44.7 fps (min 40.1 max 47.5 sd 1.4) |  22.37 ms (p95 23.65 max 24.94) = pose 0.88 + render 12.23 + get 1.87 + fresh 0.11 + tables 1.73 + s12 4.76 + gpu 0.00 + sync 0.00 + cpu 0.00 + out 0.79 |  | lag {'1': 120} anomalies 0
+[k1_gui_vpon g        circular #2 timed  ]   43.8 fps (min 36.0 max 47.4 sd 1.7) |  22.82 ms (p95 24.21 max 27.82) = pose 0.87 + render 12.05 + get 1.84 + fresh 0.11 + tables 1.72 + s12 0.63 + gpu 3.55 + sync 1.31 + cpu 0.00 + out 0.75 | s3_optics=0.34 s4_detector=0.17 s5_noise=0.12 adc=0.07 s6_agc_table=2.56 s6_lut_dde=0.17 s6_palette=0.08 | lag {'1': 120} anomalies 0
+[k1_gui_vpon g_ff     circular #2 timed  ]   43.7 fps (min 37.4 max 46.3 sd 1.4) |  22.86 ms (p95 23.66 max 26.73) = pose 0.86 + render 12.08 + get 1.81 + fresh 0.11 + tables 1.68 + s12 0.61 + gpu 3.68 + sync 1.28 + cpu 0.00 + out 0.75 | s3_optics=0.33 s4_detector=0.17 s5_noise=0.12 adc=0.07 flat_field=0.10 s6_agc_table=2.62 s6_lut_dde=0.17 s6_palette=0.08 | lag {'1': 120} anomalies 0
+[k1_gui_vpon g_m9     circular #2 timed  ]   40.6 fps (min 11.3 max 43.9 sd 3.2) |  24.65 ms (p95 26.84 max 88.59) = pose 0.89 + render 12.78 + get 1.87 + fresh 0.11 + tables 1.73 + s12 0.63 + gpu 5.87 + sync 0.02 + cpu 0.00 + out 0.74 | m9_clock=0.12 m9_drift=0.29 m9_rts=0.11 s3_optics=0.34 s4_detector=0.17 s5_noise=0.12 m9_defects=0.11 m9_replace=1.42 m9_residual=0.10 m9_ffc=0.07 adc=0.08 s6_agc_table=2.67 s6_lut_dde=0.17 s6_palette=0.08 | lag {'1': 120} anomalies 0
+[k1_gui_vpon g_m9_ff  circular #2 timed  ]   41.8 fps (min 31.4 max 44.2 sd 1.7) |  23.94 ms (p95 24.54 max 31.81) = pose 0.86 + render 12.07 + get 1.84 + fresh 0.11 + tables 1.70 + s12 0.62 + gpu 5.95 + sync 0.04 + cpu 0.00 + out 0.75 | m9_clock=0.11 m9_drift=0.29 m9_rts=0.11 s3_optics=0.33 s4_detector=0.17 s5_noise=0.12 m9_defects=0.11 m9_replace=1.47 m9_residual=0.10 m9_ffc=0.07 adc=0.08 flat_field=0.09 s6_agc_table=2.62 s6_lut_dde=0.17 s6_palette=0.07 | lag {'1': 120} anomalies 0
+[k1_gui_vpon audit g_m9_ff circular] {"frames_closest_to_own_pose": 120, "n": 120, "closest_hist": {"-2": 0, "-1": 0, "0": 120, "1": 0, "2": 0}, "mse_own_pose": 1803.0178059895834, "mse_neighbour_pose": 1891.8375849405925, "worst_ratio_own_over_best_neighbour": 0.9850467621417182}
+[k1_gui_vpon g        linear   #0 profile]   40.7 fps (min 34.1 max 42.7 sd 1.3) |  24.56 ms (p95 25.83 max 29.31) = pose 0.69 + render 12.12 + get 1.85 + fresh 0.11 + tables 1.69 + s12 4.96 + gpu 2.39 + sync 0.02 + cpu 0.00 + out 0.74 | s3_optics=0.37 s4_detector=0.18 s5_noise=0.14 adc=0.08 s6_agc_table=1.31 s6_lut_dde=0.18 s6_palette=0.09 | lag {'1': 120} anomalies 0
+[k1_gui_vpon g        linear   #0 stills ]   44.0 fps (min 40.4 max 46.2 sd 0.8) |  22.73 ms (p95 23.37 max 24.75) = pose 0.69 + render 12.34 + get 1.85 + fresh 0.11 + tables 1.72 + s12 0.62 + gpu 3.59 + sync 1.05 + cpu 0.00 + out 0.76 | s3_optics=0.34 s4_detector=0.18 s5_noise=0.13 adc=0.07 s6_agc_table=2.60 s6_lut_dde=0.17 s6_palette=0.08 | lag {'1': 120} anomalies 0
+[k1_gui_vpon g_ff     linear   #0 profile]   41.2 fps (min 35.9 max 43.1 sd 1.0) |  24.28 ms (p95 25.11 max 27.84) = pose 0.67 + render 12.08 + get 1.83 + fresh 0.11 + tables 1.70 + s12 4.69 + gpu 2.45 + sync 0.02 + cpu 0.00 + out 0.75 | s3_optics=0.37 s4_detector=0.18 s5_noise=0.13 adc=0.08 flat_field=0.11 s6_agc_table=1.27 s6_lut_dde=0.18 s6_palette=0.09 | lag {'1': 120} anomalies 0
+[k1_gui_vpon g_ff     linear   #0 stills ]   44.3 fps (min 41.5 max 46.0 sd 0.8) |  22.56 ms (p95 23.36 max 24.08) = pose 0.67 + render 12.16 + get 1.81 + fresh 0.11 + tables 1.68 + s12 0.61 + gpu 3.68 + sync 1.08 + cpu 0.00 + out 0.76 | s3_optics=0.33 s4_detector=0.17 s5_noise=0.12 adc=0.07 flat_field=0.09 s6_agc_table=2.62 s6_lut_dde=0.17 s6_palette=0.08 | lag {'1': 120} anomalies 0
+[k1_gui_vpon g_m9     linear   #0 profile]   41.0 fps (min 36.6 max 43.2 sd 0.9) |  24.39 ms (p95 25.11 max 27.34) = pose 0.63 + render 11.71 + get 1.77 + fresh 0.11 + tables 1.67 + s12 3.91 + gpu 3.87 + sync 0.01 + cpu 0.00 + out 0.72 | m9_clock=0.13 m9_drift=0.29 m9_rts=0.11 s3_optics=0.35 s4_detector=0.18 s5_noise=0.13 m9_defects=0.12 m9_replace=0.74 m9_residual=0.11 m9_ffc=0.08 adc=0.09 s6_agc_table=1.24 s6_lut_dde=0.18 s6_palette=0.09 | lag {'1': 120} anomalies 0
+[k1_gui_vpon g_m9     linear   #0 stills ]   45.4 fps (min 36.7 max 47.6 sd 1.1) |  22.04 ms (p95 22.66 max 27.23) = pose 0.62 + render 11.66 + get 1.75 + fresh 0.10 + tables 1.67 + s12 0.61 + gpu 4.87 + sync 0.02 + cpu 0.00 + out 0.73 | m9_clock=0.11 m9_drift=0.28 m9_rts=0.10 s3_optics=0.33 s4_detector=0.16 s5_noise=0.12 m9_defects=0.11 m9_replace=1.23 m9_residual=0.10 m9_ffc=0.07 adc=0.08 s6_agc_table=1.91 s6_lut_dde=0.17 s6_palette=0.07 | lag {'1': 120} anomalies 0
+[k1_gui_vpon g_m9_ff  linear   #0 profile]   40.6 fps (min 32.6 max 43.9 sd 1.6) |  24.65 ms (p95 26.32 max 30.67) = pose 0.65 + render 11.77 + get 1.81 + fresh 0.11 + tables 1.71 + s12 3.76 + gpu 4.10 + sync 0.01 + cpu 0.00 + out 0.73 | m9_clock=0.13 m9_drift=0.30 m9_rts=0.12 s3_optics=0.36 s4_detector=0.18 s5_noise=0.14 m9_defects=0.12 m9_replace=0.75 m9_residual=0.12 m9_ffc=0.08 adc=0.09 flat_field=0.11 s6_agc_table=1.28 s6_lut_dde=0.19 s6_palette=0.09 | lag {'1': 120} anomalies 0
+[k1_gui_vpon g_m9_ff  linear   #0 stills ]   45.8 fps (min 43.1 max 48.3 sd 1.1) |  21.83 ms (p95 22.55 max 23.21) = pose 0.63 + render 11.46 + get 1.77 + fresh 0.11 + tables 1.67 + s12 0.60 + gpu 4.85 + sync 0.02 + cpu 0.00 + out 0.73 | m9_clock=0.11 m9_drift=0.28 m9_rts=0.10 s3_optics=0.33 s4_detector=0.17 s5_noise=0.12 m9_defects=0.11 m9_replace=1.21 m9_residual=0.10 m9_ffc=0.07 adc=0.08 flat_field=0.09 s6_agc_table=1.82 s6_lut_dde=0.17 s6_palette=0.07 | lag {'1': 120} anomalies 0
+[k1_gui_vpon g        circular #0 profile]   40.5 fps (min 34.6 max 43.0 sd 1.2) |  24.68 ms (p95 25.78 max 28.91) = pose 0.87 + render 12.23 + get 1.84 + fresh 0.11 + tables 1.71 + s12 4.79 + gpu 2.38 + sync 0.01 + cpu 0.00 + out 0.74 | s3_optics=0.37 s4_detector=0.19 s5_noise=0.14 adc=0.08 s6_agc_table=1.30 s6_lut_dde=0.18 s6_palette=0.09 | lag {'1': 120} anomalies 0
+[k1_gui_vpon g        circular #0 stills ]   43.6 fps (min 39.6 max 46.8 sd 1.1) |  22.95 ms (p95 23.73 max 25.28) = pose 0.90 + render 12.25 + get 1.84 + fresh 0.11 + tables 1.70 + s12 0.62 + gpu 3.55 + sync 1.22 + cpu 0.00 + out 0.77 | s3_optics=0.34 s4_detector=0.17 s5_noise=0.12 adc=0.07 s6_agc_table=2.57 s6_lut_dde=0.17 s6_palette=0.08 | lag {'1': 120} anomalies 0
+[k1_gui_vpon g_ff     circular #0 profile]   40.5 fps (min 36.1 max 43.0 sd 1.0) |  24.70 ms (p95 25.76 max 27.70) = pose 0.87 + render 12.09 + get 1.85 + fresh 0.11 + tables 1.71 + s12 4.83 + gpu 2.49 + sync 0.02 + cpu 0.00 + out 0.74 | s3_optics=0.37 s4_detector=0.18 s5_noise=0.14 adc=0.08 flat_field=0.11 s6_agc_table=1.31 s6_lut_dde=0.18 s6_palette=0.09 | lag {'1': 120} anomalies 0
+[k1_gui_vpon g_ff     circular #0 stills ]   43.1 fps (min 35.1 max 45.9 sd 1.8) |  23.20 ms (p95 24.82 max 28.51) = pose 0.90 + render 12.27 + get 1.90 + fresh 0.11 + tables 1.77 + s12 0.64 + gpu 3.63 + sync 1.23 + cpu 0.00 + out 0.76 | s3_optics=0.35 s4_detector=0.17 s5_noise=0.13 adc=0.07 flat_field=0.10 s6_agc_table=2.52 s6_lut_dde=0.18 s6_palette=0.08 | lag {'1': 120} anomalies 0
+[k1_gui_vpon g_m9     circular #0 profile]   40.9 fps (min 38.5 max 43.5 sd 1.0) |  24.48 ms (p95 25.45 max 25.94) = pose 0.82 + render 11.51 + get 1.77 + fresh 0.11 + tables 1.67 + s12 3.97 + gpu 3.89 + sync 0.01 + cpu 0.00 + out 0.72 | m9_clock=0.13 m9_drift=0.30 m9_rts=0.12 s3_optics=0.35 s4_detector=0.18 s5_noise=0.13 m9_defects=0.12 m9_replace=0.74 m9_residual=0.11 m9_ffc=0.08 adc=0.09 s6_agc_table=1.25 s6_lut_dde=0.18 s6_palette=0.09 | lag {'1': 120} anomalies 0
+[k1_gui_vpon g_m9     circular #0 stills ]   45.0 fps (min 42.9 max 47.1 sd 0.9) |  22.23 ms (p95 23.05 max 23.31) = pose 0.81 + render 11.60 + get 1.75 + fresh 0.10 + tables 1.66 + s12 0.61 + gpu 4.95 + sync 0.02 + cpu 0.00 + out 0.72 | m9_clock=0.11 m9_drift=0.28 m9_rts=0.10 s3_optics=0.33 s4_detector=0.16 s5_noise=0.12 m9_defects=0.11 m9_replace=1.28 m9_residual=0.10 m9_ffc=0.07 adc=0.08 s6_agc_table=1.94 s6_lut_dde=0.17 s6_palette=0.07 | lag {'1': 120} anomalies 0
+[k1_gui_vpon g_m9_ff  circular #0 profile]   40.5 fps (min 36.2 max 42.5 sd 0.9) |  24.71 ms (p95 25.69 max 27.65) = pose 0.82 + render 11.63 + get 1.76 + fresh 0.11 + tables 1.68 + s12 3.95 + gpu 4.00 + sync 0.01 + cpu 0.00 + out 0.74 | m9_clock=0.13 m9_drift=0.30 m9_rts=0.12 s3_optics=0.34 s4_detector=0.18 s5_noise=0.13 m9_defects=0.12 m9_replace=0.75 m9_residual=0.11 m9_ffc=0.08 adc=0.09 flat_field=0.11 s6_agc_table=1.25 s6_lut_dde=0.18 s6_palette=0.09 | lag {'1': 120} anomalies 0
+[k1_gui_vpon g_m9_ff  circular #0 stills ]   45.0 fps (min 41.8 max 48.0 sd 1.1) |  22.23 ms (p95 23.02 max 23.93) = pose 0.81 + render 11.57 + get 1.76 + fresh 0.10 + tables 1.67 + s12 0.60 + gpu 4.96 + sync 0.02 + cpu 0.00 + out 0.74 | m9_clock=0.11 m9_drift=0.28 m9_rts=0.10 s3_optics=0.33 s4_detector=0.16 s5_noise=0.12 m9_defects=0.11 m9_replace=1.28 m9_residual=0.10 m9_ffc=0.07 adc=0.08 flat_field=0.09 s6_agc_table=1.86 s6_lut_dde=0.17 s6_palette=0.07 | lag {'1': 120} anomalies 0
+wrote /tmp/irsim_render_cost/full/out/k1_gui_vpon/report.json
+2026-10-11T03:18:36Z [12,530ms] [Warning] [omni.rtx] DLSS increasing input dimensions: Render resolution of (320, 256) is below minimal input resolution of 300.
+2026-10-11T03:18:36Z [12,666ms] [Warning] [omni.syntheticdata.plugin] OgnSdPostRenderVarToHost : rendervar copy from texture directly to host buffer is counter-performant. Please use copy from texture to device buffer first.
+2026-10-11T03:18:36Z [12,667ms] [Warning] [omni.syntheticdata.plugin] SdPostRenderVarToHost : invalid input resource for renderVar AmbientOcclusion
+2026-10-11T03:18:37Z [13,129ms] [Warning] [carb] Plugin interface for a client: omni.hydratexture.plugin was already released.
+2026-10-11T03:22:02Z [218,107ms] [Warning] [carb] Plugin interface for a client: omni.hydratexture.plugin was already released.
+[218.258s] Simulation App Shutting Down

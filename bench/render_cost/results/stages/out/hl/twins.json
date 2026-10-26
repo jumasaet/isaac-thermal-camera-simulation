@@ -1,0 +1,113 @@
+{
+ "device": "cuda:0",
+ "shape": [
+  512,
+  640
+ ],
+ "reps": 300,
+ "rows": {
+  "s3 launch_optics, as written (allocs `blurred`, uploads psf + cos4 each call)": {
+   "mean": 0.383379963459447,
+   "p50": 0.37874095141887665,
+   "p95": 0.41327322251163423,
+   "max": 0.9948300430551171
+  },
+  "s3 launch_optics, psf + cos4 already on device (still allocs `blurred`)": {
+   "mean": 0.2120747638400644,
+   "p50": 0.2074359799735248,
+   "p95": 0.21245077950879931,
+   "max": 0.507191987708211
+  },
+  "s4 launch_detector (transfer + membrane IIR, state on device)": {
+   "mean": 0.0765685411170125,
+   "p50": 0.07626897422596812,
+   "p95": 0.08042399422265589,
+   "max": 0.08217501454055309
+  },
+  "s5 launch_noise (all seven NVESD components, TVH included)": {
+   "mean": 0.06442918985461195,
+   "p50": 0.06380298873409629,
+   "p95": 0.06693163886666298,
+   "max": 0.11478294618427753
+  },
+  "ADC _quantise_kernel": {
+   "mean": 0.037846872971082725,
+   "p50": 0.03654294414445758,
+   "p95": 0.04173435736447583,
+   "max": 0.07958500646054745
+  },
+  "s6 launch_display as written (histogram, AGC table via host, DDE, palette)": {
+   "mean": 1.136056394316256,
+   "p50": 1.127539959270507,
+   "p95": 1.2059936649166048,
+   "max": 1.3566859997808933
+  },
+  "s6   of which agc_lut_warp (3 transfers of 65536 entries + syncs)": {
+   "mean": 0.8489791808339456,
+   "p50": 0.8397300262004137,
+   "p95": 0.9008098277263343,
+   "max": 1.0396199068054557
+  },
+  "s6   download of the RGBA8 frame to host": {
+   "mean": 0.216648088923345,
+   "p50": 0.21631945855915546,
+   "p95": 0.2198326343204826,
+   "max": 0.2310809213668108
+  },
+  "m9 launch_rts_step + launch_defects": {
+   "mean": 0.09447483501086633,
+   "p50": 0.09413750376552343,
+   "p95": 0.09798649116419256,
+   "max": 0.10907696560025215
+  },
+  "m9 launch_replacement as written (5 allocs, one sync + readback per pass)": {
+   "mean": 0.38166709632302326,
+   "p50": 0.37080550100654364,
+   "p95": 0.43278150842525065,
+   "max": 0.6242230301722884
+  },
+  "m9 launch_ffc_hold (not freezing: two device copies)": {
+   "mean": 0.021324414992704988,
+   "p50": 0.02124253660440445,
+   "p95": 0.021704990649595857,
+   "max": 0.025019049644470215
+  },
+  "m9 launch_ou_drift (V, H, VH fields, one step)": {
+   "mean": 0.12529027182608843,
+   "p50": 0.12488197535276413,
+   "p95": 0.12884369934909046,
+   "max": 0.13039703480899334
+  },
+  "m9 residual_fields (re-uploads both xi planes every call)": {
+   "mean": 0.28627462801523507,
+   "p50": 0.2830574521794915,
+   "p95": 0.30930188950151205,
+   "max": 0.3838019911199808
+  },
+  "m9 launch_nuc_residual (reference plane given)": {
+   "mean": 0.048286320719247065,
+   "p50": 0.04571105819195509,
+   "p95": 0.06344056455418468,
+   "max": 0.1223559956997633
+  }
+ },
+ "checks": {
+  "s3 flux vs CPU oracle, max rel": 1.529292299989742e-06,
+  "s4 signal vs CPU oracle, max abs DN": 0.00390625,
+  "s5 added noise sd, DN (CPU sigma_TVH = 8.898, total with ratios = 9.434)": 9.429659733647977,
+  "s6 display8 vs CPU oracle": {
+   "px_differing": 3,
+   "max_code_diff": 1
+  }
+ },
+ "psf_taps": 225,
+ "alpha_twin": 0.875485528555877,
+ "replacement_passes": 1,
+ "defects": {
+  "count": 460,
+  "active_now": 358
+ },
+ "no_twin_cpu_ms": {
+  "display flat field (TwoPointNuc.apply + quantise)": 2.885210358848174
+ }
+}

@@ -1,0 +1,3 @@
+subscribed to ['/thermal_sim/ir/image_raw', '/thermal_sim/rgb/image_raw'] (reliable, depth 10), rmw rmw_fastrtps_cpp
+/thermal_sim/ir/image_raw: 240 messages
+/thermal_sim/rgb/image_raw: 240 messages

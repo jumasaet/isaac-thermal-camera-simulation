@@ -1,0 +1,28 @@
+{
+ "pose": 48,
+ "lead_in": 30,
+ "camera_position_m": [
+  -1.0,
+  -0.579831932773109,
+  1.0
+ ],
+ "supersample": 1,
+ "resolution": [
+  640,
+  512
+ ],
+ "t_range_c": [
+  15.0,
+  160.0
+ ],
+ "palette": "gray",
+ "isp": {
+  "polarity": "white_hot",
+  "palette": "gray"
+ },
+ "frame_period_s": 0.016666666666666666,
+ "scene_radiance_min_max": [
+  49.70323181152344,
+  203.87075805664062
+ ]
+}

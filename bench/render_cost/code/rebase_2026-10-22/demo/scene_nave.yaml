@@ -1,0 +1,29 @@
+# Nave industrial cerrada -- replica de la escena del simulador pseudo-termico. /tmp, no repo.
+#
+# Solo temperaturas: una por prim, `solver: prescribed` (thermal.surfaces no existe en
+# feat/irsim-lite-gpu). La geometria, el material y el color visible de cada prim estan en
+# nave_stage.py (tabla OBJECTS) y nave_materials.yaml; aqui los nombres de target son los de
+# esa tabla en minusculas.
+#
+# El recinto: env_isothermal.yaml hace L_env = L_B(T_air) a cualquier inclinacion, y el CSV de
+# clima fija T_air = 294.15 K (21 C). Ese valor es a la vez (a) lo que refleja cada superficie,
+# (b) la temperatura de los pixeles sin geometria (id == 0: el resto de la nave, que el stage
+# no modela) y (c) la radiancia de camino de la etapa 2.
+schema_version: 17
+scene:
+  name: nave_industrial
+  description: "Closed industrial hall, prescribed temperatures -- comparison scene for the lite GPU path"
+  weather_file: /home/jumasaet/isaac-thermal-camera-simulation/bench/render_cost/code/rebase_2026-10-22/demo/nave_weather_48h.csv
+  atmosphere_preset: us_standard_clear
+  environment_preset: /home/jumasaet/isaac-thermal-camera-simulation/bench/render_cost/code/rebase_2026-10-22/env_isothermal.yaml
+  site: {latitude_deg: 37.5, longitude_deg: 127.0, altitude_m: 50.0}
+  start_utc: "2024-06-21T02:00:00Z"
+
+  targets:
+    - {name: floor,    solver: prescribed, schedule_s: [0.0, 86400.0], schedule_k: [293.15, 293.15]}  #  20 C
+    - {name: wall,     solver: prescribed, schedule_s: [0.0, 86400.0], schedule_k: [298.15, 298.15]}  #  25 C
+    - {name: hot_pipe, solver: prescribed, schedule_s: [0.0, 86400.0], schedule_k: [353.15, 353.15]}  #  80 C
+    - {name: anomaly,  solver: prescribed, schedule_s: [0.0, 86400.0], schedule_k: [423.15, 423.15]}  # 150 C
+    - {name: crate_01, solver: prescribed, schedule_s: [0.0, 86400.0], schedule_k: [291.15, 291.15]}  #  18 C
+    - {name: crate_02, solver: prescribed, schedule_s: [0.0, 86400.0], schedule_k: [303.15, 303.15]}  #  30 C
+    - {name: ball,     solver: prescribed, schedule_s: [0.0, 86400.0], schedule_k: [323.15, 323.15]}  #  50 C

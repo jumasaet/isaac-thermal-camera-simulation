@@ -1,0 +1,20 @@
+E501 Line too long (105 > 100)
+   --> src/irsim/config/sensor.py:625:101
+    |
+623 |     #: The scene's apparent temperature **before the camera**: L_B⁻¹ of the stage 1+2 radiance
+624 |     #: (emission, reflection, atmosphere and the stage-2 overlays), box-averaged in radiance to the
+625 |     #: native grid, with no PSF, cos⁴, housing, noise, calibration or ISP in it. ``apparent_temperature``
+    |                                                                                                     ^^^^^
+626 |     #: is the camera's reading and carries all of those; this is the reference a real camera's
+627 |     #: radiometric frame is compared against. Optional and off by default, which is the camera
+    |
+
+E501 Line too long (101 > 100)
+  --> tests/unit/test_scene_apparent_t.py:66:101
+   |
+65 | def _config(sensor: SensorConfig, lut, seed: int = 77) -> PipelineConfig:  # type: ignore[no-untyped-def]
+66 |     return PipelineConfig.from_sensor(sensor, MaterialTable.constant(1.0), lut=lut, sensor_seed=seed)
+   |                                                                                                     ^
+
+Found 2 errors.
+There was an error running python

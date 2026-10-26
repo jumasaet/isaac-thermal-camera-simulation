@@ -1,0 +1,559 @@
+{
+ "scene": "/tmp/irsim_render_cost/scene_iso.yaml",
+ "temps": "prescribed",
+ "rendermode": "RealTimePathTracing",
+ "resolved": {
+  "distance": "DistanceToCameraSD",
+  "position": "Camera3dPositionSD",
+  "normal": "normals",
+  "instance": "instance_id_segmentation",
+  "semantic": "semantic_segmentation"
+ },
+ "angle_lut_packed": false,
+ "regime": "emissive",
+ "atmosphere": "LayeredAtmosphere",
+ "poses": {
+  "bench_default": {
+   "shape": [
+    512,
+    640
+   ],
+   "t_s": 7200.0,
+   "pixels": {
+    "bg_above_horizon": 0,
+    "bg_below_horizon": 640,
+    "/World/wall": 204700,
+    "/World/cold_floor": 112000,
+    "/World/hot_pipe": 10340
+   },
+   "labels": {
+    "2": "/World/cold_floor",
+    "3": "/World/hot_pipe",
+    "1": "/World/wall"
+   },
+   "inputs": {
+    "illumination_terms_live": [
+     "l_env"
+    ],
+    "planes_keys": [
+     "distance_m",
+     "elevation_rad",
+     "material_id",
+     "normal_dot_view",
+     "semantic_id",
+     "sky_mask",
+     "sky_view_factor",
+     "temperature_k"
+    ],
+    "sky_mask_mismatch": 0,
+    "nonfinite_distance_with_id": 0,
+    "material_id_mismatch": 0,
+    "material_id_mismatch_on_geometry": 0,
+    "v_s_min": 0.49999237060546875,
+    "v_s_max": 1.0,
+    "v_s_unique": 3,
+    "l_env_unique_bit_patterns": 1,
+    "l_env_min": 55.477684020996094,
+    "l_env_max": 55.477684020996094,
+    "l_env_scalar": 55.477684020996094,
+    "l_env_plane_equals_scalar_bits": true,
+    "t_air_k": 300.0,
+    "l_b_t_air": 55.477684020996094,
+    "scalar_equals_l_b_t_air_bits": true,
+    "l_env_spread_mK": 0.0
+   },
+   "temperature": {
+    "n_diff": 0,
+    "n": 327680
+   },
+   "full_T_bg_below_horizon": {
+    "min": 300.0,
+    "max": 300.0,
+    "unique": 1
+   },
+   "radiance_full_vs_reduced": {
+    "n_diff": 0,
+    "n": 327680
+   },
+   "radiance_full_vs_reduced_fullbgT": {
+    "n_diff": 0,
+    "n": 327680
+   },
+   "radiance_full_vs_reduced_fullT": {
+    "n_diff": 0,
+    "n": 327680
+   },
+   "warp_full_vs_warp_reduced": {
+    "n_diff": 0,
+    "n": 327680
+   },
+   "warp_full_vs_numpy_full": {
+    "n_diff": 122340,
+    "n": 327680,
+    "max_abs": 7.62939453125e-06,
+    "max_rel": 7.848667025560048e-08,
+    "max_abs_mK": 0.0,
+    "by_group": {
+     "bg_above_horizon": {
+      "n_diff": 0,
+      "n": 0,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "bg_below_horizon": {
+      "n_diff": 0,
+      "n": 640,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/wall": {
+      "n_diff": 0,
+      "n": 204700,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/cold_floor": {
+      "n_diff": 112000,
+      "n": 112000,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/hot_pipe": {
+      "n_diff": 10340,
+      "n": 10340,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     }
+    }
+   },
+   "warp_reduced_vs_numpy_reduced": {
+    "n_diff": 122340,
+    "n": 327680,
+    "max_abs": 7.62939453125e-06,
+    "max_rel": 7.848667025560048e-08,
+    "max_abs_mK": 0.0,
+    "by_group": {
+     "bg_above_horizon": {
+      "n_diff": 0,
+      "n": 0,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "bg_below_horizon": {
+      "n_diff": 0,
+      "n": 640,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/wall": {
+      "n_diff": 0,
+      "n": 204700,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/cold_floor": {
+      "n_diff": 112000,
+      "n": 112000,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/hot_pipe": {
+      "n_diff": 10340,
+      "n": 10340,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     }
+    }
+   },
+   "stage2_effect": {
+    "n_diff": 327040,
+    "n": 327680,
+    "max_abs": 0.2368316650390625,
+    "max_rel": 0.0022352462371218796,
+    "max_abs_mK": 183.013916015625,
+    "by_group": {
+     "bg_above_horizon": {
+      "n_diff": 0,
+      "n": 0,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "bg_below_horizon": {
+      "n_diff": 0,
+      "n": 640,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/wall": {
+      "n_diff": 204700,
+      "n": 204700,
+      "max_abs_mK": 15.80810546875,
+      "signed_mean_mK": -14.737827914135014
+     },
+     "/World/cold_floor": {
+      "n_diff": 112000,
+      "n": 112000,
+      "max_abs_mK": 46.69189453125,
+      "signed_mean_mK": 39.54936981201172
+     },
+     "/World/hot_pipe": {
+      "n_diff": 10340,
+      "n": 10340,
+      "max_abs_mK": 183.013916015625,
+      "signed_mean_mK": -155.29292270800593
+     }
+    }
+   },
+   "distance_m": {
+    "bg_below_horizon": [
+     0.0,
+     0.0
+    ],
+    "/World/wall": [
+     4.490632057189941,
+     5.051835536956787
+    ],
+    "/World/cold_floor": [
+     3.6898205280303955,
+     5.047616004943848
+    ],
+    "/World/hot_pipe": [
+     3.150357723236084,
+     4.276965141296387
+    ]
+   },
+   "full_chain_radiance_vs_reduced_mK": {
+    "rms": 367.89586728729375,
+    "max_abs": 11492.12646484375,
+    "mean": 3.125752229243517,
+    "noise_enabled": true
+   }
+  },
+  "pulled_back": {
+   "shape": [
+    512,
+    640
+   ],
+   "t_s": 7200.0,
+   "pixels": {
+    "bg_above_horizon": 79450,
+    "bg_below_horizon": 14848,
+    "/World/wall": 231890,
+    "/World/hot_pipe": 1492
+   },
+   "labels": {
+    "2": "/World/cold_floor",
+    "3": "/World/hot_pipe",
+    "1": "/World/wall"
+   },
+   "inputs": {
+    "illumination_terms_live": [
+     "l_env"
+    ],
+    "planes_keys": [
+     "distance_m",
+     "elevation_rad",
+     "material_id",
+     "motion_px",
+     "normal_dot_view",
+     "semantic_id",
+     "sky_mask",
+     "sky_view_factor",
+     "temperature_k"
+    ],
+    "sky_mask_mismatch": 0,
+    "nonfinite_distance_with_id": 0,
+    "material_id_mismatch": 0,
+    "material_id_mismatch_on_geometry": 0,
+    "v_s_min": 0.49999237060546875,
+    "v_s_max": 1.0,
+    "v_s_unique": 3,
+    "l_env_unique_bit_patterns": 1,
+    "l_env_min": 55.477684020996094,
+    "l_env_max": 55.477684020996094,
+    "l_env_scalar": 55.477684020996094,
+    "l_env_plane_equals_scalar_bits": true,
+    "t_air_k": 300.0,
+    "l_b_t_air": 55.477684020996094,
+    "scalar_equals_l_b_t_air_bits": true,
+    "l_env_spread_mK": 0.0
+   },
+   "temperature": {
+    "n_diff": 580,
+    "n": 327680,
+    "max_abs": 0.0001220703125,
+    "max_rel": 4.069010416666667e-07,
+    "max_abs_mK": 0.06103515625,
+    "by_group": {
+     "bg_above_horizon": {
+      "n_diff": 580,
+      "n": 79450,
+      "max_abs_mK": 0.06103515625,
+      "signed_mean_mK": -0.00037873293934864694
+     },
+     "bg_below_horizon": {
+      "n_diff": 0,
+      "n": 14848,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/wall": {
+      "n_diff": 0,
+      "n": 231890,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/hot_pipe": {
+      "n_diff": 0,
+      "n": 1492,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     }
+    },
+    "kelvin_diff_mK_by_group": {
+     "bg_above_horizon": {
+      "min": -0.1220703125,
+      "max": 0.0,
+      "n_diff": 580
+     },
+     "bg_below_horizon": {
+      "min": 0.0,
+      "max": 0.0,
+      "n_diff": 0
+     },
+     "/World/wall": {
+      "min": 0.0,
+      "max": 0.0,
+      "n_diff": 0
+     },
+     "/World/hot_pipe": {
+      "min": 0.0,
+      "max": 0.0,
+      "n_diff": 0
+     }
+    }
+   },
+   "full_T_bg_above_horizon": {
+    "min": 299.9998779296875,
+    "max": 300.0,
+    "unique": 5
+   },
+   "full_T_bg_below_horizon": {
+    "min": 300.0,
+    "max": 300.0,
+    "unique": 1
+   },
+   "radiance_full_vs_reduced": {
+    "n_diff": 580,
+    "n": 327680,
+    "max_abs": 0.000110626220703125,
+    "max_rel": 1.9940670317322075e-06,
+    "max_abs_mK": 0.1220703125,
+    "by_group": {
+     "bg_above_horizon": {
+      "n_diff": 580,
+      "n": 79450,
+      "max_abs_mK": 0.1220703125,
+      "signed_mean_mK": -0.0006906306541063562
+     },
+     "bg_below_horizon": {
+      "n_diff": 0,
+      "n": 14848,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/wall": {
+      "n_diff": 0,
+      "n": 231890,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/hot_pipe": {
+      "n_diff": 0,
+      "n": 1492,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     }
+    }
+   },
+   "radiance_full_vs_reduced_fullbgT": {
+    "n_diff": 0,
+    "n": 327680
+   },
+   "radiance_full_vs_reduced_fullT": {
+    "n_diff": 0,
+    "n": 327680
+   },
+   "warp_full_vs_warp_reduced": {
+    "n_diff": 580,
+    "n": 327680,
+    "max_abs": 0.0001068115234375,
+    "max_rel": 1.9253060996035108e-06,
+    "max_abs_mK": 0.1220703125,
+    "by_group": {
+     "bg_above_horizon": {
+      "n_diff": 580,
+      "n": 79450,
+      "max_abs_mK": 0.1220703125,
+      "signed_mean_mK": -0.0006906306541063562
+     },
+     "bg_below_horizon": {
+      "n_diff": 0,
+      "n": 14848,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/wall": {
+      "n_diff": 0,
+      "n": 231890,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/hot_pipe": {
+      "n_diff": 0,
+      "n": 1492,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     }
+    }
+   },
+   "warp_full_vs_numpy_full": {
+    "n_diff": 1782,
+    "n": 327680,
+    "max_abs": 7.62939453125e-06,
+    "max_rel": 7.200715923980025e-08,
+    "max_abs_mK": 0.0,
+    "by_group": {
+     "bg_above_horizon": {
+      "n_diff": 290,
+      "n": 79450,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "bg_below_horizon": {
+      "n_diff": 0,
+      "n": 14848,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/wall": {
+      "n_diff": 0,
+      "n": 231890,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/hot_pipe": {
+      "n_diff": 1492,
+      "n": 1492,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     }
+    }
+   },
+   "warp_reduced_vs_numpy_reduced": {
+    "n_diff": 1492,
+    "n": 327680,
+    "max_abs": 7.62939453125e-06,
+    "max_rel": 7.200715923980025e-08,
+    "max_abs_mK": 0.0,
+    "by_group": {
+     "bg_above_horizon": {
+      "n_diff": 0,
+      "n": 79450,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "bg_below_horizon": {
+      "n_diff": 0,
+      "n": 14848,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/wall": {
+      "n_diff": 0,
+      "n": 231890,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/hot_pipe": {
+      "n_diff": 1492,
+      "n": 1492,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     }
+    }
+   },
+   "stage2_effect": {
+    "n_diff": 233382,
+    "n": 327680,
+    "max_abs": 0.4207916259765625,
+    "max_rel": 0.003971482860711944,
+    "max_abs_mK": 325.37841796875,
+    "by_group": {
+     "bg_above_horizon": {
+      "n_diff": 0,
+      "n": 79450,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "bg_below_horizon": {
+      "n_diff": 0,
+      "n": 14848,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/wall": {
+      "n_diff": 231890,
+      "n": 231890,
+      "max_abs_mK": 25.909423828125,
+      "signed_mean_mK": -25.027352509541164
+     },
+     "/World/hot_pipe": {
+      "n_diff": 1492,
+      "n": 1492,
+      "max_abs_mK": 325.37841796875,
+      "signed_mean_mK": -299.58742361605647
+     }
+    }
+   },
+   "distance_m": {
+    "bg_above_horizon": [
+     0.0,
+     0.0
+    ],
+    "bg_below_horizon": [
+     0.0,
+     0.0
+    ],
+    "/World/wall": [
+     7.950001239776611,
+     8.377666473388672
+    ],
+    "/World/hot_pipe": [
+     6.547550678253174,
+     7.691544532775879
+    ]
+   },
+   "full_chain_radiance_vs_reduced_mK": {
+    "rms": 1440.7505529659713,
+    "max_abs": 15027.130126953125,
+    "mean": -178.48107665777206,
+    "noise_enabled": true
+   }
+  }
+ },
+ "background_sweep": {
+  "enclosure_k (ground_temperature_k)": 300.0,
+  "below_horizon_min_max": [
+   300.0,
+   300.0
+  ],
+  "above_horizon_min_max": [
+   299.9998779296875,
+   300.0
+  ],
+  "max_abs_dev_mK": 0.1220703125,
+  "cloud_base_m": 0.001,
+  "t_cloud_base_k": 299.999990239
+ }
+}

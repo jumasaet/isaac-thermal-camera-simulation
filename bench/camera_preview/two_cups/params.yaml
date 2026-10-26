@@ -1,0 +1,64 @@
+# Two cups in front of a matte background -- template for Dahee's experiment.
+# Edit this file and rerun:
+#   /home/jumasaet/isaac_sim/python.sh bench/camera_preview/two_cups/render_two_cups.py [params.yaml]
+#
+# Geometry (metres, +Z up). The camera sits at X = 0, Y = 0 and looks toward -X. Every distance below is
+# measured HORIZONTALLY from the camera, along its viewing direction (X):
+#     cup distance_m        camera -> axis of that cup
+#     background distance_m camera -> front face of the background
+# lateral_m moves a cup sideways (Y): negative = left in the image, positive = right.
+# The table top is Z = 0; cups stand on it. The camera aims at the midpoint of the two cups at half
+# their height unless aim: is given.
+#
+# Temperatures are SURFACE temperatures of what the camera sees (prescribed, not solved). For a glass
+# of water the outer glass wall runs a few kelvin closer to room temperature than the water inside;
+# put the wall temperature here if it is measured (contact probe), otherwise the water temperature.
+# Materials are names in configs/materials/ (LWIR emissivity in brackets for the ones suggested):
+#   glass_windshield (soda-lime glass, ~0.85)  pvc_white (0.96)  abs_plastic_white (0.95)
+#   concrete_white (0.95)  plywood (0.95)  etics_render (0.91)  bare_aluminium (0.09)
+# Room: t_air_c drives the air (the 1 m atmospheric path) AND the radiation every surface reflects:
+# the room is an isothermal enclosure at t_air_c (bench/render_cost/code/rebase_2026-10-22/env_isothermal.yaml),
+# so a cup with emissivity e shows e*L(T_cup) + (1-e)*L(T_air).
+
+sensor_yaml: bench/camera_check/cellplus_ctc007_lwir.yaml    # relative to the repo root
+
+camera:
+  height_m: 0.15            # lens centre above the table top
+  aim: null                 # null = midpoint of the cups at half height; or [x, y, z] in metres
+
+cups:
+  - name: HotCup
+    distance_m: 1.0
+    lateral_m: -0.12
+    radius_m: 0.04          # outer radius (8 cm diameter)
+    height_m: 0.10
+    material: glass_windshield
+    t_c: 60.0
+  - name: ColdCup
+    distance_m: 1.0
+    lateral_m: 0.12
+    radius_m: 0.04
+    height_m: 0.10
+    material: glass_windshield
+    t_c: 5.0
+
+background:                 # flat matte board / wall, facing the camera
+  distance_m: 1.5
+  width_m: 2.5
+  height_m: 1.5
+  material: concrete_white
+  t_c: 22.0
+
+table:                      # the surface the cups stand on, from under the camera to the background
+  enabled: true
+  material: plywood
+  t_c: 22.0
+
+room:
+  t_air_c: 22.0
+  rh_fraction: 0.5
+
+render:
+  window_c: [0.0, 65.0]     # fixed display window of apparent temperature, white hot (no AGC)
+  warmup_frames: 4          # frames at the same pose before the one saved (membrane + chain settle)
+  out_dir: bench/camera_preview/two_cups/out

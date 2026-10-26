@@ -1,0 +1,290 @@
+{
+ "tag": "opt_dn16",
+ "gui": false,
+ "viewport_flag": false,
+ "k": 1,
+ "resolution": [
+  640,
+  512
+ ],
+ "n_frames": 240,
+ "frame_period_s": 0.016666666666666666,
+ "palette": "white_hot",
+ "polarity": "white_hot",
+ "ros": {
+  "enabled": true,
+  "subscribers_at_start": {
+   "/thermal_sim/ir/image_raw": 1,
+   "/thermal_sim/rgb/image_raw": 1
+  },
+  "ir_topic": "/thermal_sim/ir/image_raw",
+  "rgb_topic": "/thermal_sim/rgb/image_raw",
+  "ir_content": "dn16",
+  "ir_encoding": "mono16",
+  "rgb_encoding": "rgba8",
+  "camera_info": true,
+  "rclpy": "/home/jumasaet/isaac_sim/exts/isaacsim.ros2.core/humble/rclpy/rclpy/__init__.py",
+  "rmw": "rmw_fastrtps_cpp",
+  "domain_id": "15",
+  "reliability": "reliable",
+  "depth": 10,
+  "topics": {
+   "/thermal_sim/ir/image_raw": {
+    "published": 240,
+    "subscribers": 1
+   },
+   "/thermal_sim/rgb/image_raw": {
+    "published": 240,
+    "subscribers": 1
+   },
+   "/thermal_sim/ir/camera_info": {
+    "published": 240,
+    "subscribers": 0
+   }
+  }
+ },
+ "rendermode": "RealTimePathTracing",
+ "host": {
+  "epp": "performance",
+  "gpu_temp_util_power_mem": "57, 1, 168.62, 3040"
+ },
+ "camera": {
+  "hfov_deg": 30.676393032914383,
+  "vfov_deg": 24.75237226059246
+ },
+ "trajectory": {
+  "frame_0": [
+   -1.0,
+   -3.0,
+   1.0
+  ],
+  "frame_119": [
+   -1.0,
+   3.0,
+   1.0
+  ],
+  "frame_120": [
+   -1.0,
+   3.0,
+   1.0
+  ],
+  "frame_239": [
+   -1.0,
+   -3.0,
+   1.0
+  ],
+  "step_m": 0.05042016806722671,
+  "look": [
+   -0.9902680687415704,
+   0.0,
+   -0.13917310096006544
+  ]
+ },
+ "sensor": {
+  "name": "flir_boson_640_lwir",
+  "sigma_tvh_dn": 8.897614953681181,
+  "dn_per_k_300": 177.95263671875,
+  "isp": {
+   "agc": "plateau_equalization",
+   "plateau": 0.012,
+   "clip_percentiles": [
+    0.005,
+    0.995
+   ],
+   "gamma": 1.0,
+   "dde_gain": 0.35,
+   "polarity": "white_hot",
+   "palette": "gray",
+   "agc_tiles": [
+    8,
+    8
+   ],
+   "linear_percent": 0.0,
+   "info_weight": 1.0,
+   "detail_headroom": 0.0,
+   "smoothing_sigma_dn": 1250.0,
+   "clip_limit_low": 0.0,
+   "max_gain": 0.0
+  }
+ },
+ "passes": [
+  {
+   "pass": 0,
+   "mode": "timed",
+   "n_frames": 240,
+   "fps": {
+    "mean": 47.92814897657757,
+    "min": 36.50032674839904,
+    "max": 51.499094862043066,
+    "sd": 1.951824626312633,
+    "p05": 44.784341824108324,
+    "p50": 48.28540743892384
+   },
+   "ms": {
+    "pose": {
+     "mean": 0.8730560696373383,
+     "p50": 0.8388319984078407,
+     "p95": 1.1787783994805068,
+     "max": 2.566596958786249,
+     "min": 0.6146399537101388,
+     "sd": 0.15382725732124633
+    },
+    "render": {
+     "mean": 9.647254010390801,
+     "p50": 9.630260523408651,
+     "p95": 10.655262961518018,
+     "max": 12.92785711120814,
+     "min": 8.60958406701684,
+     "sd": 0.4948960883408947
+    },
+    "get_data": {
+     "mean": 1.8296093490789644,
+     "p50": 1.7878845101222396,
+     "p95": 2.1101074467878784,
+     "max": 2.8888439992442727,
+     "min": 1.6649700701236725,
+     "sd": 0.16025487917379969
+    },
+    "fresh": {
+     "mean": 0.07966955260296042,
+     "p50": 0.07728353375568986,
+     "p95": 0.09341068798676133,
+     "max": 0.12812204658985138,
+     "min": 0.07279403507709503,
+     "sd": 0.008348490362430757
+    },
+    "tables": {
+     "mean": 1.7420723849985127,
+     "p50": 1.6954924794845283,
+     "p95": 1.926288945833221,
+     "max": 3.132009063847363,
+     "min": 1.6242529964074492,
+     "sd": 0.1744449570056124
+    },
+    "s12": {
+     "mean": 0.6382760800382433,
+     "p50": 0.6018354324623942,
+     "p95": 0.7768742914777245,
+     "max": 1.3957760529592633,
+     "min": 0.5689740646630526,
+     "sd": 0.09571308502187814
+    },
+    "gpu": {
+     "mean": 3.826793249754701,
+     "p50": 3.7495879805646837,
+     "p95": 4.244184459093958,
+     "max": 6.177805946208537,
+     "min": 3.5548380110412836,
+     "sd": 0.31872374334950115
+    },
+    "sync": {
+     "mean": 0.025640419820168365,
+     "p50": 0.02049753675237298,
+     "p95": 0.03293355694040656,
+     "max": 0.34449202939867973,
+     "min": 0.019268947653472424,
+     "sd": 0.028996063212400103
+    },
+    "download": {
+     "mean": 0.7623477581849633,
+     "p50": 0.740812043659389,
+     "p95": 0.8661840169224887,
+     "max": 1.3427450321614742,
+     "min": 0.7077970076352358,
+     "sd": 0.07766840337000927
+    },
+    "store": {
+     "mean": 0.2320168113025526,
+     "p50": 0.2250425168313086,
+     "p95": 0.2702714991755782,
+     "max": 0.4826278891414404,
+     "min": 0.20188104826956987,
+     "sd": 0.02711161612561064
+    },
+    "publish": {
+     "mean": 1.2078297387536925,
+     "p50": 1.160013023763895,
+     "p95": 1.4741093968041241,
+     "max": 2.1070390939712524,
+     "min": 1.0798920411616564,
+     "sd": 0.13093550671839033
+    },
+    "total": {
+     "mean": 20.864565424562898,
+     "p50": 20.710190990939736,
+     "p95": 22.32925379066728,
+     "max": 27.39701501559466,
+     "min": 19.417817005887628,
+     "sd": 0.956322702896031
+    }
+   },
+   "sub_ms": {
+    "m9_clock": 0.11754939623642713,
+    "m9_drift": 0.282213457103353,
+    "m9_rts": 0.10174212463122481,
+    "s3_optics": 0.32894654965881875,
+    "s4_detector": 0.1636278539081104,
+    "s5_noise": 0.11936257020958388,
+    "m9_defects": 0.10682568148088953,
+    "m9_replace": 0.7468206381114821,
+    "m9_residual": 0.10066552931675687,
+    "m9_ffc": 0.07085672453589116,
+    "adc": 0.0763489015904876,
+    "flat_field": 0.092562489832441,
+    "s6_agc_table": 1.2522749268100597,
+    "s6_lut_dde": 0.16793287213658914,
+    "s6_palette": 0.07375366403721273
+   },
+   "frac_over_33ms": 0.0,
+   "freshness": {
+    "lag_hist": {
+     "1": 240
+    },
+    "anomalous_reads": 0,
+    "frames_never_delivered": [],
+    "events": []
+   },
+   "ffc_fired_or_frozen_frames": 0,
+   "housing_k_last": 298.15,
+   "m9": {
+    "dT_eff_k": 0.0,
+    "replacement_passes": 1,
+    "defects": 460
+   },
+   "host_before": {
+    "epp": "performance",
+    "gpu_temp_util_power_mem": "59, 63, 199.69, 3072"
+   },
+   "host_after": {
+    "epp": "performance",
+    "gpu_temp_util_power_mem": "57, 34, 143.60, 3053"
+   }
+  }
+ ],
+ "check": [],
+ "viewport_updates_enabled": false,
+ "viewport_resolution": [
+  1280,
+  720
+ ],
+ "serial_check": {
+  "camera_fstop": 0.0,
+  "rows": [
+   {
+    "pose": 40,
+    "ids_identical": true,
+    "distance_identical": true,
+    "rgb_mean_abs_diff_same_serial": 0.1432098388671875,
+    "rgb_mean_abs_diff_other_serial": 0.23418121337890624
+   },
+   {
+    "pose": 100,
+    "ids_identical": true,
+    "distance_identical": true,
+    "rgb_mean_abs_diff_same_serial": 0.4608329772949219,
+    "rgb_mean_abs_diff_other_serial": 0.5735450744628906
+   }
+  ],
+  "ok": true
+ }
+}

@@ -1,0 +1,17 @@
+wall_time,event,detail
+1792579202.780,missing,9 frame(s) sent by the camera in the last 5.0 s never arrived (CPU busy or USB loss)
+1792579247.819,missing,1 frame(s) sent by the camera in the last 5.0 s never arrived (CPU busy or USB loss)
+1792579252.782,missing,2 frame(s) sent by the camera in the last 5.0 s never arrived (CPU busy or USB loss)
+1792579312.798,missing,5 frame(s) sent by the camera in the last 5.0 s never arrived (CPU busy or USB loss)
+1792579317.806,missing,2 frame(s) sent by the camera in the last 5.0 s never arrived (CPU busy or USB loss)
+1792579389.634,shift,"bad frame header (counter 71238717, board 10.92, shutter 10.85 degC)"
+1792579389.666,reopen,#1: frame header does not match
+1792579389.976,shift,"bad frame header (counter 74450036, board 11.31, shutter 11.35 degC)"
+1792579390.019,reopen,#2: frame header does not match
+1792579390.300,shift,"bad frame header (counter 67175448, board 10.37, shutter 10.35 degC)"
+1792579390.317,reopen,#3: frame header does not match
+1792579390.581,recovered,"1.00 s since the last good frame, 18 frame(s) dropped (shifted); reopens so far 3"
+1792579462.822,missing,1 frame(s) sent by the camera in the last 5.0 s never arrived (CPU busy or USB loss)
+1792579487.225,shift,"bad frame header (counter 71566405, board 10.91, shutter 10.92 degC)"
+1792579487.251,reopen,#4: frame header does not match
+1792579487.558,recovered,"0.37 s since the last good frame, 6 frame(s) dropped (shifted); reopens so far 4"

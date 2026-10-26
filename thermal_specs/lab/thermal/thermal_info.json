@@ -1,0 +1,15 @@
+{
+  "serial_port": "/dev/serial/by-id/usb-Obsidian_Sensors_Inc._Thermal_Camera_MirVG-01234567-if02",
+  "firmware": "4.6.6.3",
+  "t_list": [
+    0.006000000052154064,
+    4.0,
+    0.3499999940395355,
+    55000.0,
+    0.0
+  ],
+  "denoise": 40,
+  "unit": "16383 - raw sensor counts (higher = hotter)",
+  "invert_raw": true,
+  "dtype": "int16"
+}

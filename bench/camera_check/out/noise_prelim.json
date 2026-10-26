@@ -1,0 +1,24 @@
+[
+ {
+  "run": "377-389",
+  "n_frames": 13,
+  "sigma_tvh_counts": 2.1,
+  "sigma_tv_rows_counts": 0.46,
+  "sigma_th_cols_counts": 0.66,
+  "ratio_tv": 0.22,
+  "ratio_th": 0.313,
+  "spatial_row_pattern_v_upper_counts": 2.81,
+  "spatial_col_pattern_h_upper_counts": 1.47
+ },
+ {
+  "run": "650-663",
+  "n_frames": 14,
+  "sigma_tvh_counts": 2.1,
+  "sigma_tv_rows_counts": 0.58,
+  "sigma_th_cols_counts": 0.61,
+  "ratio_tv": 0.279,
+  "ratio_th": 0.292,
+  "spatial_row_pattern_v_upper_counts": 2.79,
+  "spatial_col_pattern_h_upper_counts": 1.49
+ }
+]

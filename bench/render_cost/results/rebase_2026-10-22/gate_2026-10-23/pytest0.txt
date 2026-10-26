@@ -1,0 +1,49 @@
+........................................................................ [ 19%]
+........................................................................ [ 38%]
+........................................................................ [ 58%]
+........................................................................ [ 77%]
+....................................................F................... [ 96%]
+............                                                             [100%]
+=================================== FAILURES ===================================
+____________________ test_older_scene_documents_still_load _____________________
+
+    def test_older_scene_documents_still_load() -> None:
+        """v5 added `thermal:` as an *optional* field, so every v4 document is a valid v5 document.
+    
+        A range is the honest representation of a backwards-compatible change; refusing a v4 scene
+        would be refusing it for a change that cannot affect it — and would break every scene config
+        in the repository for an addition none of them use.
+        """
+        assert MIN_SCENE_SCHEMA_VERSION < SCENE_SCHEMA_VERSION
+        for path in sorted((REPO / "configs" / "scenes").glob("*.yaml")):
+>           config = load_scene_config(path)
+                     ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/unit/test_thermal_scene.py:109: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path = PosixPath('/home/jumasaet/isaac-thermal-camera-simulation/configs/scenes/inspection_bench.yaml')
+
+    def load_scene_config(path: str | os.PathLike[str]) -> SceneConfig:
+        raw = yaml.safe_load(pathlib.Path(path).read_text(encoding="utf-8"))
+>       return SceneConfig.model_validate(raw)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       pydantic_core._pydantic_core.ValidationError: 2 validation errors for SceneConfig
+E       scene.thermal.surfaces.0.prescribed
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=[{'temperature_k': 330.0,...: [3.0, 3.5, 2.0, 2.5]}], input_type=list]
+E           For further information visit https://errors.pydantic.dev/2.11/v/extra_forbidden
+E       scene.thermal.surfaces.1.prescribed
+E         Extra inputs are not permitted [type=extra_forbidden, input_value=[{'temperature_k': 420.0}], input_type=list]
+E           For further information visit https://errors.pydantic.dev/2.11/v/extra_forbidden
+
+src/irsim/config/scene.py:1490: ValidationError
+=============================== warnings summary ===============================
+tests/unit/test_sea_skin.py::test_sst_accuracy_matters_at_nadir_and_barely_at_the_horizon
+  /home/jumasaet/isaac-thermal-camera-simulation/src/irsim/atmosphere/layered.py:849: UserWarning: LayeredAtmosphere has no spectral response for band 'lwir', so its spectral-class weights come from a nominal top-hat rather than from the camera -- and since AT.10 its spectral *classes* too, since they are derived from the band's own span. Pass responses= (irsim.radiometry.lut_files.load_band_response_for_config) -- measured on the shipped InSb MWIR response, this is a 6.8x error in the h2o_wing class weight.
+    weights = self.weights(band)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/unit/test_thermal_scene.py::test_older_scene_documents_still_load
+1 failed, 371 passed, 1 warning in 130.77s (0:02:10)
+There was an error running python

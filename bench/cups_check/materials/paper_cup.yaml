@@ -1,0 +1,26 @@
+# Paper cup (180 ml, PE-lined paperboard) -- bench material for bench/cups_check, NOT part of configs/materials/.
+# task3_render_cups.py adds it to the library at run time; nothing in configs/ is touched.
+#
+# LWIR emissivity 0.93: ESTIMATED, the middle of the 0.90-0.96 range taken in task1_calibration.py for
+# paper / paperboard (handbook values for paper run 0.90-0.95; a printed PE-coated outer face is near
+# the top of that). Not measured on this cup -- task 1 carries the range as an uncertainty. Opaque:
+# rho = 1 - eps (Kirchhoff, CLAUDE.md #4, derived by the loader). Matte: the empirical angular model of
+# the matte class (plywood's), roughness of a fibrous surface. Thermal block: paperboard, ESTIMATED;
+# unused here (the cup's temperature is prescribed).
+schema_version: 2
+material:
+  name: paper_cup
+  source: estimated
+  surface_treatment: as_manufactured
+  reference: "ESTIMATED for bench/cups_check: LWIR emissivity of paper/paperboard 0.90-0.95 (handbook range), 0.93 taken; NIR/SWIR/MWIR placeholders"
+  description: "PE-lined paper cup, matte printed outer face"
+  thermal:
+    density_kg_m3: 800
+    specific_heat_j_kgk: 1300
+    conductivity_w_mk: 0.08
+    thickness_m: 0.0004
+    solar_absorptivity: 0.3
+  optical:
+    emissivity_per_band: {nir: 0.15, swir: 0.30, mwir: 0.85, lwir: 0.93}
+    roughness_per_band: {nir: 0.7, swir: 0.7, mwir: 0.6, lwir: 0.55}
+    angular_model: {type: empirical, a: 0.05, p: 4.0}

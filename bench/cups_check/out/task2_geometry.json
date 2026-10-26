@@ -1,0 +1,361 @@
+{
+ "sim_f_px": 925.0,
+ "calibrated_fx_fy_px": [
+  626.9461835,
+  620.62145336
+ ],
+ "focal_mm_implied_by_calibration_at_24um": 15.05,
+ "hfov_deg_sim_vs_calibrated_pinhole": [
+  38.17,
+  54.08
+ ],
+ "cases": {
+  "hot_water_50": {
+   "measured": {
+    "width_top10_px": 79.36,
+    "width_bottom10_px": 63.59,
+    "height_px": 80.03,
+    "top_row": 199.21,
+    "bottom_row": 279.25,
+    "centre_col": 233.47
+   },
+   "intrinsic_lidar_distance": {
+    "top_row": 222.1,
+    "bottom_row": 300.55,
+    "height_px": 78.45,
+    "width_top10_px": 84.55,
+    "width_bottom10_px": 63.71,
+    "centre_col": 239.09
+   },
+   "simulator_lidar_distance": {
+    "top_row": 238.24,
+    "bottom_row": 356.28,
+    "height_px": 118.04,
+    "width_top10_px": 127.53,
+    "width_bottom10_px": 96.27,
+    "centre_col": 179.87
+   },
+   "intrinsic_nominal_distance": {
+    "top_row": 221.88,
+    "bottom_row": 300.87,
+    "height_px": 78.99,
+    "width_top10_px": 85.09,
+    "width_bottom10_px": 64.11,
+    "centre_col": 238.48
+   },
+   "simulator_nominal_distance": {
+    "top_row": 237.91,
+    "bottom_row": 356.77,
+    "height_px": 118.87,
+    "width_top10_px": 128.4,
+    "width_bottom10_px": 96.91,
+    "centre_col": 178.93
+   },
+   "error_pct_intrinsic_lidar": {
+    "width_top10_px": -6.1,
+    "width_bottom10_px": -0.2,
+    "height_px": 2.0
+   },
+   "error_pct_simulator_lidar": {
+    "width_top10_px": -37.8,
+    "width_bottom10_px": -33.9,
+    "height_px": -32.2
+   },
+   "error_pct_intrinsic_nominal": {
+    "width_top10_px": -6.7,
+    "width_bottom10_px": -0.8,
+    "height_px": 1.3
+   },
+   "error_pct_simulator_nominal": {
+    "width_top10_px": -38.2,
+    "width_bottom10_px": -34.4,
+    "height_px": -32.7
+   },
+   "error_px_intrinsic_lidar_position": {
+    "row_of_top": -22.9,
+    "row_of_bottom": -21.3,
+    "centre_col": -5.6
+   }
+  },
+  "hot_water_95": {
+   "measured": {
+    "width_top10_px": 43.62,
+    "width_bottom10_px": 35.99,
+    "height_px": 40.82,
+    "top_row": 219.29,
+    "bottom_row": 260.11,
+    "centre_col": 262.06
+   },
+   "intrinsic_lidar_distance": {
+    "top_row": 235.08,
+    "bottom_row": 275.74,
+    "height_px": 40.66,
+    "width_top10_px": 44.9,
+    "width_bottom10_px": 34.04,
+    "centre_col": 264.65
+   },
+   "simulator_lidar_distance": {
+    "top_row": 257.69,
+    "bottom_row": 318.54,
+    "height_px": 60.85,
+    "width_top10_px": 66.91,
+    "width_bottom10_px": 50.77,
+    "centre_col": 218.76
+   },
+   "intrinsic_nominal_distance": {
+    "top_row": 235.06,
+    "bottom_row": 275.77,
+    "height_px": 40.71,
+    "width_top10_px": 44.95,
+    "width_bottom10_px": 34.08,
+    "centre_col": 264.56
+   },
+   "simulator_nominal_distance": {
+    "top_row": 257.66,
+    "bottom_row": 318.59,
+    "height_px": 60.93,
+    "width_top10_px": 66.99,
+    "width_bottom10_px": 50.83,
+    "centre_col": 218.63
+   },
+   "error_pct_intrinsic_lidar": {
+    "width_top10_px": -2.9,
+    "width_bottom10_px": 5.7,
+    "height_px": 0.4
+   },
+   "error_pct_simulator_lidar": {
+    "width_top10_px": -34.8,
+    "width_bottom10_px": -29.1,
+    "height_px": -32.9
+   },
+   "error_pct_intrinsic_nominal": {
+    "width_top10_px": -3.0,
+    "width_bottom10_px": 5.6,
+    "height_px": 0.3
+   },
+   "error_pct_simulator_nominal": {
+    "width_top10_px": -34.9,
+    "width_bottom10_px": -29.2,
+    "height_px": -33.0
+   },
+   "error_px_intrinsic_lidar_position": {
+    "row_of_top": -15.8,
+    "row_of_bottom": -15.6,
+    "centre_col": -2.6
+   }
+  },
+  "cold_water_50": {
+   "measured": {
+    "width_top10_px": 78.38,
+    "width_bottom10_px": 63.32,
+    "height_px": 72.99,
+    "top_row": 201.68,
+    "bottom_row": 274.67,
+    "centre_col": 225.49
+   },
+   "intrinsic_lidar_distance": {
+    "top_row": 216.95,
+    "bottom_row": 295.21,
+    "height_px": 78.26,
+    "width_top10_px": 84.44,
+    "width_bottom10_px": 63.69,
+    "centre_col": 230.9
+   },
+   "simulator_lidar_distance": {
+    "top_row": 230.43,
+    "bottom_row": 348.25,
+    "height_px": 117.82,
+    "width_top10_px": 128.07,
+    "width_bottom10_px": 96.7,
+    "centre_col": 167.39
+   },
+   "intrinsic_nominal_distance": {
+    "top_row": 216.81,
+    "bottom_row": 295.41,
+    "height_px": 78.6,
+    "width_top10_px": 84.79,
+    "width_bottom10_px": 63.94,
+    "centre_col": 230.48
+   },
+   "simulator_nominal_distance": {
+    "top_row": 230.21,
+    "bottom_row": 348.55,
+    "height_px": 118.35,
+    "width_top10_px": 128.63,
+    "width_bottom10_px": 97.12,
+    "centre_col": 166.74
+   },
+   "error_pct_intrinsic_lidar": {
+    "width_top10_px": -7.2,
+    "width_bottom10_px": -0.6,
+    "height_px": -6.7
+   },
+   "error_pct_simulator_lidar": {
+    "width_top10_px": -38.8,
+    "width_bottom10_px": -34.5,
+    "height_px": -38.0
+   },
+   "error_pct_intrinsic_nominal": {
+    "width_top10_px": -7.6,
+    "width_bottom10_px": -1.0,
+    "height_px": -7.1
+   },
+   "error_pct_simulator_nominal": {
+    "width_top10_px": -39.1,
+    "width_bottom10_px": -34.8,
+    "height_px": -38.3
+   },
+   "error_px_intrinsic_lidar_position": {
+    "row_of_top": -15.3,
+    "row_of_bottom": -20.5,
+    "centre_col": -5.4
+   }
+  },
+  "cold_water_95": {
+   "measured": {
+    "width_top10_px": 42.84,
+    "width_bottom10_px": 36.5,
+    "height_px": 37.42,
+    "top_row": 216.63,
+    "bottom_row": 254.05,
+    "centre_col": 253.46
+   },
+   "intrinsic_lidar_distance": {
+    "top_row": 235.09,
+    "bottom_row": 275.22,
+    "height_px": 40.13,
+    "width_top10_px": 44.49,
+    "width_bottom10_px": 33.81,
+    "centre_col": 255.81
+   },
+   "simulator_lidar_distance": {
+    "top_row": 257.69,
+    "bottom_row": 317.81,
+    "height_px": 60.12,
+    "width_top10_px": 66.55,
+    "width_bottom10_px": 50.55,
+    "centre_col": 205.54
+   },
+   "intrinsic_nominal_distance": {
+    "top_row": 234.95,
+    "bottom_row": 275.4,
+    "height_px": 40.46,
+    "width_top10_px": 44.84,
+    "width_bottom10_px": 34.07,
+    "centre_col": 255.2
+   },
+   "simulator_nominal_distance": {
+    "top_row": 257.48,
+    "bottom_row": 318.09,
+    "height_px": 60.62,
+    "width_top10_px": 67.1,
+    "width_bottom10_px": 50.96,
+    "centre_col": 204.63
+   },
+   "error_pct_intrinsic_lidar": {
+    "width_top10_px": -3.7,
+    "width_bottom10_px": 8.0,
+    "height_px": -6.8
+   },
+   "error_pct_simulator_lidar": {
+    "width_top10_px": -35.6,
+    "width_bottom10_px": -27.8,
+    "height_px": -37.8
+   },
+   "error_pct_intrinsic_nominal": {
+    "width_top10_px": -4.5,
+    "width_bottom10_px": 7.1,
+    "height_px": -7.5
+   },
+   "error_pct_simulator_nominal": {
+    "width_top10_px": -36.2,
+    "width_bottom10_px": -28.4,
+    "height_px": -38.3
+   },
+   "error_px_intrinsic_lidar_position": {
+    "row_of_top": -18.5,
+    "row_of_bottom": -21.2,
+    "centre_col": -2.3
+   }
+  }
+ },
+ "ratio_50_over_95_measured": {
+  "hot": {
+   "width_top10_px": 1.819,
+   "width_bottom10_px": 1.767,
+   "height_px": 1.961
+  },
+  "cold": {
+   "width_top10_px": 1.83,
+   "width_bottom10_px": 1.735,
+   "height_px": 1.951
+  },
+  "lidar_distance_ratio_hot": 1.89,
+  "lidar_distance_ratio_cold": 1.907
+ },
+ "lidar": {
+  "hot_water_50": {
+   "n_points_cup": 96,
+   "camera_height_above_table_m": 0.0344,
+   "camera_pitch_up_deg": 2.834,
+   "camera_roll_deg": -1.514,
+   "board_distance_along_normal_m": 0.9974,
+   "board_distance_horizontal_m": 1.0143,
+   "cup_front_depth_m": 0.4718,
+   "cup_front_height_m": 0.0387,
+   "cup_axis_horizontal_distance_m": 0.5033,
+   "cup_axis_lateral_m": 0.0757
+  },
+  "hot_water_95": {
+   "n_points_cup": 25,
+   "camera_height_above_table_m": 0.0373,
+   "camera_pitch_up_deg": 2.407,
+   "camera_roll_deg": -1.455,
+   "board_distance_along_normal_m": 1.0127,
+   "board_distance_horizontal_m": 1.0236,
+   "cup_front_depth_m": 0.9193,
+   "cup_front_height_m": 0.0381,
+   "cup_axis_horizontal_distance_m": 0.9512,
+   "cup_axis_lateral_m": 0.1039
+  },
+  "cold_water_50": {
+   "n_points_cup": 42,
+   "camera_height_above_table_m": 0.0343,
+   "camera_pitch_up_deg": 2.47,
+   "camera_roll_deg": -0.72,
+   "board_distance_along_normal_m": 1.009,
+   "board_distance_horizontal_m": 1.029,
+   "cup_front_depth_m": 0.4716,
+   "cup_front_height_m": 0.0321,
+   "cup_axis_horizontal_distance_m": 0.5021,
+   "cup_axis_lateral_m": 0.0822
+  },
+  "cold_water_95": {
+   "n_points_cup": 22,
+   "camera_height_above_table_m": 0.0326,
+   "camera_pitch_up_deg": 2.728,
+   "camera_roll_deg": -0.817,
+   "board_distance_along_normal_m": 1.0102,
+   "board_distance_horizontal_m": 1.0294,
+   "cup_front_depth_m": 0.9251,
+   "cup_front_height_m": 0.044,
+   "cup_axis_horizontal_distance_m": 0.9576,
+   "cup_axis_lateral_m": 0.1181
+  }
+ },
+ "image_pose": {
+  "camera_height_above_table_m": 0.0323,
+  "camera_pitch_up_deg": 1.213,
+  "row_residuals_px": [
+   0.5,
+   -1.52,
+   -1.94,
+   -2.47,
+   -2.0,
+   3.11,
+   0.87,
+   3.43
+  ],
+  "rms_px": 2.2
+ }
+}

@@ -1,0 +1,134 @@
+# Cellplus CTC-007 / CTC-008 VGA USB (LWIR, uncooled microbolometer, 22.2 mm F/1.3 lens).
+# DRAFT for bench/camera_check -- not part of configs/sensors/. Schema: docs/physics-model.md §12.2,
+# laid out like configs/sensors/flir_boson_640_lwir.yaml.
+#
+# Source of every value, one of:
+#   [DS]    thermal_specs/thermal_camera_specs.md (the Cellplus datasheet)
+#   [INFO]  thermal_specs/lab/thermal/thermal_info.json (written by the capture tool, read off the core)
+#   [DATA]  measured from the .npy recordings in bench/camera_check/ (agc_check.py, noise_prelim.py)
+#   PENDIENTE  nothing published and nothing measured. The schema requires a value, so the Boson's
+#           number stays as a placeholder; do not trust any result that depends on it.
+#
+# The core reports itself as "Obsidian Sensors Inc. Thermal Camera MirVG", firmware 4.6.6.3 [INFO].
+
+schema_version: 12
+
+sensor:
+  name: cellplus_ctc007_lwir
+  band:
+    lambda_min_um: 8.0                           # [DS] "8-14 um"
+    lambda_max_um: 14.0                          # [DS]
+    # PENDIENTE: the Boson's raised-cosine shape moved to 8/14 um. Path is relative to data/, so this
+    # points back out to the bench copy; a real curve (manufacturer or monochromator) replaces it.
+    spectral_response: ../bench/camera_check/cellplus_ctc007_response_ESTIMATED.csv
+    regime: emissive
+
+  optics:
+    f_number: 1.3                                # [DS]
+    focal_length_mm: 22.2                        # [DS] CTC-007/008. 640 x 24 um / 22.2 mm -> 38.2 x 29.1 deg
+    transmittance: 0.92                          # PENDIENTE (Boson). Datasheet: "shortwave-blocking
+                                                 # coating on the lens" -- material and AR coat unknown
+    housing_temp_mode: coupled
+    housing_tau_s: 900.0                         # PENDIENTE (Boson). Core 25-31 g without lens [DS]
+    housing_self_heating_k: 4.0                  # PENDIENTE (Boson). This core draws 1.2 W [DS],
+                                                 # ~2.4x the Boson's ~0.5 W, so likely higher
+    cold_shield_efficiency: 1.0                  # n/a for uncooled
+    distortion:
+      model: brown_conrady
+      coeffs: [0.0, 0.0, 0.0, 0.0, 0.0]          # PENDIENTE -- cali_board/ has 27 circle-grid views;
+                                                 # a calibration goes in `calibration.geometric`
+    vignetting_cos4: true
+    mtf:
+      # PENDIENTE. No MTF published. The Boson's 1.654 um was solved from FLIR's 42 % at Nyquist and
+      # does not transfer. 0.0 = diffraction-limited: at F/1.3, 11 um and 24 um pitch (Nyquist
+      # 20.8 cyc/mm) that is MTF_diff ~ 0.63 -- an upper bound on a real lens. Measure a slant edge.
+      aberration_sigma_um: 0.0
+    # focus: left at the schema default (infinity). PENDIENTE and it matters for the lab set: the
+    # hyperfocal distance of this lens at c = 1 pitch is f^2/(F c) + f = 15.8 m, so a lens focused
+    # at infinity is visibly soft at the 1-5 m of the lab. Unknown whether the lens is fixed-focus
+    # or was focused by hand; if known, set `focus` and `mtf.defocus_model: hopkins`.
+
+  fpa:
+    type: bolometer
+    # [DATA] The .npy frames are 480 rows x 640 columns and the scene is upright in them, so the
+    # recordings are 640 wide. The datasheet lists "640 x 480 (viewer) / 480 x 640 (camera)" and
+    # FOV (H x V) 30 x 40: the native readout is portrait and the viewer/capture rotates it. Keep
+    # 640 x 480 to compare with these files; swap width/height to model the native stream.
+    width: 640
+    height: 480
+    pitch_um: 24.0                               # [DS]
+    fill_factor: 0.90                            # PENDIENTE (Boson)
+    frame_rate_hz: 9.0                           # [DS] CTC-007 = 9 Hz, CTC-008 = 30 Hz. The lab
+                                                 # recording runs at 10.0 Hz [DATA] -- matches neither;
+                                                 # PENDIENTE: confirm which unit this is
+    bit_depth: 14                                # [INFO] "16383 - raw sensor counts"; the files hold
+                                                 # 16383 - raw (invert_raw: true), higher = hotter
+    thermal_time_constant_ms: 8.0                # PENDIENTE (Boson). Datasheet "latency 1 ms" is the
+                                                 # readout latency, not the membrane time constant
+    g_th_w_per_k: 2.0e-8                         # PENDIENTE (Boson; a 24 um membrane differs)
+    tcr_per_k: -0.021                            # PENDIENTE (Boson, VOx). Sensing material unknown
+
+  noise:
+    netd_mk_at_300k: 50.0                        # [DS] "<= 50 mK" -- an upper bound; test conditions
+                                                 # (f-number, scene temp, frame averaging) not given
+    # netd_ref_f_number: unset = the configured F/1.3. PENDIENTE: the datasheet does not say whether
+    # its NETD is with this lens or lensless at f/1.0 as FLIR's is (ADR 0025).
+    ratios_3d:
+      # PENDIENTE (all seven are the Boson's). Preliminary [DATA], from frame differences in the two
+      # static stretches of the lab set, AFTER the core's own denoise (denoise: 40 [INFO]):
+      #   sigma_tvh = 2.1 counts; tv (row, temporal) ~ 0.22-0.28; th (column, temporal) ~ 0.29-0.31.
+      # Spatial v/h could not be separated from scene structure. Needs a uniform target (lens cap or
+      # blackbody) for 30+ s with denoise off, then the 3D-noise decomposition.
+      tvh: 1.00
+      vh:  0.30
+      h:   0.15
+      v:   0.08
+      tv:  0.05
+      th:  0.05
+      t:   0.02
+    fpn_drift_tau_s: 120.0                       # PENDIENTE (Boson)
+    bad_pixel_fraction: 0.005                    # [DS] pixel operability 99.5 %
+    bad_pixel_cluster_lambda: 1.6                # PENDIENTE (Boson)
+    bad_pixel_late_fraction: 0.01                # PENDIENTE (Boson)
+
+  nuc:
+    # Shuttered: the frame header carries a shutter temperature [INFO, thermal_sync_events.csv], and
+    # the lab set has one whole-frame +106-count step across a 0.7 s output pause [DATA].
+    mode: shuttered
+    ffc_interval_s: 300                          # PENDIENTE (Boson). One event in 120 s of data
+    ffc_freeze_ms: 700                           # [DATA] one event: 0.70 s between frames vs 0.10 s
+                                                 # nominal, i.e. ~600 ms with no output. Coincides
+                                                 # with the Boson's 700
+    residual_gain_ppm_per_k: 900                 # PENDIENTE (Boson)
+    residual_offset_mk_per_k: 45                 # PENDIENTE (Boson). [DATA] between FFCs the level
+                                                 # drifts up to ~1 count/frame
+
+  # The recordings are raw counts with no ISP, so the comparison plane is `dn_16`, not `display_8`.
+  # The camera's own 8-bit video path (if it has an AGC) was not recorded -- PENDIENTE.
+  # The capture tool's thermal_color/*.png are a FIXED linear window, stored counts 15096 -> 0 and
+  # 15500 -> 255 [DATA]; the schema has no fixed-window mode (`none` maps the whole 14-bit range),
+  # so `linear` here is a placeholder and the Boson's equaliser settings are dropped.
+  isp:
+    agc: linear                                  # PENDIENTE
+    plateau: 0.07                                # unused by `linear`
+    clip_percentiles: [0.005, 0.995]
+    gamma: 1.0
+    dde_gain: 0.0
+    polarity: white_hot
+    palette: gray
+
+  outputs:
+    radiance_linear: true
+    apparent_temperature: true
+    dn_16: true
+    display_8: true
+    scene_apparent_temperature: true             # the reference a radiometric comparison needs
+
+  extensions:
+    core: Obsidian Sensors MirVG
+    firmware: 4.6.6.3
+    capture_invert_raw: true                     # files store 16383 - raw
+    capture_denoise: 40                          # core denoise setting during capture
+    capture_t_list: [0.006, 4.0, 0.35, 55000.0, 0.0]   # undocumented; ask the vendor
+    object_range_c: [-100, 400]                  # [DS]; one or two gain states unknown
+    accuracy: "+/-3 C (10-60 C), +/-5 % to 400 C, ambient 15-35 C"   # [DS]

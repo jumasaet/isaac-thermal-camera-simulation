@@ -1,0 +1,113 @@
+{
+ "params": {
+  "sensor_yaml": "bench/camera_check/cellplus_ctc007_lwir.yaml",
+  "camera": {
+   "height_m": 0.15,
+   "aim": null
+  },
+  "cups": [
+   {
+    "name": "HotCup",
+    "distance_m": 1.0,
+    "lateral_m": -0.12,
+    "radius_m": 0.04,
+    "height_m": 0.1,
+    "material": "glass_windshield",
+    "t_c": 60.0
+   },
+   {
+    "name": "ColdCup",
+    "distance_m": 1.0,
+    "lateral_m": 0.12,
+    "radius_m": 0.04,
+    "height_m": 0.1,
+    "material": "glass_windshield",
+    "t_c": 5.0
+   }
+  ],
+  "background": {
+   "distance_m": 1.5,
+   "width_m": 2.5,
+   "height_m": 1.5,
+   "material": "concrete_white",
+   "t_c": 22.0
+  },
+  "table": {
+   "enabled": true,
+   "material": "plywood",
+   "t_c": 22.0
+  },
+  "room": {
+   "t_air_c": 22.0,
+   "rh_fraction": 0.5
+  },
+  "render": {
+   "window_c": [
+    0.0,
+    65.0
+   ],
+   "warmup_frames": 4,
+   "out_dir": "bench/camera_preview/two_cups/out"
+  }
+ },
+ "params_file": "/home/jumasaet/isaac-thermal-camera-simulation/bench/camera_preview/two_cups/params.yaml",
+ "scene_yaml": "/home/jumasaet/isaac-thermal-camera-simulation/bench/camera_preview/two_cups/out/scene_two_cups.yaml",
+ "camera_position": [
+  0.0,
+  0.0,
+  0.15
+ ],
+ "camera_look": [
+  -0.9950371902099893,
+  0.0,
+  -0.09950371902099892
+ ],
+ "hfov_deg": 38.1657080340769,
+ "vfov_deg": 29.090405365486255,
+ "render_product_w_h": [
+  2560,
+  1920
+ ],
+ "objects": {
+  "Background": {
+   "material": "concrete_white",
+   "t_surface_c": 22.0,
+   "t_apparent_c_median": 21.8,
+   "pixels_core": 142240,
+   "pixels": 146668
+  },
+  "Table": {
+   "material": "plywood",
+   "t_surface_c": 22.0,
+   "t_apparent_c_median": 21.8,
+   "pixels_core": 141914,
+   "pixels": 146372
+  },
+  "HotCup": {
+   "material": "glass_windshield",
+   "t_surface_c": 60.0,
+   "t_apparent_c_median": 55.89,
+   "pixels_core": 6074,
+   "pixels": 7076
+  },
+  "ColdCup": {
+   "material": "glass_windshield",
+   "t_surface_c": 5.0,
+   "t_apparent_c_median": 7.1,
+   "pixels_core": 6082,
+   "pixels": 7084
+  }
+ },
+ "cups_geometry": {
+  "HotCup": {
+   "diameter_px_expected": 73.6
+  },
+  "ColdCup": {
+   "diameter_px_expected": 73.6
+  }
+ },
+ "field_of_view_at_cups_m": [
+  0.692,
+  0.519
+ ]
+}

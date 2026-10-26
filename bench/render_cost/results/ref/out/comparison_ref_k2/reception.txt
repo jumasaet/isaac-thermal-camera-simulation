@@ -1,0 +1,3 @@
+{"topic": "/thermal_sim/ir/image_raw", "sent": 240, "received": 240, "missing": 0, "duplicates": 0, "in_order": true, "payload_crc_mismatches": 0, "encoding": ["rgba8"], "frame_id": ["ir_camera"], "width_height_step_len": [[640, 512, 2560, 1310720]], "arrival_rate_hz": 33.6}
+{"topic": "/thermal_sim/rgb/image_raw", "sent": 240, "received": 240, "missing": 0, "duplicates": 0, "in_order": true, "payload_crc_mismatches": 0, "encoding": ["rgba8"], "frame_id": ["rgb_camera"], "width_height_step_len": [[640, 512, 2560, 1310720]], "arrival_rate_hz": 33.66}
+RECEPTION OK

@@ -1,0 +1,7 @@
+izquierda a derecha, arriba a abajo:
+cpu_completo_k1
+gpu_completo_k1
+gpu_ff_m9_k1
+gpu_ff_m9_k2
+gpu_ff_m9_k4
+gpu_ff_m9_k2_jet

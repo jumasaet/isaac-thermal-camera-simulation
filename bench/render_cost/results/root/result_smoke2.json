@@ -1,0 +1,93 @@
+{
+  "sensor": "/tmp/irsim_render_cost/sensor_ss1.yaml",
+  "scene": "/tmp/irsim_render_cost/scene_bench.yaml",
+  "requested_rendermode": "RaytracedLighting",
+  "effective_rendermode": "RealTimePathTracing",
+  "supersample_factor": 1,
+  "native_px": [
+    640,
+    512
+  ],
+  "render_product_px": [
+    640,
+    512
+  ],
+  "rt_subframes": 1,
+  "pt_spp": null,
+  "warmup": 3,
+  "frames": 4,
+  "env_radiance_patched_in": [
+    "irsim.pipeline.environment",
+    "irsim.pipeline.radiance",
+    "irsim.validation.aerial"
+  ],
+  "renderer_settings_readback": {
+    "/rtx/rendermode": "RealTimePathTracing",
+    "/rtx/post/aa/op": 3,
+    "/rtx/post/dlss/execMode": 0,
+    "/rtx/pathtracing/spp": 64,
+    "/rtx/pathtracing/totalSpp": 64,
+    "/rtx/sceneDb/ambientLightIntensity": 0.0
+  },
+  "env_radiance_calls_per_frame": 1.0,
+  "sky_clear_lut_calls_per_frame": 1.0,
+  "vram_mib_max": 2009.0,
+  "phases": {
+    "renderer": {
+      "mean_ms": 86.85528379282914,
+      "std_ms": 1.4965341475126144,
+      "min_ms": 85.08735406212509,
+      "max_ms": 88.32951803924516,
+      "n": 4
+    },
+    "planes_total": {
+      "mean_ms": 402.5362392567331,
+      "std_ms": 7.692885452600838,
+      "min_ms": 393.92883697291836,
+      "max_ms": 410.1889070007019,
+      "n": 4
+    },
+    "material_id": {
+      "mean_ms": 3.597776507376693,
+      "std_ms": 0.05286516217849687,
+      "min_ms": 3.549256012775004,
+      "max_ms": 3.645349992439151,
+      "n": 4
+    },
+    "temperature": {
+      "mean_ms": 2.0834452734561637,
+      "std_ms": 0.1071141202940613,
+      "min_ms": 1.9792340463027358,
+      "max_ms": 2.2329820203594863,
+      "n": 4
+    },
+    "environment_radiance": {
+      "mean_ms": 731.1133012408391,
+      "std_ms": 6.57610079091114,
+      "min_ms": 724.5345980045386,
+      "max_ms": 738.8039249926805,
+      "n": 4
+    },
+    "sky_clear_lut": {
+      "mean_ms": 724.1261787712574,
+      "std_ms": 6.9082401175380435,
+      "min_ms": 716.5753850131296,
+      "max_ms": 731.8781969952397,
+      "n": 4
+    },
+    "get_outputs_total": {
+      "mean_ms": 1310.7916342414683,
+      "std_ms": 11.017268508049824,
+      "min_ms": 1299.3350679753348,
+      "max_ms": 1324.6002729865722,
+      "n": 4
+    },
+    "assembly_b": {
+      "mean_ms": 315.68095546390396,
+      "std_ms": 7.452714566879033,
+      "min_ms": 308.8414829107933,
+      "max_ms": 324.0164659800939,
+      "n": 4
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+ "shape": [
+  512,
+  640
+ ],
+ "numpy": "2.3.1",
+ "boson_information_based": {
+  "median_ms": 104.39694950002831,
+  "p95_ms": 107.98212455007956,
+  "n": 32
+ },
+ "old_plateau_dde": {
+  "median_ms": 15.62777549997918,
+  "p95_ms": 16.250002800001084,
+  "n": 32
+ },
+ "boson_bilateral_split_5x5_ms": 77.78587079999397
+}

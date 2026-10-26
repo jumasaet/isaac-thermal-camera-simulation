@@ -1,0 +1,226 @@
+........................................................................ [ 19%]
+........................................................................ [ 38%]
+........................................................................ [ 57%]
+...................E.EEE................................................ [ 76%]
+........................................................................ [ 95%]
+.................                                                        [100%]
+==================================== ERRORS ====================================
+_ ERROR at setup of test_every_part_of_the_asset_resolves_to_its_own_node_or_surface _
+
+tophat_lwir_lut = BandLUT(t0_k=200.0, t1_k=1000.0, n=16001, lb=array([   5.5594068,    5.568698 ,    5.5780005, ..., 2252.9849   ,
+     ... 1.0109612e+19, ..., 2.1077863e+20,
+       2.1078262e+20, 2.1078660e+20], shape=(16001,), dtype=float32), band_hash='')
+
+    @pytest.fixture(scope="module")
+    def scene(tophat_lwir_lut):  # type: ignore[no-untyped-def]
+>       return Scene.from_config(load_scene_config(SCENE), {"lwir": tophat_lwir_lut})
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/unit/test_phantom4_perpart.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/irsim/scene.py:878: in from_config
+    meshes[surface.name] = build_mesh(surface.mesh)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^
+src/irsim/scene.py:163: in build_mesh
+    mesh = load_asset_meshes(spec.asset)[str(spec.prim)]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path = 'phantom4_parts', check_area = 1e-06
+
+    def load_asset_meshes(path: str | os.PathLike[str], *, check_area: float = 1e-6) -> AssetMeshes:
+        """Read an ``.npz`` written by ``scripts/prep_asset.py --emit-mesh``.
+    
+        A bare name (``"phantom4"``) resolves to ``data/assets/<name>/<name>.meshes.npz``, so a scene
+        can name an asset without knowing the layout.
+    
+        ``check_area`` is the relative tolerance between each prim's recorded area and the area of the
+        arrays as loaded. It is not a formality: the recorded value is what the prep tool's own gate
+        was applied to, so a silent disagreement here would mean the gate passed on geometry that is
+        not the geometry being solved.
+        """
+        p = pathlib.Path(path)
+        if not p.suffix:
+            p = ASSETS_DIR / p.name / f"{p.name}.meshes.npz"
+        if not p.exists():
+>           raise FileNotFoundError(
+                f"no mesh archive at {p}. Generate it with:\n"
+                f"    python scripts/prep_asset.py --asset {p.stem.split('.')[0]} --emit-mesh"
+            )
+E           FileNotFoundError: no mesh archive at /home/jumasaet/isaac-thermal-camera-simulation/data/assets/phantom4_parts/phantom4_parts.meshes.npz. Generate it with:
+E               python scripts/prep_asset.py --asset phantom4_parts --emit-mesh
+
+src/irsim/io/assets.py:142: FileNotFoundError
+_ ERROR at setup of test_same_kind_parts_differ_the_way_the_flight_makes_them_differ _
+
+tophat_lwir_lut = BandLUT(t0_k=200.0, t1_k=1000.0, n=16001, lb=array([   5.5594068,    5.568698 ,    5.5780005, ..., 2252.9849   ,
+     ... 1.0109612e+19, ..., 2.1077863e+20,
+       2.1078262e+20, 2.1078660e+20], shape=(16001,), dtype=float32), band_hash='')
+
+    @pytest.fixture(scope="module")
+    def scene(tophat_lwir_lut):  # type: ignore[no-untyped-def]
+>       return Scene.from_config(load_scene_config(SCENE), {"lwir": tophat_lwir_lut})
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/unit/test_phantom4_perpart.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/irsim/scene.py:878: in from_config
+    meshes[surface.name] = build_mesh(surface.mesh)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^
+src/irsim/scene.py:163: in build_mesh
+    mesh = load_asset_meshes(spec.asset)[str(spec.prim)]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path = 'phantom4_parts', check_area = 1e-06
+
+    def load_asset_meshes(path: str | os.PathLike[str], *, check_area: float = 1e-6) -> AssetMeshes:
+        """Read an ``.npz`` written by ``scripts/prep_asset.py --emit-mesh``.
+    
+        A bare name (``"phantom4"``) resolves to ``data/assets/<name>/<name>.meshes.npz``, so a scene
+        can name an asset without knowing the layout.
+    
+        ``check_area`` is the relative tolerance between each prim's recorded area and the area of the
+        arrays as loaded. It is not a formality: the recorded value is what the prep tool's own gate
+        was applied to, so a silent disagreement here would mean the gate passed on geometry that is
+        not the geometry being solved.
+        """
+        p = pathlib.Path(path)
+        if not p.suffix:
+            p = ASSETS_DIR / p.name / f"{p.name}.meshes.npz"
+        if not p.exists():
+>           raise FileNotFoundError(
+                f"no mesh archive at {p}. Generate it with:\n"
+                f"    python scripts/prep_asset.py --asset {p.stem.split('.')[0]} --emit-mesh"
+            )
+E           FileNotFoundError: no mesh archive at /home/jumasaet/isaac-thermal-camera-simulation/data/assets/phantom4_parts/phantom4_parts.meshes.npz. Generate it with:
+E               python scripts/prep_asset.py --asset phantom4_parts --emit-mesh
+
+src/irsim/io/assets.py:142: FileNotFoundError
+_________ ERROR at setup of test_the_motors_converge_again_once_landed _________
+
+tophat_lwir_lut = BandLUT(t0_k=200.0, t1_k=1000.0, n=16001, lb=array([   5.5594068,    5.568698 ,    5.5780005, ..., 2252.9849   ,
+     ... 1.0109612e+19, ..., 2.1077863e+20,
+       2.1078262e+20, 2.1078660e+20], shape=(16001,), dtype=float32), band_hash='')
+
+    @pytest.fixture(scope="module")
+    def scene(tophat_lwir_lut):  # type: ignore[no-untyped-def]
+>       return Scene.from_config(load_scene_config(SCENE), {"lwir": tophat_lwir_lut})
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/unit/test_phantom4_perpart.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/irsim/scene.py:878: in from_config
+    meshes[surface.name] = build_mesh(surface.mesh)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^
+src/irsim/scene.py:163: in build_mesh
+    mesh = load_asset_meshes(spec.asset)[str(spec.prim)]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path = 'phantom4_parts', check_area = 1e-06
+
+    def load_asset_meshes(path: str | os.PathLike[str], *, check_area: float = 1e-6) -> AssetMeshes:
+        """Read an ``.npz`` written by ``scripts/prep_asset.py --emit-mesh``.
+    
+        A bare name (``"phantom4"``) resolves to ``data/assets/<name>/<name>.meshes.npz``, so a scene
+        can name an asset without knowing the layout.
+    
+        ``check_area`` is the relative tolerance between each prim's recorded area and the area of the
+        arrays as loaded. It is not a formality: the recorded value is what the prep tool's own gate
+        was applied to, so a silent disagreement here would mean the gate passed on geometry that is
+        not the geometry being solved.
+        """
+        p = pathlib.Path(path)
+        if not p.suffix:
+            p = ASSETS_DIR / p.name / f"{p.name}.meshes.npz"
+        if not p.exists():
+>           raise FileNotFoundError(
+                f"no mesh archive at {p}. Generate it with:\n"
+                f"    python scripts/prep_asset.py --asset {p.stem.split('.')[0]} --emit-mesh"
+            )
+E           FileNotFoundError: no mesh archive at /home/jumasaet/isaac-thermal-camera-simulation/data/assets/phantom4_parts/phantom4_parts.meshes.npz. Generate it with:
+E               python scripts/prep_asset.py --asset phantom4_parts --emit-mesh
+
+src/irsim/io/assets.py:142: FileNotFoundError
+_________ ERROR at setup of test_each_propeller_follows_its_own_motor __________
+
+tophat_lwir_lut = BandLUT(t0_k=200.0, t1_k=1000.0, n=16001, lb=array([   5.5594068,    5.568698 ,    5.5780005, ..., 2252.9849   ,
+     ... 1.0109612e+19, ..., 2.1077863e+20,
+       2.1078262e+20, 2.1078660e+20], shape=(16001,), dtype=float32), band_hash='')
+
+    @pytest.fixture(scope="module")
+    def scene(tophat_lwir_lut):  # type: ignore[no-untyped-def]
+>       return Scene.from_config(load_scene_config(SCENE), {"lwir": tophat_lwir_lut})
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/unit/test_phantom4_perpart.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/irsim/scene.py:878: in from_config
+    meshes[surface.name] = build_mesh(surface.mesh)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^
+src/irsim/scene.py:163: in build_mesh
+    mesh = load_asset_meshes(spec.asset)[str(spec.prim)]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path = 'phantom4_parts', check_area = 1e-06
+
+    def load_asset_meshes(path: str | os.PathLike[str], *, check_area: float = 1e-6) -> AssetMeshes:
+        """Read an ``.npz`` written by ``scripts/prep_asset.py --emit-mesh``.
+    
+        A bare name (``"phantom4"``) resolves to ``data/assets/<name>/<name>.meshes.npz``, so a scene
+        can name an asset without knowing the layout.
+    
+        ``check_area`` is the relative tolerance between each prim's recorded area and the area of the
+        arrays as loaded. It is not a formality: the recorded value is what the prep tool's own gate
+        was applied to, so a silent disagreement here would mean the gate passed on geometry that is
+        not the geometry being solved.
+        """
+        p = pathlib.Path(path)
+        if not p.suffix:
+            p = ASSETS_DIR / p.name / f"{p.name}.meshes.npz"
+        if not p.exists():
+>           raise FileNotFoundError(
+                f"no mesh archive at {p}. Generate it with:\n"
+                f"    python scripts/prep_asset.py --asset {p.stem.split('.')[0]} --emit-mesh"
+            )
+E           FileNotFoundError: no mesh archive at /home/jumasaet/isaac-thermal-camera-simulation/data/assets/phantom4_parts/phantom4_parts.meshes.npz. Generate it with:
+E               python scripts/prep_asset.py --asset phantom4_parts --emit-mesh
+
+src/irsim/io/assets.py:142: FileNotFoundError
+=============================== warnings summary ===============================
+tests/unit/test_fire.py::test_the_flux_uses_absorptivity_for_the_flame_and_emissivity_for_the_sky
+  /home/jumasaet/isaac-thermal-camera-simulation/tests/unit/test_fire.py:177: DeprecationWarning: Conversion of an array with ndim > 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
+    assert float(flame_flux_w_m2(view, sep, 0.85)) == pytest.approx(0.10 * 0.85 * sep)
+
+tests/unit/test_fire.py::test_the_flux_uses_absorptivity_for_the_flame_and_emissivity_for_the_sky
+  /home/jumasaet/isaac-thermal-camera-simulation/tests/unit/test_fire.py:180: DeprecationWarning: Conversion of an array with ndim > 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
+    assert float(with_sky) == pytest.approx(0.10 * (0.85 * sep - 0.93 * 300.0))
+
+tests/unit/test_fire.py::test_the_flux_uses_absorptivity_for_the_flame_and_emissivity_for_the_sky
+tests/unit/test_fire.py::test_the_flux_uses_absorptivity_for_the_flame_and_emissivity_for_the_sky
+  /home/jumasaet/isaac-thermal-camera-simulation/tests/unit/test_fire.py:185: DeprecationWarning: Conversion of an array with ndim > 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
+    assert float(half) == pytest.approx(float(with_sky))
+
+tests/unit/test_fire.py::test_overlapping_radiators_are_clamped_to_a_unit_solid_angle
+  /home/jumasaet/isaac-thermal-camera-simulation/tests/unit/test_fire.py:216: UserWarning: view factors summed to 1.1500 > 1 on 1 cell(s) -- radiator footprints overlap; rescaling proportionally to conserve energy (docs/decisions/0090-clamped-view-factors-for-nested-radiators.md)
+    a, b = clamp_view_factor_sum([flame, pool])
+
+tests/unit/test_point_target.py: 1 warning
+tests/unit/test_tier3_maritime.py: 10 warnings
+  /home/jumasaet/isaac-thermal-camera-simulation/src/irsim/atmosphere/layered.py:849: UserWarning: LayeredAtmosphere has no spectral response for band 'lwir', so its spectral-class weights come from a nominal top-hat rather than from the camera -- and since AT.10 its spectral *classes* too, since they are derived from the band's own span. Pass responses= (irsim.radiometry.lut_files.load_band_response_for_config) -- measured on the shipped InSb MWIR response, this is a 6.8x error in the h2o_wing class weight.
+    weights = self.weights(band)
+
+tests/unit/test_skylight.py::test_the_sky_model_is_brighter_with_the_term_than_without_it
+  /home/jumasaet/isaac-thermal-camera-simulation/src/irsim/atmosphere/layered.py:849: UserWarning: LayeredAtmosphere has no spectral response for band 'nir', so its spectral-class weights come from a nominal top-hat rather than from the camera -- and since AT.10 its spectral *classes* too, since they are derived from the band's own span. Pass responses= (irsim.radiometry.lut_files.load_band_response_for_config) -- measured on the shipped InSb MWIR response, this is a 6.8x error in the h2o_wing class weight.
+    weights = self.weights(band)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+ERROR tests/unit/test_phantom4_perpart.py::test_every_part_of_the_asset_resolves_to_its_own_node_or_surface
+ERROR tests/unit/test_phantom4_perpart.py::test_same_kind_parts_differ_the_way_the_flight_makes_them_differ
+ERROR tests/unit/test_phantom4_perpart.py::test_the_motors_converge_again_once_landed
+ERROR tests/unit/test_phantom4_perpart.py::test_each_propeller_follows_its_own_motor
+373 passed, 17 warnings, 4 errors in 630.59s (0:10:30)
+There was an error running python

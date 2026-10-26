@@ -1,0 +1,45 @@
+........................................................................ [ 18%]
+........................................................................ [ 37%]
+........................................................................ [ 56%]
+.....................................................................F.. [ 74%]
+..................................................................s..... [ 93%]
+.....s...................                                                [100%]
+=================================== FAILURES ===================================
+___________ test_every_scene_config_is_either_swept_or_accounted_for ___________
+
+driver = <module 'render_multiband' from '/home/jumasaet/isaac-thermal-camera-simulation/scripts/render_multiband.py'>
+
+    def test_every_scene_config_is_either_swept_or_accounted_for(driver):
+        """The sweep covered three of eight scene configs, and nothing said which five it missed.
+    
+        A scene config that no sweep renders is a scene that has only ever been seen in the one band
+        its own driver defaults to -- which for five of the eight, including the whole aerial
+        point-target lane, was the case. The exclusion list is the honest half: a scene may sit
+        outside the sweep, but it has to say why, in the file, where the next person will read it.
+        """
+        present = {p.name for p in SCENE_CONFIGS.glob("*.yaml")}
+        assert present, "no scene configs found; the test is pointed at the wrong directory"
+    
+        filmed = {_filmed_scene(driver, entry) for entry in driver.SCENES.values()}
+        assert None not in filmed, "a SCENES row names a driver with no resolvable --scene default"
+    
+        unaccounted = present - filmed - set(driver.UNSWEPT_SCENES)
+>       assert not unaccounted, (
+            "these scene configs are rendered by no sweep and are not listed in UNSWEPT_SCENES: "
+            + ", ".join(sorted(unaccounted))
+        )
+E       AssertionError: these scene configs are rendered by no sweep and are not listed in UNSWEPT_SCENES: inspection_bench.yaml
+E       assert not {'inspection_bench.yaml'}
+
+tests/unit/test_render_multiband.py:185: AssertionError
+=============================== warnings summary ===============================
+tests/unit/test_sky_cloud.py::test_the_structured_field_preserves_the_uniform_blend_it_replaces
+tests/unit/test_warp_stages_contract.py::test_layered_terms_reproduce_the_exponential_sum_including_the_infinite_path
+  /home/jumasaet/isaac-thermal-camera-simulation/src/irsim/atmosphere/layered.py:849: UserWarning: LayeredAtmosphere has no spectral response for band 'lwir', so its spectral-class weights come from a nominal top-hat rather than from the camera -- and since AT.10 its spectral *classes* too, since they are derived from the band's own span. Pass responses= (irsim.radiometry.lut_files.load_band_response_for_config) -- measured on the shipped InSb MWIR response, this is a 6.8x error in the h2o_wing class weight.
+    weights = self.weights(band)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/unit/test_render_multiband.py::test_every_scene_config_is_either_swept_or_accounted_for
+1 failed, 382 passed, 3 skipped, 2 warnings in 138.77s (0:02:18)
+There was an error running python

@@ -1,0 +1,35 @@
+........................................................................ [ 15%]
+........................................................................ [ 31%]
+........................................................................ [ 47%]
+........................................................................ [ 63%]
+........................................................................ [ 79%]
+........................................................................ [ 95%]
+.........s.........                                                      [100%]
+=============================== warnings summary ===============================
+tests/unit/test_car_demo.py: 14 warnings
+  /home/jumasaet/isaac-thermal-camera-simulation/src/irsim_isaac/car_demo.py:902: UserWarning: view factors summed to 1.4118 > 1 on 24 cell(s) -- radiator footprints overlap; rescaling proportionally to conserve energy (docs/decisions/0090-clamped-view-factors-for-nested-radiators.md)
+    clamped_views = clamp_view_factor_sum(raw_views)
+
+tests/unit/test_car_demo.py::test_ground_radiator_view_factors_never_exceed_one[yaml_path0]
+tests/unit/test_car_demo.py::test_ground_radiator_view_factors_never_exceed_one[yaml_path1]
+  /home/jumasaet/isaac-thermal-camera-simulation/tests/unit/test_car_demo.py:237: UserWarning: view factors summed to 1.4118 > 1 on 24 cell(s) -- radiator footprints overlap; rescaling proportionally to conserve energy (docs/decisions/0090-clamped-view-factors-for-nested-radiators.md)
+    clamped = clamp_view_factor_sum(
+
+tests/unit/test_car_demo.py::test_a_scene_that_declares_no_grid_still_gets_the_hand_built_ones
+  /home/jumasaet/isaac-thermal-camera-simulation/src/irsim_isaac/car_demo.py:902: UserWarning: view factors summed to 1.4000 > 1 on 28 cell(s) -- radiator footprints overlap; rescaling proportionally to conserve energy (docs/decisions/0090-clamped-view-factors-for-nested-radiators.md)
+    clamped_views = clamp_view_factor_sum(raw_views)
+
+tests/unit/test_sea_envelope.py::test_the_envelope_separates_shore_cameras_from_airborne_ones[shore camera, just below the horizon--1.0-20.0-1.0]
+tests/unit/test_sea_envelope.py::test_the_envelope_separates_shore_cameras_from_airborne_ones[shore camera, well down--20.0-20.0-1.0]
+tests/unit/test_sea_envelope.py::test_the_envelope_separates_shore_cameras_from_airborne_ones[mast camera--5.0-100.0-1.0]
+tests/unit/test_sea_envelope.py::test_the_envelope_separates_shore_cameras_from_airborne_ones[UAV at 2 km, oblique--60.0-2000.0-0.0]
+tests/unit/test_sea_envelope.py::test_the_envelope_separates_shore_cameras_from_airborne_ones[UAV at 2 km, near nadir--90.0-2000.0-0.0]
+tests/unit/test_sea_envelope.py::test_recording_the_envelope_against_depression_inverts_the_answer
+tests/unit/test_sea_envelope.py::test_the_maritime_scene_carries_the_report_in_its_metadata
+tests/unit/test_tier3_sky.py::test_fixture_honours_the_contract_in_its_sky_aware_form
+tests/unit/test_tier3_sky.py::test_clouds_read_warmer_than_the_clear_sky
+  /home/jumasaet/isaac-thermal-camera-simulation/src/irsim/atmosphere/layered.py:849: UserWarning: LayeredAtmosphere has no spectral response for band 'lwir', so its spectral-class weights come from a nominal top-hat rather than from the camera -- and since AT.10 its spectral *classes* too, since they are derived from the band's own span. Pass responses= (irsim.radiometry.lut_files.load_band_response_for_config) -- measured on the shipped InSb MWIR response, this is a 6.8x error in the h2o_wing class weight.
+    weights = self.weights(band)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+450 passed, 2 skipped, 26 warnings in 390.43s (0:06:30)

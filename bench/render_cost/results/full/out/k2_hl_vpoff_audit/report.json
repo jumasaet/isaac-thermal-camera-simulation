@@ -1,0 +1,129 @@
+{
+ "tag": "k2_hl_vpoff_audit",
+ "gui": false,
+ "viewport_flag": false,
+ "rgb": false,
+ "k": 2,
+ "optics": "fused",
+ "render_product": [
+  1280,
+  1024
+ ],
+ "resolution": [
+  640,
+  512
+ ],
+ "n_frames": 120,
+ "frame_period_s": 0.016666666666666666,
+ "variants": [],
+ "epp": "performance",
+ "rendermode": "RealTimePathTracing",
+ "sensor": {
+  "name": "flir_boson_640_lwir",
+  "psf_shape": [
+   27,
+   27
+  ],
+  "sigma_tvh_dn": 8.897614953681181,
+  "dn_per_k_300": 177.95263671875,
+  "isp": {
+   "agc": "plateau_equalization",
+   "plateau": 0.012,
+   "clip_percentiles": [
+    0.005,
+    0.995
+   ],
+   "gamma": 1.0,
+   "dde_gain": 0.35,
+   "polarity": "white_hot",
+   "palette": "gray",
+   "agc_tiles": [
+    8,
+    8
+   ],
+   "linear_percent": 0.0,
+   "info_weight": 1.0,
+   "detail_headroom": 0.0,
+   "smoothing_sigma_dn": 1250.0,
+   "clip_limit_low": 0.0,
+   "max_gain": 0.0
+  },
+  "t_housing_cal_k": 300.0
+ },
+ "tolerances": {
+  "flux_max_rel": 1e-05,
+  "dn16_max_code": 1,
+  "display_far_max_code": 1,
+  "signal_mk": 5.0,
+  "noise_abs_z": 4.0
+ },
+ "passes": [],
+ "check": [],
+ "viewport_updates_enabled": false,
+ "viewport_resolution": [
+  1280,
+  720
+ ],
+ "audit_ids": {
+  "g/linear": {
+   "identical_to_own_pose": 120,
+   "n": 120,
+   "worst_px_differing_from_own": 0,
+   "identical_to_previous_pose": 0,
+   "identical_to_next_pose": 0,
+   "poses_identical_to_a_neighbour_in_the_reference": 0,
+   "distinguishable_and_identical_to_own": 120,
+   "distinguishable": 120,
+   "min_px_between_neighbouring_distinguishable_poses": 1714,
+   "lag_hist": {
+    "1": 120
+   },
+   "ms": 26.050841343627933
+  },
+  "g_m9_ff/linear": {
+   "identical_to_own_pose": 120,
+   "n": 120,
+   "worst_px_differing_from_own": 0,
+   "identical_to_previous_pose": 0,
+   "identical_to_next_pose": 0,
+   "poses_identical_to_a_neighbour_in_the_reference": 0,
+   "distinguishable_and_identical_to_own": 120,
+   "distinguishable": 120,
+   "min_px_between_neighbouring_distinguishable_poses": 1714,
+   "lag_hist": {
+    "1": 120
+   },
+   "ms": 26.276727535878308
+  },
+  "g/circular": {
+   "identical_to_own_pose": 120,
+   "n": 120,
+   "worst_px_differing_from_own": 0,
+   "identical_to_previous_pose": 0,
+   "identical_to_next_pose": 0,
+   "poses_identical_to_a_neighbour_in_the_reference": 0,
+   "distinguishable_and_identical_to_own": 120,
+   "distinguishable": 120,
+   "min_px_between_neighbouring_distinguishable_poses": 1901,
+   "lag_hist": {
+    "1": 120
+   },
+   "ms": 26.28089749875168
+  },
+  "g_m9_ff/circular": {
+   "identical_to_own_pose": 120,
+   "n": 120,
+   "worst_px_differing_from_own": 0,
+   "identical_to_previous_pose": 0,
+   "identical_to_next_pose": 0,
+   "poses_identical_to_a_neighbour_in_the_reference": 0,
+   "distinguishable_and_identical_to_own": 120,
+   "distinguishable": 120,
+   "min_px_between_neighbouring_distinguishable_poses": 1901,
+   "lag_hist": {
+    "1": 120
+   },
+   "ms": 26.519950025249273
+  }
+ }
+}

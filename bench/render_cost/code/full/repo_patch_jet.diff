@@ -1,0 +1,82 @@
+diff -ruN a/src/irsim/config/sensor.py b/src/irsim/config/sensor.py
+--- a/src/irsim/config/sensor.py	2026-10-11 12:10:31.489620684 +0900
++++ b/src/irsim/config/sensor.py	2026-10-11 12:10:48.903373890 +0900
+@@ -87,7 +87,8 @@
+ AgcMode = Literal["linear", "plateau_equalization", "plateau_local", "information_based", "none"]
+ Polarity = Literal["white_hot", "black_hot"]
+ # §11.4 lists ironbow/rainbow/lava/arctic and §12.2 gray/ironbow/rainbow/lava: both accepted (S27).
+-Palette = Literal["gray", "ironbow", "rainbow", "lava", "arctic"]
++# `jet` is an extra display option beyond both lists; the default stays gray.
++Palette = Literal["gray", "ironbow", "rainbow", "lava", "arctic", "jet"]
+ # `OC.4`: how the lens is focused, and which model turns the resulting W020 into an OTF.
+ # `infinity` + `none` is what every configuration written before v10 describes.
+ FocusMode = Literal["infinity", "hyperfocal", "fixed", "autofocus", "track"]
+diff -ruN a/src/irsim/isp/palette.py b/src/irsim/isp/palette.py
+--- a/src/irsim/isp/palette.py	2026-10-11 12:10:31.489620684 +0900
++++ b/src/irsim/isp/palette.py	2026-10-11 12:10:48.903373890 +0900
+@@ -11,6 +11,11 @@
+ so the point is reproducibility -- training and deployment use the same table -- not fidelity to
+ a particular vendor's curve. Ironbow and lava have non-decreasing Rec.601 luma along the index;
+ rainbow has 256 distinct entries.
++
++Jet is the classic piecewise-linear map (dark blue, blue, cyan, yellow, red, dark red) that
++general-purpose thermography viewers default to. It is an *option*, never a default: its luma is
++not monotone, so hotter does not mean brighter, and it is not rainbow -- rainbow is a hue sweep at
++full value, jet darkens at both ends.
+ """
+ 
+ from __future__ import annotations
+@@ -29,7 +34,7 @@
+     "to_display8",
+ ]
+ 
+-PaletteName = Literal["gray", "ironbow", "rainbow", "lava", "arctic"]
++PaletteName = Literal["gray", "ironbow", "rainbow", "lava", "arctic", "jet"]
+ Polarity = Literal["white_hot", "black_hot"]
+ 
+ # (index in 0..255, (R, G, B)) control points; linear interpolation between them.
+@@ -60,6 +65,14 @@
+         (216, (255, 224, 96)),
+         (255, (255, 96, 0)),
+     ],
++    "jet": [
++        (0, (0, 0, 128)),
++        (32, (0, 0, 255)),
++        (96, (0, 255, 255)),
++        (160, (255, 255, 0)),
++        (224, (255, 0, 0)),
++        (255, (128, 0, 0)),
++    ],
+ }
+ 
+ 
+@@ -90,6 +103,7 @@
+         "ironbow": _interpolate(_CONTROL_POINTS["ironbow"]),
+         "lava": _interpolate(_CONTROL_POINTS["lava"]),
+         "arctic": _interpolate(_CONTROL_POINTS["arctic"]),
++        "jet": _interpolate(_CONTROL_POINTS["jet"]),
+         "rainbow": _rainbow(),
+     }
+ 
+diff -ruN a/tests/unit/test_isp_palette.py b/tests/unit/test_isp_palette.py
+--- a/tests/unit/test_isp_palette.py	2026-10-11 12:10:31.490620670 +0900
++++ b/tests/unit/test_isp_palette.py	2026-10-11 12:10:48.903373890 +0900
+@@ -47,6 +47,18 @@
+         palette_table("viridis")
+ 
+ 
++def test_jet_is_the_classic_map_and_not_rainbow() -> None:
++    """Jet's six knots, and the two properties that tell it from `rainbow`: it darkens at both
++    ends, and its luma is not monotone (which is why it is never the default)."""
++    jet = palette_table("jet")
++    for index, rgb in ((0, (0, 0, 128)), (32, (0, 0, 255)), (96, (0, 255, 255)), (160, (255, 255, 0)),
++                       (224, (255, 0, 0)), (255, (128, 0, 0))):
++        assert tuple(jet[index]) == rgb, index
++    assert tuple(jet[128]) == (128, 255, 128)  # half-way between cyan and yellow
++    assert not np.array_equal(jet, palette_table("rainbow"))
++    assert np.any(np.diff(_luma(jet)) < 0)
++
++
+ def test_quantisation_half_lsb_and_no_wrap() -> None:
+     y = np.linspace(0, 1, 5001, dtype=np.float32)
+     dn8 = quantise_display(y)

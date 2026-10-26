@@ -1,0 +1,722 @@
+{
+ "scene": "/tmp/irsim_render_cost/scene_bench.yaml",
+ "temps": "prescribed",
+ "rendermode": "RealTimePathTracing",
+ "resolved": {
+  "distance": "DistanceToCameraSD",
+  "position": "Camera3dPositionSD",
+  "normal": "normals",
+  "instance": "instance_id_segmentation",
+  "semantic": "semantic_segmentation"
+ },
+ "angle_lut_packed": false,
+ "regime": "emissive",
+ "atmosphere": "LayeredAtmosphere",
+ "poses": {
+  "bench_default": {
+   "shape": [
+    512,
+    640
+   ],
+   "t_s": 7200.0,
+   "pixels": {
+    "bg_above_horizon": 0,
+    "bg_below_horizon": 640,
+    "/World/wall": 204700,
+    "/World/hot_pipe": 10340,
+    "/World/cold_floor": 112000
+   },
+   "labels": {
+    "3": "/World/cold_floor",
+    "2": "/World/hot_pipe",
+    "1": "/World/wall"
+   },
+   "inputs": {
+    "illumination_terms_live": [
+     "l_env"
+    ],
+    "planes_keys": [
+     "distance_m",
+     "elevation_rad",
+     "material_id",
+     "normal_dot_view",
+     "semantic_id",
+     "sky_mask",
+     "sky_view_factor",
+     "temperature_k"
+    ],
+    "sky_mask_mismatch": 0,
+    "nonfinite_distance_with_id": 0,
+    "material_id_mismatch": 0,
+    "material_id_mismatch_on_geometry": 0,
+    "v_s_min": 0.49999237060546875,
+    "v_s_max": 1.0,
+    "v_s_unique": 3,
+    "l_env_unique_bit_patterns": 3,
+    "l_env_min": 18.418006896972656,
+    "l_env_max": 35.12751007080078,
+    "l_env_scalar": 35.12729263305664,
+    "l_env_plane_equals_scalar_bits": false,
+    "t_air_k": 289.3544450422656,
+    "l_b_t_air": 46.570709228515625,
+    "scalar_equals_l_b_t_air_bits": false,
+    "l_env_spread_mK": 30744.888671875
+   },
+   "temperature": {
+    "n_diff": 0,
+    "n": 327680
+   },
+   "full_T_bg_below_horizon": {
+    "min": 289.35443115234375,
+    "max": 289.35443115234375,
+    "unique": 1
+   },
+   "radiance_full_vs_reduced": {
+    "n_diff": 327040,
+    "n": 327680,
+    "max_abs": 2.5063934326171875,
+    "max_rel": 0.02845640956427836,
+    "max_abs_mK": 1982.23876953125,
+    "by_group": {
+     "bg_above_horizon": {
+      "n_diff": 0,
+      "n": 0,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "bg_below_horizon": {
+      "n_diff": 0,
+      "n": 640,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/wall": {
+      "n_diff": 204700,
+      "n": 204700,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/hot_pipe": {
+      "n_diff": 10340,
+      "n": 10340,
+      "max_abs_mK": 1982.23876953125,
+      "signed_mean_mK": -1941.5964978806517
+     },
+     "/World/cold_floor": {
+      "n_diff": 112000,
+      "n": 112000,
+      "max_abs_mK": 1695.1904296875,
+      "signed_mean_mK": -1695.1904296875
+     }
+    }
+   },
+   "radiance_full_vs_reduced_fullbgT": {
+    "n_diff": 327040,
+    "n": 327680,
+    "max_abs": 2.5063934326171875,
+    "max_rel": 0.02845640956427836,
+    "max_abs_mK": 1982.23876953125,
+    "by_group": {
+     "bg_above_horizon": {
+      "n_diff": 0,
+      "n": 0,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "bg_below_horizon": {
+      "n_diff": 0,
+      "n": 640,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/wall": {
+      "n_diff": 204700,
+      "n": 204700,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/hot_pipe": {
+      "n_diff": 10340,
+      "n": 10340,
+      "max_abs_mK": 1982.23876953125,
+      "signed_mean_mK": -1941.5964978806517
+     },
+     "/World/cold_floor": {
+      "n_diff": 112000,
+      "n": 112000,
+      "max_abs_mK": 1695.1904296875,
+      "signed_mean_mK": -1695.1904296875
+     }
+    }
+   },
+   "radiance_full_vs_reduced_fullT": {
+    "n_diff": 327040,
+    "n": 327680,
+    "max_abs": 2.5063934326171875,
+    "max_rel": 0.02845640956427836,
+    "max_abs_mK": 1982.23876953125,
+    "by_group": {
+     "bg_above_horizon": {
+      "n_diff": 0,
+      "n": 0,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "bg_below_horizon": {
+      "n_diff": 0,
+      "n": 640,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/wall": {
+      "n_diff": 204700,
+      "n": 204700,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/hot_pipe": {
+      "n_diff": 10340,
+      "n": 10340,
+      "max_abs_mK": 1982.23876953125,
+      "signed_mean_mK": -1941.5964978806517
+     },
+     "/World/cold_floor": {
+      "n_diff": 112000,
+      "n": 112000,
+      "max_abs_mK": 1695.1904296875,
+      "signed_mean_mK": -1695.1904296875
+     }
+    }
+   },
+   "warp_full_vs_warp_reduced": {
+    "n_diff": 327040,
+    "n": 327680,
+    "max_abs": 2.5063934326171875,
+    "max_rel": 0.02845640956427836,
+    "max_abs_mK": 1982.23876953125,
+    "by_group": {
+     "bg_above_horizon": {
+      "n_diff": 0,
+      "n": 0,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "bg_below_horizon": {
+      "n_diff": 0,
+      "n": 640,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/wall": {
+      "n_diff": 204700,
+      "n": 204700,
+      "max_abs_mK": 0.030517578125,
+      "signed_mean_mK": -0.030517578125
+     },
+     "/World/hot_pipe": {
+      "n_diff": 10340,
+      "n": 10340,
+      "max_abs_mK": 1982.23876953125,
+      "signed_mean_mK": -1941.5964978806517
+     },
+     "/World/cold_floor": {
+      "n_diff": 112000,
+      "n": 112000,
+      "max_abs_mK": 1695.1904296875,
+      "signed_mean_mK": -1695.1904296875
+     }
+    }
+   },
+   "warp_full_vs_numpy_full": {
+    "n_diff": 0,
+    "n": 327680
+   },
+   "warp_reduced_vs_numpy_reduced": {
+    "n_diff": 204700,
+    "n": 327680,
+    "max_abs": 3.814697265625e-06,
+    "max_rel": 6.758113859080351e-08,
+    "max_abs_mK": 0.030517578125,
+    "by_group": {
+     "bg_above_horizon": {
+      "n_diff": 0,
+      "n": 0,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "bg_below_horizon": {
+      "n_diff": 0,
+      "n": 640,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/wall": {
+      "n_diff": 204700,
+      "n": 204700,
+      "max_abs_mK": 0.030517578125,
+      "signed_mean_mK": 0.030517578125
+     },
+     "/World/hot_pipe": {
+      "n_diff": 0,
+      "n": 10340,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/cold_floor": {
+      "n_diff": 0,
+      "n": 112000,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     }
+    }
+   },
+   "stage2_effect": {
+    "n_diff": 327040,
+    "n": 327680,
+    "max_abs": 0.1941375732421875,
+    "max_rel": 0.0019337504659399333,
+    "max_abs_mK": 154.693603515625,
+    "by_group": {
+     "bg_above_horizon": {
+      "n_diff": 0,
+      "n": 0,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "bg_below_horizon": {
+      "n_diff": 0,
+      "n": 640,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/wall": {
+      "n_diff": 204700,
+      "n": 204700,
+      "max_abs_mK": 47.088623046875,
+      "signed_mean_mK": -43.872204786635166
+     },
+     "/World/hot_pipe": {
+      "n_diff": 10340,
+      "n": 10340,
+      "max_abs_mK": 154.693603515625,
+      "signed_mean_mK": -131.27158070901837
+     },
+     "/World/cold_floor": {
+      "n_diff": 112000,
+      "n": 112000,
+      "max_abs_mK": 5.06591796875,
+      "signed_mean_mK": 4.296546936035156
+     }
+    }
+   },
+   "distance_m": {
+    "bg_below_horizon": [
+     0.0,
+     0.0
+    ],
+    "/World/wall": [
+     4.490632057189941,
+     5.051835536956787
+    ],
+    "/World/hot_pipe": [
+     3.150357723236084,
+     4.276965141296387
+    ],
+    "/World/cold_floor": [
+     3.6898205280303955,
+     5.047616004943848
+    ]
+   },
+   "full_chain_radiance_vs_reduced_mK": {
+    "rms": 1125.59320222802,
+    "max_abs": 11353.759765625,
+    "mean": -667.1124560758471,
+    "noise_enabled": true
+   }
+  },
+  "pulled_back": {
+   "shape": [
+    512,
+    640
+   ],
+   "t_s": 7200.0,
+   "pixels": {
+    "bg_above_horizon": 79450,
+    "bg_below_horizon": 14848,
+    "/World/wall": 231890,
+    "/World/hot_pipe": 1492
+   },
+   "labels": {
+    "3": "/World/cold_floor",
+    "2": "/World/hot_pipe",
+    "1": "/World/wall"
+   },
+   "inputs": {
+    "illumination_terms_live": [
+     "l_env"
+    ],
+    "planes_keys": [
+     "distance_m",
+     "elevation_rad",
+     "material_id",
+     "motion_px",
+     "normal_dot_view",
+     "semantic_id",
+     "sky_mask",
+     "sky_view_factor",
+     "temperature_k"
+    ],
+    "sky_mask_mismatch": 0,
+    "nonfinite_distance_with_id": 0,
+    "material_id_mismatch": 0,
+    "material_id_mismatch_on_geometry": 0,
+    "v_s_min": 0.49999237060546875,
+    "v_s_max": 1.0,
+    "v_s_unique": 3,
+    "l_env_unique_bit_patterns": 3,
+    "l_env_min": 18.418006896972656,
+    "l_env_max": 35.12751007080078,
+    "l_env_scalar": 35.12729263305664,
+    "l_env_plane_equals_scalar_bits": false,
+    "t_air_k": 289.3544450422656,
+    "l_b_t_air": 46.570709228515625,
+    "scalar_equals_l_b_t_air_bits": false,
+    "l_env_spread_mK": 30744.888671875
+   },
+   "temperature": {
+    "n_diff": 79450,
+    "n": 327680,
+    "max_abs": 30.66070556640625,
+    "max_rel": 0.10596245388156345,
+    "max_abs_mK": 14383.026123046875,
+    "by_group": {
+     "bg_above_horizon": {
+      "n_diff": 79450,
+      "n": 79450,
+      "max_abs_mK": 14383.026123046875,
+      "signed_mean_mK": -11371.658367063355
+     },
+     "bg_below_horizon": {
+      "n_diff": 0,
+      "n": 14848,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/wall": {
+      "n_diff": 0,
+      "n": 231890,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/hot_pipe": {
+      "n_diff": 0,
+      "n": 1492,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     }
+    },
+    "kelvin_diff_mK_by_group": {
+     "bg_above_horizon": {
+      "min": -30660.70556640625,
+      "max": -86.761474609375,
+      "n_diff": 79450
+     },
+     "bg_below_horizon": {
+      "min": 0.0,
+      "max": 0.0,
+      "n_diff": 0
+     },
+     "/World/wall": {
+      "min": 0.0,
+      "max": 0.0,
+      "n_diff": 0
+     },
+     "/World/hot_pipe": {
+      "min": 0.0,
+      "max": 0.0,
+      "n_diff": 0
+     }
+    }
+   },
+   "full_T_bg_above_horizon": {
+    "min": 258.6937255859375,
+    "max": 289.2676696777344,
+    "unique": 38069
+   },
+   "full_T_bg_below_horizon": {
+    "min": 289.35443115234375,
+    "max": 289.35443115234375,
+    "unique": 1
+   },
+   "radiance_full_vs_reduced": {
+    "n_diff": 312832,
+    "n": 327680,
+    "max_abs": 20.424545288085938,
+    "max_rel": 0.43857063004700436,
+    "max_abs_mK": 30660.70556640625,
+    "by_group": {
+     "bg_above_horizon": {
+      "n_diff": 79450,
+      "n": 79450,
+      "max_abs_mK": 30660.70556640625,
+      "signed_mean_mK": -24344.35104456542
+     },
+     "bg_below_horizon": {
+      "n_diff": 0,
+      "n": 14848,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/wall": {
+      "n_diff": 231890,
+      "n": 231890,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/hot_pipe": {
+      "n_diff": 1492,
+      "n": 1492,
+      "max_abs_mK": 1982.23876953125,
+      "signed_mean_mK": -1913.1516362003601
+     }
+    }
+   },
+   "radiance_full_vs_reduced_fullbgT": {
+    "n_diff": 233382,
+    "n": 327680,
+    "max_abs": 2.5063934326171875,
+    "max_rel": 0.02435739482241318,
+    "max_abs_mK": 1982.23876953125,
+    "by_group": {
+     "bg_above_horizon": {
+      "n_diff": 0,
+      "n": 79450,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "bg_below_horizon": {
+      "n_diff": 0,
+      "n": 14848,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/wall": {
+      "n_diff": 231890,
+      "n": 231890,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/hot_pipe": {
+      "n_diff": 1492,
+      "n": 1492,
+      "max_abs_mK": 1982.23876953125,
+      "signed_mean_mK": -1913.1516362003601
+     }
+    }
+   },
+   "radiance_full_vs_reduced_fullT": {
+    "n_diff": 233382,
+    "n": 327680,
+    "max_abs": 2.5063934326171875,
+    "max_rel": 0.02435739482241318,
+    "max_abs_mK": 1982.23876953125,
+    "by_group": {
+     "bg_above_horizon": {
+      "n_diff": 0,
+      "n": 79450,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "bg_below_horizon": {
+      "n_diff": 0,
+      "n": 14848,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/wall": {
+      "n_diff": 231890,
+      "n": 231890,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/hot_pipe": {
+      "n_diff": 1492,
+      "n": 1492,
+      "max_abs_mK": 1982.23876953125,
+      "signed_mean_mK": -1913.1516362003601
+     }
+    }
+   },
+   "warp_full_vs_warp_reduced": {
+    "n_diff": 312832,
+    "n": 327680,
+    "max_abs": 20.424543380737305,
+    "max_rel": 0.438570589091033,
+    "max_abs_mK": 30660.70556640625,
+    "by_group": {
+     "bg_above_horizon": {
+      "n_diff": 79450,
+      "n": 79450,
+      "max_abs_mK": 30660.70556640625,
+      "signed_mean_mK": -24344.35104456542
+     },
+     "bg_below_horizon": {
+      "n_diff": 0,
+      "n": 14848,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/wall": {
+      "n_diff": 231890,
+      "n": 231890,
+      "max_abs_mK": 0.030517578125,
+      "signed_mean_mK": -0.030517578125
+     },
+     "/World/hot_pipe": {
+      "n_diff": 1492,
+      "n": 1492,
+      "max_abs_mK": 1982.23876953125,
+      "signed_mean_mK": -1913.1516362003601
+     }
+    }
+   },
+   "warp_full_vs_numpy_full": {
+    "n_diff": 15756,
+    "n": 327680,
+    "max_abs": 3.814697265625e-06,
+    "max_rel": 1.191606798355106e-07,
+    "max_abs_mK": 0.0,
+    "by_group": {
+     "bg_above_horizon": {
+      "n_diff": 15756,
+      "n": 79450,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "bg_below_horizon": {
+      "n_diff": 0,
+      "n": 14848,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/wall": {
+      "n_diff": 0,
+      "n": 231890,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/hot_pipe": {
+      "n_diff": 0,
+      "n": 1492,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     }
+    }
+   },
+   "warp_reduced_vs_numpy_reduced": {
+    "n_diff": 231890,
+    "n": 327680,
+    "max_abs": 3.814697265625e-06,
+    "max_rel": 6.758113859080351e-08,
+    "max_abs_mK": 0.030517578125,
+    "by_group": {
+     "bg_above_horizon": {
+      "n_diff": 0,
+      "n": 79450,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "bg_below_horizon": {
+      "n_diff": 0,
+      "n": 14848,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/wall": {
+      "n_diff": 231890,
+      "n": 231890,
+      "max_abs_mK": 0.030517578125,
+      "signed_mean_mK": 0.030517578125
+     },
+     "/World/hot_pipe": {
+      "n_diff": 0,
+      "n": 1492,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     }
+    }
+   },
+   "stage2_effect": {
+    "n_diff": 233382,
+    "n": 327680,
+    "max_abs": 0.34592437744140625,
+    "max_rel": 0.0034456566798782722,
+    "max_abs_mK": 275.787353515625,
+    "by_group": {
+     "bg_above_horizon": {
+      "n_diff": 0,
+      "n": 79450,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "bg_below_horizon": {
+      "n_diff": 0,
+      "n": 14848,
+      "max_abs_mK": 0.0,
+      "signed_mean_mK": 0.0
+     },
+     "/World/wall": {
+      "n_diff": 231890,
+      "n": 231890,
+      "max_abs_mK": 77.423095703125,
+      "signed_mean_mK": -74.7192414397384
+     },
+     "/World/hot_pipe": {
+      "n_diff": 1492,
+      "n": 1492,
+      "max_abs_mK": 275.787353515625,
+      "signed_mean_mK": -254.07708298424933
+     }
+    }
+   },
+   "distance_m": {
+    "bg_above_horizon": [
+     0.0,
+     0.0
+    ],
+    "bg_below_horizon": [
+     0.0,
+     0.0
+    ],
+    "/World/wall": [
+     7.950001239776611,
+     8.377666473388672
+    ],
+    "/World/hot_pipe": [
+     6.547550678253174,
+     7.691544532775879
+    ]
+   },
+   "full_chain_radiance_vs_reduced_mK": {
+    "rms": 9737.839905254707,
+    "max_abs": 24252.74658203125,
+    "mean": -4925.871145166457,
+    "noise_enabled": true
+   }
+  }
+ },
+ "background_sweep": {
+  "enclosure_k (ground_temperature_k)": 289.3544450422656,
+  "below_horizon_min_max": [
+   289.3544450422656,
+   289.3544450422656
+  ],
+  "above_horizon_min_max": [
+   234.95216369628906,
+   289.2933044433594
+  ],
+  "max_abs_dev_mK": 54402.28134597652,
+  "cloud_base_m": 525.5556302832006,
+  "t_cloud_base_k": 284.22449653507124
+ }
+}

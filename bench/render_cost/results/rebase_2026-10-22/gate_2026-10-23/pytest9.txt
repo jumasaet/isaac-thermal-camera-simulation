@@ -1,0 +1,63 @@
+........................................................................ [ 14%]
+........................................................................ [ 29%]
+............F...........F............................................... [ 43%]
+........................................................................ [ 58%]
+........................................................................ [ 72%]
+........................................................................ [ 87%]
+................................................................         [100%]
+=================================== FAILURES ===================================
+_ test_every_render_driver_writes_float32_planes_and_a_sidecar[render_inspection_bench_offline.py] _
+
+driver = PosixPath('/home/jumasaet/isaac-thermal-camera-simulation/scripts/render_inspection_bench_offline.py')
+
+    @pytest.mark.parametrize("driver", DRIVERS, ids=lambda p: p.name)
+    def test_every_render_driver_writes_float32_planes_and_a_sidecar(driver) -> None:
+        """The exit bar of IG.13, asked of each driver in turn.
+    
+        Before this step it failed for `render_quad_flight`, `render_aircraft_pass` and
+        `render_vessel_departure`. It is a static check because the alternative is a render, and a
+        render needs Isaac Sim and a GPU -- but what it checks is not cosmetic: a driver that names
+        neither writer cannot be producing planes, whatever else it does.
+        """
+        source = driver.read_text("utf-8")
+        tree = ast.parse(source)
+        names = {n.id for n in ast.walk(tree) if isinstance(n, ast.Name)}
+>       assert names & {"FrameWriter", "write_frame"}, (
+            f"{driver.name} writes no float32 planes. An 8-bit display PNG has had the AGC, the "
+            "palette and a 256-level quantisation applied and none of them invert (ADR 0068)"
+        )
+E       AssertionError: render_inspection_bench_offline.py writes no float32 planes. An 8-bit display PNG has had the AGC, the palette and a 256-level quantisation applied and none of them invert (ADR 0068)
+E       assert ({'Any', 'CameraPlacement', 'ENU_TO_STAGE', 'NotImplementedError', 'PointwiseTemperature', 'REPO', ...} & {'FrameWriter', 'write_frame'})
+
+tests/unit/test_frame_writer.py:199: AssertionError
+_ test_every_render_driver_records_the_hashes_a_frame_is_traceable_by[render_inspection_bench_offline.py] _
+
+driver = PosixPath('/home/jumasaet/isaac-thermal-camera-simulation/scripts/render_inspection_bench_offline.py')
+
+    @pytest.mark.parametrize("driver", DRIVERS, ids=lambda p: p.name)
+    def test_every_render_driver_records_the_hashes_a_frame_is_traceable_by(driver) -> None:
+        """ADR 0004: a frame nobody can trace back to a configuration is not data."""
+        source = driver.read_text("utf-8")
+        for hash_name in ("config_hash", "band_hash"):
+>           assert hash_name in source, f"{driver.name} never computes {hash_name}"
+E           AssertionError: render_inspection_bench_offline.py never computes config_hash
+E           assert 'config_hash' in '#!/usr/bin/env python\n"""WP4 inspection bench, engine-free: a wall, a pipe and a floor seen by a synthetic LWIR came... done in {time.time() - t_start:.1f} s")\n    return 0\n\n\nif __name__ == "__main__":\n    raise SystemExit(main())\n'
+
+tests/unit/test_frame_writer.py:213: AssertionError
+=============================== warnings summary ===============================
+tests/unit/test_cloud_occlusion.py::test_a_target_behind_an_opaque_cloud_reads_as_the_cloud
+tests/unit/test_observer_height.py::test_transmittance_from_altitude_is_higher_and_at_zero_unchanged
+tests/unit/test_tier3_reflection.py::test_a_painted_roof_reads_colder_than_it_is
+tests/unit/test_tier3_reflection.py::test_glass_reads_colder_too_and_rough_asphalt_barely_moves
+tests/unit/test_tier3_reflection.py::test_bare_aluminium_reads_as_the_sky_rather_than_as_itself
+tests/unit/test_tier3_reflection.py::test_the_roof_wall_gap_is_the_closed_form_view_factor_difference
+tests/unit/test_tier3_reflection.py::test_overcast_closes_the_gap_for_every_facet
+  /home/jumasaet/isaac-thermal-camera-simulation/src/irsim/atmosphere/layered.py:849: UserWarning: LayeredAtmosphere has no spectral response for band 'lwir', so its spectral-class weights come from a nominal top-hat rather than from the camera -- and since AT.10 its spectral *classes* too, since they are derived from the band's own span. Pass responses= (irsim.radiometry.lut_files.load_band_response_for_config) -- measured on the shipped InSb MWIR response, this is a 6.8x error in the h2o_wing class weight.
+    weights = self.weights(band)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/unit/test_frame_writer.py::test_every_render_driver_writes_float32_planes_and_a_sidecar[render_inspection_bench_offline.py]
+FAILED tests/unit/test_frame_writer.py::test_every_render_driver_records_the_hashes_a_frame_is_traceable_by[render_inspection_bench_offline.py]
+2 failed, 494 passed, 1 skipped, 7 warnings in 367.52s (0:06:07)
+There was an error running python

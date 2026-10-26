@@ -1,0 +1,5 @@
+/thermal_sim/ir/image_raw: delivery pass sent 240, received 240, frames 0..239 in order True, crc identical 240, encoding ['rgba8'], stamp of frame 1 = 16666667 ns
+/thermal_sim/rgb/image_raw: delivery pass sent 240, received 240, frames 0..239 in order True, crc identical 240, encoding ['rgba8'], stamp of frame 1 = 16666667 ns
+(the 240 'missing' in reception.txt are the later profiled pass: the subscriber's 8 s idle timeout fired while the PNGs were being written)
+rgb: mean |frame k - frame 239-k| = 0.993 codes (max 1.519); against 238-k: 4.428
+thermal PNG (512, 640, 3) uint8 R==G==B True

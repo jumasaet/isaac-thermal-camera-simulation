@@ -1,0 +1,372 @@
+"""Stages 3, 4, 5, 6 + ADC composed on the device, on the lite path's stage-2 radiance. /tmp only.
+
+    radiance (k x grid, device)                                    <- lite: gather + stage 1 + stage 2
+      -> [M9 clock: housing node, FPA node, dT_eff; OU drift and RTS step on device]
+      -> stage 3  PSF, box, aperture, cos4, housing        launch_optics | the fused kernel below
+      -> stage 4  linear transfer + membrane IIR           launch_detector
+      -> stage 5  all seven NVESD components               launch_noise  (sigma_TVH is IN here)
+      -> [M9: defects, replacement, NUC residual, FFC hold]
+      -> ADC                                               _quantise_kernel
+      -> [display flat field]                              _flat_field_kernel   (NEW, no repo twin)
+      -> stage 6  histogram, AGC table, DDE, palette       the repo kernels, palette as an argument
+
+Everything in brackets is optional. Every kernel that exists in the repo is the repo's; two are
+new and live here: the display flat field, and a fused PSF+box optics kernel that evaluates the
+convolution only at the native pixels (identical sum, 14x fewer taps at k = 4).
+
+The three seams, and what this module does about each:
+
+  sigma_TVH   `launch_noise` adds it together with the six correlated terms. The CPU adds it in
+              `frame_from_signal` (stage 4) and the other six in `NoiseStage.apply`. Here stage 4
+              is `launch_detector`, which adds no noise, so it is added exactly once.
+  housing     `housing_k` is PipelineState's 300 K default unless a chain is attached, in which
+              case the chain's housing node sets it each frame -- the same rule `run_frame` has.
+              Read `housing_k` back after a frame to see which one a frame was rendered with.
+  registry    EQUIVALENCE_STAGES covers stages 1-4 only, so nothing in the repo's harness holds
+              the composition of 5, 6 and the defects to the oracle. `inject_noise` and
+              `rts_override` exist for that: with the CPU's own noise field and RTS state fed in,
+              everything downstream is deterministic and can be compared plane by plane.
+"""
+from __future__ import annotations
+
+import dataclasses
+import time
+
+import numpy as np
+import warp as wp
+
+from irsim.detector.quantise import dn_max_for_bits
+from irsim.optics.self_emission import housing_power_axis
+from irsim.optics.stage import shutter_flux
+from irsim_isaac.pipeline import warp_stages as ws
+
+pc = time.perf_counter
+
+BLOCKS = ("m9_clock", "m9_drift", "m9_rts", "s3_optics", "s4_detector", "s5_noise", "m9_shutter",
+          "m9_defects", "m9_replace", "m9_residual", "m9_ffc", "adc", "flat_field", "s6_agc_table",
+          "s6_lut_dde", "s6_palette")
+
+
+@wp.kernel
+def _flat_field_kernel(
+    dn: wp.array2d(dtype=wp.uint16),
+    gain: wp.array2d(dtype=wp.float32),
+    offset: wp.array2d(dtype=wp.float32),
+    pedestal: wp.float64,
+    dn_max: wp.int32,
+    out: wp.array2d(dtype=wp.uint16),
+):
+    """quantise(TwoPointNuc.apply(dn16)): G (DN - O) + pedestal in float64, cast to float32, floor.
+
+    Op for op `irsim.isp.nuc.TwoPointNuc.apply` followed by `irsim.detector.quantise`
+    (docs/physics-model.md 11.2; frame.py's display branch). float64 because the CPU forms the
+    product there before the float32 cast, and the floor that follows turns a last-bit difference
+    into a whole display-branch code.
+    """
+    i, j = wp.tid()
+    x = wp.float64(wp.int32(dn[i, j]))
+    c = wp.float64(gain[i, j]) * (x - wp.float64(offset[i, j])) + pedestal
+    code = wp.int32(wp.floor(wp.float32(c)))
+    out[i, j] = wp.uint16(wp.clamp(code, 0, dn_max))
+
+
+@wp.kernel
+def _fused_optics_kernel(
+    radiance_ss: wp.array2d(dtype=wp.float32),
+    kc: wp.array2d(dtype=wp.float32),
+    radius: wp.int32,
+    supersample: wp.int32,
+    cos4: wp.array2d(dtype=wp.float32),
+    factor: wp.float32,
+    area_m2: wp.float32,
+    lb_housing: wp.float32,
+    phi_housing: wp.float32,
+    flux: wp.array2d(dtype=wp.float32),
+):
+    """Stage 3 in one pass: (box_k * PSF) evaluated at the native pixels only (8.3).
+
+    `_psf_kernel` then `_optics_kernel` convolve the whole k x grid and then average k x k blocks;
+    only one sample in k^2 of the convolution is ever used. Both are linear and the edge clamp
+    acts on the final radiance index, so grouping the taps by that index gives the same sum:
+
+        mean[i, j] = sum_{m, n} Kc[m, n] L[clamp(i k + m - r), clamp(j k + n - r)]
+        Kc = (1 / k^2) sum_{p, q < k} shift_{p, q}(flip(PSF))          (built on the host)
+
+    (2r + k)^2 taps per NATIVE pixel instead of (2r + 1)^2 per SUPERSAMPLED pixel.
+    """
+    i, j = wp.tid()
+    hs = radiance_ss.shape[0]
+    wss = radiance_ss.shape[1]
+    n = 2 * radius + supersample
+    y0 = i * supersample - radius
+    x0 = j * supersample - radius
+    acc = wp.float32(0.0)
+    for m in range(n):
+        y = wp.clamp(y0 + m, 0, hs - 1)
+        for q in range(n):
+            x = wp.clamp(x0 + q, 0, wss - 1)
+            acc += kc[m, q] * radiance_ss[y, x]
+    flux[i, j] = (acc - lb_housing) * factor * cos4[i, j] * area_m2 + phi_housing
+
+
+@wp.kernel
+def _add_kernel(a: wp.array2d(dtype=wp.float32), b: wp.array2d(dtype=wp.float32),
+                out: wp.array2d(dtype=wp.float32)):
+    """TEST ONLY: signal + a noise field drawn by the CPU, so the two paths share one draw."""
+    i, j = wp.tid()
+    out[i, j] = a[i, j] + b[i, j]
+
+
+def fused_kernel(psf: np.ndarray, k: int) -> np.ndarray:
+    """Kc of `_fused_optics_kernel`, float64 on the host, cast to float32 at upload."""
+    p = np.asarray(psf, dtype=np.float64)
+    r2 = p.shape[0] - 1  # 2r
+    if p.shape[0] != p.shape[1] or p.shape[0] % 2 == 0:
+        raise ValueError("square odd PSF expected")
+    kc = np.zeros((r2 + k, r2 + k), dtype=np.float64)
+    flipped = p[::-1, ::-1]
+    for a in range(k):
+        for b in range(k):
+            kc[a:a + r2 + 1, b:b + r2 + 1] += flipped
+    return kc / float(k * k)
+
+
+class FullGpu:
+    """One camera's device-resident stages 3-6. `frame()` is one frame; nothing is downloaded."""
+
+    def __init__(self, cfg, *, device: str = "cuda:0", flat_field: bool = False, chain=None,
+                 noise: bool = True, optics: str = "repo", palette: np.ndarray | None = None,
+                 extra_palette: np.ndarray | None = None, profile: bool = False) -> None:
+        self.cfg, self.device, self.profile = cfg, device, profile
+        self.spec = spec = cfg.sensor.sensor
+        self.lut, self.q = cfg.lut, cfg.quantity
+        self.k = k = int(cfg.supersample)
+        self.shape = (h, w) = spec.fpa_shape
+        self.bits = spec.fpa.bit_depth
+        self.dn_max = dn_max_for_bits(self.bits)
+        self.chain = chain
+        self.noise_on = bool(noise) and cfg.noise_enabled
+        self.frame_index = 0
+        self.housing_k = 300.0  # PipelineState's default; a chain overwrites it every frame
+        self._last_t_s = None
+        self.optics_impl = optics
+        dev = device
+
+        def z(dtype, shape=(h, w)):
+            return wp.zeros(shape, dtype=dtype, device=dev)
+
+        # stage 3: cos4 and the kernel live on the device; the two housing scalars change per frame
+        base = ws.optics_terms(spec, 0.0, k, cfg.psf)
+        self._a_d, self._f, self._tau = base.area_m2, spec.optics.f_number, spec.optics.transmittance
+        cos4 = wp.array(base.cos4, dtype=wp.float32, device=dev)
+        psf = None if base.psf is None else wp.array(base.psf, dtype=wp.float32, device=dev)
+        self.terms3 = dataclasses.replace(base, cos4=cos4, psf=psf)
+        self.kc = self.kc_radius = None
+        if optics == "fused":
+            if cfg.psf is None:
+                raise ValueError("the fused optics kernel needs a PSF")
+            self.kc = wp.array(fused_kernel(cfg.psf, k).astype(np.float32), dtype=wp.float32, device=dev)
+            self.kc_radius = int(cfg.psf.shape[0] // 2)
+        elif optics != "repo":
+            raise ValueError(optics)
+        self.flux = z(wp.float32)
+        # stage 4
+        self.terms4 = ws.detector_terms(cfg)
+        self.dstate = ws.WarpPipelineState(dev)
+        self.sig, self.lag = z(wp.float32), z(wp.float32)
+        # stage 5
+        self.sigma_tvh = float(cfg.detector.sigma_signal_dn)
+        self.terms5 = ws.noise_terms(cfg, self.sigma_tvh)
+        seed_pattern = cfg.noise.unit_fixed if chain is None else chain.fixed_pattern
+        self.fixed = self.dstate.fixed_pattern((h, w), seed_pattern)
+        self.noisy = z(wp.float32)
+        self.inject = z(wp.float32)
+        # M9
+        self.signal = self.noisy
+        if chain is not None:
+            self.dterms = ws.defect_terms(spec, self.dn_max)
+            self.kind, _, _ = self.dstate.defect_buffers(
+                chain.bad_pixels, np.asarray(chain.defect_state.bad, dtype=np.uint8))
+            self.on_map = self.dstate.factory_map_buffer(chain.bad_pixels)
+            self.defects_on = bool(chain.defects_enabled and chain.bad_pixels.count)
+            self.defective, self.replaced = z(wp.float32), z(wp.float32)
+            self.active = z(wp.uint8)
+            self.xi = self.dstate.residual_fields(chain.residual.gain_field, chain.residual.offset_field)
+            self.resid, self.held_out = z(wp.float32), z(wp.float32)
+            self.ref = z(wp.float32)  # the shutter frame; zeros until the first one (g x + o)
+            self._unit = chain.pattern.drift.sigmas
+            self._dummy = np.zeros((1, 1), np.float32)  # what the host FFC schedule "holds"
+            self.last_event = None
+            self.replacement_passes = 0
+        # ADC + display
+        self.dn16 = z(wp.uint16)
+        self.flat_on = bool(flat_field)
+        self.display_dn = z(wp.uint16)
+        self.ff_gain = self.ff_offset = None
+        self.ff_pedestal = 0.0
+        if self.flat_on:
+            if cfg.flat_field is None:
+                raise ValueError("flat_field=True needs a config built with flat_field_enabled=True")
+            self._upload_flat(cfg.flat_field)
+        self.y, self.y2 = z(wp.float32), z(wp.float32)
+        self.rgba = z(wp.uint8, (h, w, 4))
+        pal = ws.palette_table(spec.isp.palette) if palette is None else palette
+        self.palette = wp.array2d(np.ascontiguousarray(pal, dtype=np.uint8), dtype=wp.uint8, device=dev)
+        self.palette2 = self.rgba2 = None
+        if extra_palette is not None:
+            self.palette2 = wp.array2d(np.ascontiguousarray(extra_palette, dtype=np.uint8), dtype=wp.uint8, device=dev)
+            self.rgba2 = z(wp.uint8, (h, w, 4))
+        self.y_final = self.y
+
+    # -- helpers ------------------------------------------------------------------------------
+    def _upload_flat(self, nuc) -> None:
+        g, o = np.ascontiguousarray(nuc.gain, np.float32), np.ascontiguousarray(nuc.offset, np.float32)
+        if self.ff_gain is None:
+            self.ff_gain = wp.array(g, dtype=wp.float32, device=self.device)
+            self.ff_offset = wp.array(o, dtype=wp.float32, device=self.device)
+        else:
+            self.ff_gain.assign(g)
+            self.ff_offset.assign(o)
+        self.ff_pedestal = float(nuc.pedestal)
+
+    def _tick(self, tm, name, t0):
+        if tm is None:
+            return t0
+        if self.profile:
+            wp.synchronize_device(self.device)
+        t = pc()
+        tm[name] += t - t0
+        return t
+
+    # -- one frame ----------------------------------------------------------------------------
+    def frame(self, radiance_ss, t_s: float, tm: dict | None = None, *, inject_noise=None,
+              rts_override=None, extra_palette: bool = False):
+        """`radiance_ss`: device float32 (H k, W k). Leaves flux, signal, dn16, display_dn, y, rgba
+        on the device. `tm` accumulates seconds per block (exact per block only with profile=True;
+        otherwise the device time lands wherever the next synchronisation is)."""
+        dev, (h, w), fi = self.device, self.shape, self.frame_index
+        ch = self.chain
+        seed = self.cfg.sensor_seed
+        t = pc()
+        t_fpa = self.housing_k
+        dt_s = 0.0
+        if ch is not None:
+            dt_s = 0.0 if self._last_t_s is None else max(0.0, float(t_s) - self._last_t_s)
+            self._last_t_s = float(t_s)
+            self.housing_k = ch.housing.at(t_s)
+            t_fpa = self.housing_k
+            if ch.fpa_node is not None:
+                t_fpa = ch.fpa_node.step(t_s, dt_s) if dt_s > 0.0 else ch.fpa_node.settle(t_s)
+            if dt_s > 0.0:
+                ch.ffc.update_delta_t(t_fpa, dt_s)
+            t = self._tick(tm, "m9_clock", t)
+            if dt_s > 0.0:
+                u = self._unit
+                ws.launch_ou_drift(self.fixed, (u.v, u.h, u.vh), dt_s, ch.sensor.noise.fpn_drift_tau_s,
+                                   fi, seed, dev)
+                t = self._tick(tm, "m9_drift", t)
+                if self.defects_on:
+                    ws.launch_rts_step(self.dstate, self.dterms, fi, seed, dev)
+                    t = self._tick(tm, "m9_rts", t)
+        lb_h = float(self.lut.lookup(self.housing_k, self.q)[()])
+        phi_h = housing_power_axis(self._a_d, self._f, self._tau, lb_h)
+        # stage 3
+        if self.kc is not None:
+            wp.launch(_fused_optics_kernel, dim=(h, w),
+                      inputs=[radiance_ss, self.kc, np.int32(self.kc_radius), np.int32(self.k), self.terms3.cos4,
+                              np.float32(self.terms3.factor), np.float32(self._a_d), np.float32(lb_h),
+                              np.float32(phi_h)], outputs=[self.flux], device=dev)
+        else:
+            ws.launch_optics(radiance_ss, dataclasses.replace(self.terms3, lb_housing=lb_h, phi_housing=phi_h),
+                             self.flux, dev)
+        t = self._tick(tm, "s3_optics", t)
+        # stage 4: transfer + membrane IIR; no noise in here
+        lagged = ws.launch_detector(self.flux, self.terms4, self.dstate, self.sig, self.lag)
+        t = self._tick(tm, "s4_detector", t)
+        # stage 5: sigma_TVH and the six correlated terms, once
+        if inject_noise is not None:
+            self.inject.assign(inject_noise)
+            wp.launch(_add_kernel, dim=(h, w), inputs=[lagged, self.inject], outputs=[self.noisy], device=dev)
+            signal = self.noisy
+        elif self.noise_on:
+            ws.launch_noise(lagged, self.fixed, self.terms5, fi, seed, self.noisy, dev)
+            signal = self.noisy
+        else:
+            signal = lagged
+        t = self._tick(tm, "s5_noise", t)
+        if ch is not None:
+            if ch.needs_shutter_frame(fi):  # power-up and every scheduled FFC: host, per event
+                lb_sh = float(self.lut.lookup(t_fpa, self.q)[()])
+                ch.record_shutter(self.cfg.detector.noiseless_signal_dn(shutter_flux(self.spec, lb_sh, lb_h)),
+                                  self.cfg.flat_field if self.flat_on else None)
+                self.ref.assign(ch.shutter_dn)
+                if self.flat_on and ch.display_nuc is not None:
+                    self._upload_flat(ch.display_nuc)
+                t = self._tick(tm, "m9_shutter", t)
+            if self.defects_on:
+                kind, rts, _scratch = self.dstate._defects
+                if rts_override is not None:
+                    rts.assign(np.ascontiguousarray(rts_override, dtype=np.uint8))
+                ws.launch_defects(signal, kind, rts, self.dterms, self.defective, self.active, dev,
+                                  on_map=self.on_map)
+                t = self._tick(tm, "m9_defects", t)
+                self.replacement_passes = ws.launch_replacement(self.defective, self.active, self.replaced, dev)
+                signal = self.replaced
+                t = self._tick(tm, "m9_replace", t)
+            if ch.residual_enabled:
+                nuc = self.spec.nuc
+                ws.launch_nuc_residual(signal, self.xi, nuc.residual_gain_ppm_per_k, nuc.residual_offset_mk_per_k,
+                                       ch.residual.dn_per_k, ch.ffc.delta_t_eff_k, self.resid, dev,
+                                       reference=self.ref)
+                signal = self.resid
+                t = self._tick(tm, "m9_residual", t)
+            # the schedule is the host controller's; only the held frame lives on the device
+            _, event = ch.ffc.process(self._dummy, fi, t_fpa_k=t_fpa)
+            self.last_event = event
+            ws.launch_ffc_hold(signal, self.dstate, bool(event.frozen), self.held_out, dev)
+            signal = self.held_out
+            if event.fired:  # the resets ran on the host objects: new xi, new pattern realisation
+                self.xi = self.dstate.residual_fields(ch.residual.gain_field, ch.residual.offset_field)
+                pat = ch.pattern.pattern
+                for buf, src in zip(self.fixed, (pat.v, pat.h, pat.vh), strict=True):
+                    buf.assign(np.ascontiguousarray(src, dtype=np.float32))
+            t = self._tick(tm, "m9_ffc", t)
+        self.signal = signal
+        wp.launch(ws._quantise_kernel, dim=(h, w), inputs=[signal, np.int32(self.dn_max)],
+                  outputs=[self.dn16], device=dev)
+        t = self._tick(tm, "adc", t)
+        dn = self.dn16
+        if self.flat_on:
+            wp.launch(_flat_field_kernel, dim=(h, w),
+                      inputs=[self.dn16, self.ff_gain, self.ff_offset, wp.float64(self.ff_pedestal),
+                              np.int32(self.dn_max)], outputs=[self.display_dn], device=dev)
+            dn = self.display_dn
+            t = self._tick(tm, "flat_field", t)
+        self.dn_shown = dn
+        # stage 6, ADR 0031's order; the repo kernels, with the palette table an argument
+        isp = self.spec.isp
+        table, _host = ws.agc_lut_warp(dn, isp, self.bits, dev)
+        t = self._tick(tm, "s6_agc_table", t)
+        wp.launch(ws._apply_lut_kernel, dim=(h, w), inputs=[dn, table, self.y], device=dev)
+        y = self.y
+        if isp.dde_gain > 0.0:
+            wp.launch(ws._dde_kernel, dim=(h, w),
+                      inputs=[self.y, wp.float32(isp.dde_gain), wp.int32(h), wp.int32(w), self.y2], device=dev)
+            y = self.y2
+        self.y_final = y
+        t = self._tick(tm, "s6_lut_dde", t)
+        invert = wp.int32(1 if isp.polarity == "black_hot" else 0)
+        wp.launch(ws._palette_kernel, dim=(h, w), inputs=[y, self.palette, invert, self.rgba], device=dev)
+        if extra_palette and self.palette2 is not None:
+            wp.launch(ws._palette_kernel, dim=(h, w), inputs=[y, self.palette2, invert, self.rgba2], device=dev)
+        self._tick(tm, "s6_palette", t)
+        self.frame_index += 1
+        return self.rgba
+
+    def planes(self) -> dict:
+        """Host copies of what the last frame left on the device (for comparison, off the clock)."""
+        out = {"flux": self.flux.numpy(), "signal": self.signal.numpy(), "dn16": self.dn16.numpy(),
+               "display_dn": self.dn_shown.numpy(), "y": self.y_final.numpy(), "display8": self.rgba.numpy()}
+        if self.chain is not None and self.defects_on:
+            out["active"] = self.active.numpy()
+        return out

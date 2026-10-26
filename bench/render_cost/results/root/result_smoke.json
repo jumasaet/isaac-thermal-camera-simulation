@@ -1,0 +1,76 @@
+{
+  "sensor": "/tmp/irsim_render_cost/sensor_ss1.yaml",
+  "scene": "/tmp/irsim_render_cost/scene_bench.yaml",
+  "requested_rendermode": "RaytracedLighting",
+  "effective_rendermode": "RealTimePathTracing",
+  "supersample_factor": 1,
+  "native_px": [
+    640,
+    512
+  ],
+  "render_product_px": [
+    640,
+    512
+  ],
+  "rt_subframes": 1,
+  "pt_spp": null,
+  "warmup": 2,
+  "frames": 3,
+  "env_radiance_patched_in": [
+    "irsim.pipeline.environment",
+    "irsim.pipeline.radiance",
+    "irsim.validation.aerial"
+  ],
+  "vram_mib_max": null,
+  "phases": {
+    "renderer": {
+      "mean_ms": 86.04011432422946,
+      "std_ms": 1.699035736811011,
+      "min_ms": 84.59746598964557,
+      "max_ms": 87.91287097847089,
+      "n": 3
+    },
+    "planes_total": {
+      "mean_ms": 443.3625890330101,
+      "std_ms": 19.161222540083966,
+      "min_ms": 429.4711590046063,
+      "max_ms": 465.22217604797333,
+      "n": 3
+    },
+    "material_id": {
+      "mean_ms": 3.609508004349967,
+      "std_ms": 0.02916140222340744,
+      "min_ms": 3.576024028006941,
+      "max_ms": 3.629332990385592,
+      "n": 3
+    },
+    "temperature": {
+      "mean_ms": 2.0708329781579473,
+      "std_ms": 0.04853940749936599,
+      "min_ms": 2.017505990806967,
+      "max_ms": 2.1124379709362984,
+      "n": 3
+    },
+    "environment_radiance": {
+      "mean_ms": 726.6471253242344,
+      "std_ms": 6.888832245219926,
+      "min_ms": 722.3410949809477,
+      "max_ms": 734.5923410030082,
+      "n": 3
+    },
+    "get_outputs_total": {
+      "mean_ms": 1351.7935020305838,
+      "std_ms": 17.823604328171534,
+      "min_ms": 1333.6878800182603,
+      "max_ms": 1369.321023055818,
+      "n": 3
+    },
+    "assembly_b": {
+      "mean_ms": 357.32247470878065,
+      "std_ms": 17.48238729740932,
+      "min_ms": 344.87369301496074,
+      "max_ms": 377.30930506950244,
+      "n": 3
+    }
+  }
+}

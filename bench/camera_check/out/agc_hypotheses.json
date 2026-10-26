@@ -1,0 +1,358 @@
+{
+ "summary": {
+  "n_events": 36,
+  "mean_abs_measured_bg_shift_counts": 0.4722222222222222,
+  "mean_abs_predicted_holdmean_shift_counts": 3.1333333333333333,
+  "corr_measured_vs_holdmean_prediction": -0.260615490044673,
+  "span_ratio_range": [
+   0.696,
+   1.409
+  ],
+  "bg_spread_ratio_range": [
+   0.519,
+   1.184
+  ],
+  "corr_log_spread_ratio_vs_log_span_ratio": 0.17441417699578526,
+  "events_span_changes_over_25pct": 5,
+  "those_events_bg_spread_ratio": [
+   1.043,
+   0.955,
+   1.078,
+   1.016,
+   0.938
+  ],
+  "those_events_span_ratio": [
+   0.723,
+   0.72,
+   1.409,
+   1.388,
+   0.696
+  ]
+ },
+ "events": [
+  {
+   "k": 89,
+   "dhot_px": -1465,
+   "bg_shift_meas": 0.0,
+   "bg_shift_pred_holdmean": 9.64,
+   "bg_motion": 5.0,
+   "span_ratio": 1.068,
+   "bg_spread_ratio": 0.852
+  },
+  {
+   "k": 231,
+   "dhot_px": -1097,
+   "bg_shift_meas": -1.0,
+   "bg_shift_pred_holdmean": 1.72,
+   "bg_motion": 4.0,
+   "span_ratio": 1.043,
+   "bg_spread_ratio": 0.984
+  },
+  {
+   "k": 232,
+   "dhot_px": -1529,
+   "bg_shift_meas": -1.0,
+   "bg_shift_pred_holdmean": 1.83,
+   "bg_motion": 4.0,
+   "span_ratio": 1.084,
+   "bg_spread_ratio": 1.0
+  },
+  {
+   "k": 508,
+   "dhot_px": 1099,
+   "bg_shift_meas": -2.0,
+   "bg_shift_pred_holdmean": 3.27,
+   "bg_motion": 5.0,
+   "span_ratio": 0.925,
+   "bg_spread_ratio": 0.519
+  },
+  {
+   "k": 676,
+   "dhot_px": 1732,
+   "bg_shift_meas": 0.0,
+   "bg_shift_pred_holdmean": -9.6,
+   "bg_motion": 3.0,
+   "span_ratio": 0.723,
+   "bg_spread_ratio": 1.043
+  },
+  {
+   "k": 677,
+   "dhot_px": 1675,
+   "bg_shift_meas": 0.0,
+   "bg_shift_pred_holdmean": -7.39,
+   "bg_motion": 3.0,
+   "span_ratio": 0.824,
+   "bg_spread_ratio": 1.021
+  },
+  {
+   "k": 701,
+   "dhot_px": -1103,
+   "bg_shift_meas": 0.0,
+   "bg_shift_pred_holdmean": -0.23,
+   "bg_motion": 4.0,
+   "span_ratio": 1.131,
+   "bg_spread_ratio": 1.05
+  },
+  {
+   "k": 706,
+   "dhot_px": -1599,
+   "bg_shift_meas": -2.0,
+   "bg_shift_pred_holdmean": 0.37,
+   "bg_motion": 10.0,
+   "span_ratio": 1.103,
+   "bg_spread_ratio": 1.184
+  },
+  {
+   "k": 1018,
+   "dhot_px": 1149,
+   "bg_shift_meas": 1.0,
+   "bg_shift_pred_holdmean": -3.11,
+   "bg_motion": 4.0,
+   "span_ratio": 0.961,
+   "bg_spread_ratio": 1.0
+  },
+  {
+   "k": 1019,
+   "dhot_px": 1138,
+   "bg_shift_meas": 1.0,
+   "bg_shift_pred_holdmean": -2.67,
+   "bg_motion": 4.0,
+   "span_ratio": 0.883,
+   "bg_spread_ratio": 1.0
+  },
+  {
+   "k": 1021,
+   "dhot_px": 1821,
+   "bg_shift_meas": 1.0,
+   "bg_shift_pred_holdmean": -5.82,
+   "bg_motion": 4.0,
+   "span_ratio": 0.941,
+   "bg_spread_ratio": 0.962
+  },
+  {
+   "k": 1022,
+   "dhot_px": 2570,
+   "bg_shift_meas": 1.0,
+   "bg_shift_pred_holdmean": -5.03,
+   "bg_motion": 4.0,
+   "span_ratio": 0.975,
+   "bg_spread_ratio": 0.934
+  },
+  {
+   "k": 1023,
+   "dhot_px": 1965,
+   "bg_shift_meas": 1.0,
+   "bg_shift_pred_holdmean": -4.04,
+   "bg_motion": 4.0,
+   "span_ratio": 0.994,
+   "bg_spread_ratio": 0.915
+  },
+  {
+   "k": 1024,
+   "dhot_px": 1193,
+   "bg_shift_meas": 0.0,
+   "bg_shift_pred_holdmean": -2.52,
+   "bg_motion": 3.0,
+   "span_ratio": 0.72,
+   "bg_spread_ratio": 0.955
+  },
+  {
+   "k": 1033,
+   "dhot_px": 2111,
+   "bg_shift_meas": -2.0,
+   "bg_shift_pred_holdmean": -5.75,
+   "bg_motion": 7.0,
+   "span_ratio": 1.058,
+   "bg_spread_ratio": 0.877
+  },
+  {
+   "k": 1045,
+   "dhot_px": -1045,
+   "bg_shift_meas": 0.0,
+   "bg_shift_pred_holdmean": 1.39,
+   "bg_motion": 3.0,
+   "span_ratio": 1.021,
+   "bg_spread_ratio": 0.957
+  },
+  {
+   "k": 1048,
+   "dhot_px": -2399,
+   "bg_shift_meas": 0.0,
+   "bg_shift_pred_holdmean": 4.41,
+   "bg_motion": 3.0,
+   "span_ratio": 0.973,
+   "bg_spread_ratio": 0.915
+  },
+  {
+   "k": 1049,
+   "dhot_px": -1566,
+   "bg_shift_meas": 0.0,
+   "bg_shift_pred_holdmean": 3.99,
+   "bg_motion": 3.0,
+   "span_ratio": 0.974,
+   "bg_spread_ratio": 0.913
+  },
+  {
+   "k": 1050,
+   "dhot_px": -1177,
+   "bg_shift_meas": 0.0,
+   "bg_shift_pred_holdmean": 3.93,
+   "bg_motion": 3.0,
+   "span_ratio": 1.013,
+   "bg_spread_ratio": 0.977
+  },
+  {
+   "k": 1051,
+   "dhot_px": -1529,
+   "bg_shift_meas": 0.0,
+   "bg_shift_pred_holdmean": 3.37,
+   "bg_motion": 3.0,
+   "span_ratio": 0.976,
+   "bg_spread_ratio": 1.0
+  },
+  {
+   "k": 1052,
+   "dhot_px": -1658,
+   "bg_shift_meas": -1.0,
+   "bg_shift_pred_holdmean": 2.42,
+   "bg_motion": 3.0,
+   "span_ratio": 0.97,
+   "bg_spread_ratio": 0.979
+  },
+  {
+   "k": 1082,
+   "dhot_px": 1828,
+   "bg_shift_meas": 1.0,
+   "bg_shift_pred_holdmean": -1.62,
+   "bg_motion": 3.0,
+   "span_ratio": 0.992,
+   "bg_spread_ratio": 1.0
+  },
+  {
+   "k": 1083,
+   "dhot_px": 1283,
+   "bg_shift_meas": 0.0,
+   "bg_shift_pred_holdmean": -3.68,
+   "bg_motion": 3.0,
+   "span_ratio": 0.999,
+   "bg_spread_ratio": 0.957
+  },
+  {
+   "k": 1084,
+   "dhot_px": 1186,
+   "bg_shift_meas": 1.0,
+   "bg_shift_pred_holdmean": -2.31,
+   "bg_motion": 3.0,
+   "span_ratio": 0.97,
+   "bg_spread_ratio": 0.978
+  },
+  {
+   "k": 1085,
+   "dhot_px": 1269,
+   "bg_shift_meas": 1.0,
+   "bg_shift_pred_holdmean": -2.54,
+   "bg_motion": 3.0,
+   "span_ratio": 0.929,
+   "bg_spread_ratio": 0.978
+  },
+  {
+   "k": 1095,
+   "dhot_px": -3488,
+   "bg_shift_meas": 0.0,
+   "bg_shift_pred_holdmean": 4.83,
+   "bg_motion": 3.0,
+   "span_ratio": 1.409,
+   "bg_spread_ratio": 1.078
+  },
+  {
+   "k": 1096,
+   "dhot_px": -1079,
+   "bg_shift_meas": 0.0,
+   "bg_shift_pred_holdmean": 4.69,
+   "bg_motion": 4.0,
+   "span_ratio": 0.85,
+   "bg_spread_ratio": 0.905
+  },
+  {
+   "k": 1099,
+   "dhot_px": -2117,
+   "bg_shift_meas": 0.0,
+   "bg_shift_pred_holdmean": 2.02,
+   "bg_motion": 4.0,
+   "span_ratio": 0.98,
+   "bg_spread_ratio": 0.922
+  },
+  {
+   "k": 1108,
+   "dhot_px": 1565,
+   "bg_shift_meas": 0.0,
+   "bg_shift_pred_holdmean": 0.39,
+   "bg_motion": 3.0,
+   "span_ratio": 1.388,
+   "bg_spread_ratio": 1.016
+  },
+  {
+   "k": 1109,
+   "dhot_px": -1580,
+   "bg_shift_meas": 0.0,
+   "bg_shift_pred_holdmean": 0.54,
+   "bg_motion": 4.0,
+   "span_ratio": 0.696,
+   "bg_spread_ratio": 0.938
+  },
+  {
+   "k": 1112,
+   "dhot_px": 1617,
+   "bg_shift_meas": 0.0,
+   "bg_shift_pred_holdmean": -0.65,
+   "bg_motion": 4.0,
+   "span_ratio": 1.144,
+   "bg_spread_ratio": 0.983
+  },
+  {
+   "k": 1117,
+   "dhot_px": 1194,
+   "bg_shift_meas": 0.0,
+   "bg_shift_pred_holdmean": -0.43,
+   "bg_motion": 3.0,
+   "span_ratio": 1.127,
+   "bg_spread_ratio": 1.016
+  },
+  {
+   "k": 1118,
+   "dhot_px": -1077,
+   "bg_shift_meas": 0.0,
+   "bg_shift_pred_holdmean": -0.24,
+   "bg_motion": 3.0,
+   "span_ratio": 0.978,
+   "bg_spread_ratio": 1.0
+  },
+  {
+   "k": 1122,
+   "dhot_px": -1407,
+   "bg_shift_meas": 0.0,
+   "bg_shift_pred_holdmean": 1.72,
+   "bg_motion": 4.0,
+   "span_ratio": 0.877,
+   "bg_spread_ratio": 1.0
+  },
+  {
+   "k": 1143,
+   "dhot_px": 1205,
+   "bg_shift_meas": 0.0,
+   "bg_shift_pred_holdmean": -2.05,
+   "bg_motion": 3.0,
+   "span_ratio": 0.887,
+   "bg_spread_ratio": 0.941
+  },
+  {
+   "k": 1144,
+   "dhot_px": 1228,
+   "bg_shift_meas": 0.0,
+   "bg_shift_pred_holdmean": -2.59,
+   "bg_motion": 3.0,
+   "span_ratio": 0.973,
+   "bg_spread_ratio": 0.957
+  }
+ ]
+}
