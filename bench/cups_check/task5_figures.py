@@ -23,6 +23,8 @@ Both images of a sheet share one fixed temperature window and one palette. The w
 (hot / cold), identical for 50 and 95 cm, so the two distances of one water compare directly.
 
 Writes figures/cups_<case>_<palette>.png and cups_summary_<palette>.png for palette in (whitehot, jet).
+`--lang en --out <dir>` writes the same sheets with every label in English (decimal point) to <dir>; the text of
+both languages is in TEXT below and nothing else changes between them.
 """
 from __future__ import annotations
 
@@ -36,19 +38,76 @@ FIG = cc.HERE / "figures"
 REF_FRAME = {"hot_water_50": 0, "hot_water_95": -1, "cold_water_50": 0, "cold_water_95": 0}
 T_SET = {"hot_water_50": 66.0, "hot_water_95": 58.0, "cold_water_50": 11.0, "cold_water_95": 11.0}
 ORDER = ("hot_water_50", "hot_water_95", "cold_water_50", "cold_water_95")
-LABEL = {"hot_water_50": "Agua caliente, 50 cm", "hot_water_95": "Agua caliente, 95 cm",
-         "cold_water_50": "Agua fría, 50 cm", "cold_water_95": "Agua fría, 95 cm"}
 WINDOW_C = {"hot": (15.0, 70.0), "cold": (8.0, 26.0)}
 PALETTES = {"whitehot": "gray", "jet": "jet"}
 CROP_W, CROP_H = 256, 192  # same pixel box on both images, centred on the real water region
 SIM_TAG = "sim6"
-CAMERA = {"sim6": "cámara CTC-006 (14,6 mm F/1,3) con el desenfoque medido: foco ∞ + σ 80 µm",
-          "sim": "óptica solo con difracción (YAML anterior)"}
+LANG = "es"
+TEXT = {
+    "es": {
+        "label": {"hot_water_50": "Agua caliente, 50 cm", "hot_water_95": "Agua caliente, 95 cm",
+                  "cold_water_50": "Agua fría, 50 cm", "cold_water_95": "Agua fría, 95 cm"},
+        "camera": {"sim6": "cámara CTC-006 (14,6 mm F/1,3) con el desenfoque medido: foco ∞ + σ 80 µm",
+                   "sim": "óptica solo con difracción (YAML anterior)"},
+        "real": "Real (calibrada)", "sim": "Simulada",
+        "mean": "T aparente media del agua: {} °C",
+        "cbar": "Temperatura aparente (°C), ε = 1",
+        "title": "{label} · diferencia real − simulada: {d} K",
+        "sub": "Real: {frame} frame de la serie, al que se refiere la lectura · ventana fija {lo}–{hi} °C en las dos "
+               "imágenes",
+        "first": "primer", "last": "último",
+        "edge": "Borde 10–90 %: real {r} px · simulada {s} px",
+        "region": "Media sobre la región marcada (meseta del agua, misma definición en las dos imágenes).",
+        "note": "Simulación: superficie a {t} °C (lectura del termómetro), ε = 0,93 · {indep}",
+        "dep": "calibración ajustada a 50 cm: comparación no independiente",
+        "ind": "prueba independiente (la calibración se ajustó a 50 cm)",
+        "s_sim": "Simulada · Δ = {d} K", "s_edge": "borde 10–90 %: real {r} · sim {s} px",
+        "s_cbar": "T aparente (°C) · ventana {lo}–{hi} °C", "rows": ("Real", "Simulada"),
+        "s_title": "Vasos de agua: cámara real calibrada frente al simulador (LWIR 8–14 µm)",
+        "s_sub": "Δ = T aparente media del agua, real − simulada · misma ventana y paleta · ",
+        "s_foot": "Simulación con la temperatura leída (66 / 58 / 11 / 11 °C) y ε = 0,93. A 50 cm la calibración se "
+                  "ajustó con esos mismos vasos (no independiente); 95 cm es la prueba.\nA 95 cm el error viene casi "
+                  "entero de la lectura de entrada: con la temperatura que predice la serie de 50 cm, baja a +0,15 K "
+                  "(caliente) y +0,5 K (frío). Detalle: bench/cups_check/RESULTADOS.md",
+    },
+    "en": {
+        "label": {"hot_water_50": "Hot water, 50 cm", "hot_water_95": "Hot water, 95 cm",
+                  "cold_water_50": "Cold water, 50 cm", "cold_water_95": "Cold water, 95 cm"},
+        "camera": {"sim6": "CTC-006 camera (14.6 mm F/1.3) with the measured blur: focus ∞ + σ 80 µm",
+                   "sim": "diffraction-only optics (previous YAML)"},
+        "real": "Real (calibrated)", "sim": "Simulated",
+        "mean": "Mean apparent water temperature: {} °C",
+        "cbar": "Apparent temperature (°C), ε = 1",
+        "title": "{label} · real − simulated: {d} K",
+        "sub": "Real: {frame} frame of the series, the one the thermometer reading refers to · fixed window "
+               "{lo}–{hi} °C on both images",
+        "first": "first", "last": "last",
+        "edge": "10–90 % edge width: real {r} px · simulated {s} px",
+        "region": "Mean over the outlined region (water plateau, same definition on both images).",
+        "note": "Simulation: surface at {t} °C (thermometer reading), ε = 0.93 · {indep}",
+        "dep": "calibration fitted at 50 cm: not an independent comparison",
+        "ind": "independent test (the calibration was fitted at 50 cm)",
+        "s_sim": "Simulated · Δ = {d} K", "s_edge": "10–90 % edge: real {r} · sim {s} px",
+        "s_cbar": "Apparent T (°C) · window {lo}–{hi} °C", "rows": ("Real", "Simulated"),
+        "s_title": "Water cups: calibrated real camera vs. simulator (LWIR 8–14 µm)",
+        "s_sub": "Δ = mean apparent water temperature, real − simulated · same window and palette · ",
+        "s_foot": "Simulated at the thermometer readings (66 / 58 / 11 / 11 °C), ε = 0.93. At 50 cm the calibration "
+                  "was fitted on these same cups (not independent); 95 cm is the test.\nAt 95 cm the error comes "
+                  "almost entirely from the input reading: fed the temperature the 50 cm series predicts, it drops to "
+                  "+0.15 K (hot) and +0.5 K (cold). Details: bench/cups_check/RESULTADOS.md",
+    },
+}
+CAMERA = TEXT["es"]["camera"]  # the --sim choices
+
+
+def tx(key: str):
+    return TEXT[LANG][key]
 
 
 def fmt(x: float, nd: int = 1, sign: bool = False) -> str:
-    """Spanish decimal comma."""
-    return (f"{x:+.{nd}f}" if sign else f"{x:.{nd}f}").replace(".", ",").replace("-", "\u2212")
+    """Decimal comma in Spanish, point in English; a true minus sign in both."""
+    s = f"{x:+.{nd}f}" if sign else f"{x:.{nd}f}"
+    return (s.replace(".", ",") if LANG == "es" else s).replace("-", "\u2212")
 
 
 def real_frame_c(case: str, t1: dict) -> tuple[np.ndarray, tuple, float]:
@@ -116,7 +175,7 @@ def collect() -> dict:
         sim, core = sim_frame_c(case)
         data[case] = {"real": real, "sim": sim, "water": water, "core": core, "box": crop_box(water),
                       "real_mean": float(cc.roi(real, water).mean()), "sim_mean": float(sim[core].mean()),
-                      "frame": "último" if REF_FRAME[case] == -1 else "primer",
+                      "frame": tx("last") if REF_FRAME[case] == -1 else tx("first"),
                       "edge_real_px": edge_real[case]["core_plus_halo"]["w10_90_px_modelfree"],
                       "edge_sim_px": edge_sim[case]["core_plus_halo"]["w10_90_px_modelfree"]}
         data[case]["diff"] = data[case]["real_mean"] - data[case]["sim_mean"]
@@ -133,13 +192,13 @@ def draw_pair(ax_real, ax_sim, d: dict, cmap: str, lo: float, hi: float, size: f
     r0, r1, c0, c1 = d["box"]
     ext = (c0 - 0.5, c1 - 0.5, r1 - 0.5, r0 - 0.5)
     im = None
-    for ax, img, mean, name in ((ax_real, d["real"], d["real_mean"], "Real (calibrada)"),
-                                (ax_sim, d["sim"], d["sim_mean"], "Simulada")):
+    for ax, img, mean, name in ((ax_real, d["real"], d["real_mean"], tx("real")),
+                                (ax_sim, d["sim"], d["sim_mean"], tx("sim"))):
         im = ax.imshow(img[r0:r1, c0:c1], cmap=cmap, vmin=lo, vmax=hi, extent=ext, interpolation="nearest")
         ax.set_xticks([])
         ax.set_yticks([])
         ax.set_title(name, fontsize=size + 1)
-        ax.set_xlabel(f"T aparente media del agua: {fmt(mean)} °C", fontsize=size)
+        ax.set_xlabel(tx("mean").format(fmt(mean)), fontsize=size)
     y0, y1, x0, x1 = d["water"]
     for lw, col, ls in ((2.4, "white", "-"), (1.2, "black", (0, (3, 2)))):
         ax_real.add_patch(Rectangle((x0 - 0.5, y0 - 0.5), x1 - x0, y1 - y0, fill=False, lw=lw, ec=col, ls=ls))
@@ -151,9 +210,8 @@ def draw_pair(ax_real, ax_sim, d: dict, cmap: str, lo: float, hi: float, size: f
 
 
 def note(case: str) -> str:
-    indep = ("calibración ajustada a 50 cm: comparación no independiente" if case.endswith("50")
-             else "prueba independiente (la calibración se ajustó a 50 cm)")
-    return f"Simulación: superficie a {fmt(T_SET[case], 0)} °C (lectura del termómetro), ε = 0,93 · {indep}"
+    indep = tx("dep") if case.endswith("50") else tx("ind")
+    return tx("note").format(t=fmt(T_SET[case], 0), indep=indep)
 
 
 def sheet(case: str, d: dict, pal: str) -> None:
@@ -165,14 +223,14 @@ def sheet(case: str, d: dict, pal: str) -> None:
     ax_r, ax_s, cax = fig.add_subplot(gs[0]), fig.add_subplot(gs[1]), fig.add_subplot(gs[2])
     im = draw_pair(ax_r, ax_s, d, PALETTES[pal], lo, hi, size=11)
     cb = fig.colorbar(im, cax=cax)
-    cb.set_label("Temperatura aparente (°C), ε = 1", fontsize=10)
-    fig.suptitle(f"{LABEL[case]} · diferencia real − simulada: {fmt(d['diff'], 1, True)} K", fontsize=14,
+    cb.set_label(tx("cbar"), fontsize=10)
+    fig.suptitle(tx("title").format(label=tx("label")[case], d=fmt(d["diff"], 1, True)), fontsize=14,
                  fontweight="bold", y=0.96)
-    fig.text(0.475, 0.885, f"Real: {d['frame']} frame de la serie, al que se refiere la lectura · ventana fija "
-             f"{fmt(lo, 0)}–{fmt(hi, 0)} °C en las dos imágenes", ha="center", fontsize=9.5, color="#444")
-    fig.text(0.475, 0.025, f"Borde 10–90 %: real {fmt(d['edge_real_px'])} px · simulada {fmt(d['edge_sim_px'])} px"
-             f" · {CAMERA[SIM_TAG]}\n" + note(case) + "\nMedia sobre la región marcada (meseta del agua, misma "
-             "definición en las dos imágenes).", ha="center", fontsize=8.5, color="#444")
+    fig.text(0.475, 0.885, tx("sub").format(frame=d["frame"], lo=fmt(lo, 0), hi=fmt(hi, 0)), ha="center",
+             fontsize=9.5, color="#444")
+    fig.text(0.475, 0.025, tx("edge").format(r=fmt(d["edge_real_px"]), s=fmt(d["edge_sim_px"]))
+             + f" · {tx('camera')[SIM_TAG]}\n" + note(case) + "\n" + tx("region"), ha="center", fontsize=8.5,
+             color="#444")
     fig.savefig(FIG / f"cups_{case}_{pal}.png", facecolor="white")
     plt.close(fig)
 
@@ -191,28 +249,20 @@ def summary(data: dict, pal: str) -> None:
         lo, hi = WINDOW_C[kind]
         ax_r, ax_s = fig.add_subplot(gs[0, c]), fig.add_subplot(gs[1, c])
         ims[kind] = draw_pair(ax_r, ax_s, d, PALETTES[pal], lo, hi, size=10.5)
-        ax_r.set_title(f"{LABEL[case]}\nReal (calibrada)", fontsize=12)
-        ax_s.set_title(f"Simulada · Δ = {fmt(d['diff'], 1, True)} K", fontsize=12, fontweight="bold")
-        ax_s.text(0.5, -0.20, f"borde 10–90 %: real {fmt(d['edge_real_px'])} · sim {fmt(d['edge_sim_px'])} px",
+        ax_r.set_title(f"{tx('label')[case]}\n{tx('real')}", fontsize=12)
+        ax_s.set_title(tx("s_sim").format(d=fmt(d["diff"], 1, True)), fontsize=12, fontweight="bold")
+        ax_s.text(0.5, -0.20, tx("s_edge").format(r=fmt(d["edge_real_px"]), s=fmt(d["edge_sim_px"])),
                   transform=ax_s.transAxes, ha="center", va="top", fontsize=10, color="#444")
     for kind, c in (("hot", 2), ("cold", 6)):
         lo, hi = WINDOW_C[kind]
         cb = fig.colorbar(ims[kind], cax=fig.add_subplot(gs[:, c]))
-        cb.set_label(f"T aparente (°C) · ventana {fmt(lo, 0)}–{fmt(hi, 0)} °C", fontsize=11)
-    row_lbl = {0: "Real", 1: "Simulada"}
+        cb.set_label(tx("s_cbar").format(lo=fmt(lo, 0), hi=fmt(hi, 0)), fontsize=11)
+    row_lbl = dict(enumerate(tx("rows")))
     for r, y in ((0, 0.64), (1, 0.31)):
         fig.text(0.012, y, row_lbl[r], rotation=90, va="center", fontsize=14, fontweight="bold")
-    fig.suptitle("Vasos de agua: cámara real calibrada frente al simulador (LWIR 8–14 µm)", fontsize=18,
-                 fontweight="bold", y=0.965)
-    fig.text(0.5, 0.885, "Δ = T aparente media del agua, real − simulada · misma ventana y paleta · "
-             + CAMERA[SIM_TAG],
-             ha="center", fontsize=12, color="#444")
-    fig.text(0.5, 0.045,
-             "Simulación con la temperatura leída (66 / 58 / 11 / 11 °C) y ε = 0,93. A 50 cm la calibración se "
-             "ajustó con esos mismos vasos (no independiente); 95 cm es la prueba.\nA 95 cm el error viene casi "
-             "entero de la lectura de entrada: con la temperatura que predice la serie de 50 cm, baja a +0,15 K "
-             "(caliente) y +0,5 K (frío). Detalle: bench/cups_check/RESULTADOS.md",
-             ha="center", fontsize=10.5, color="#444")
+    fig.suptitle(tx("s_title"), fontsize=18, fontweight="bold", y=0.965)
+    fig.text(0.5, 0.885, tx("s_sub") + tx("camera")[SIM_TAG], ha="center", fontsize=12, color="#444")
+    fig.text(0.5, 0.045, tx("s_foot"), ha="center", fontsize=10.5, color="#444")
     fig.savefig(FIG / f"cups_summary_{pal}.png", facecolor="white")
     plt.close(fig)
 
@@ -222,20 +272,25 @@ def main() -> None:
 
     import matplotlib
 
-    global SIM_TAG
+    global SIM_TAG, LANG, FIG
     ap = argparse.ArgumentParser()
     ap.add_argument("--sim", default=SIM_TAG, choices=sorted(CAMERA))
-    SIM_TAG = ap.parse_args().sim
+    ap.add_argument("--lang", default=LANG, choices=sorted(TEXT))
+    ap.add_argument("--out", default=None, help="output directory (default bench/cups_check/figures)")
+    args = ap.parse_args()
+    SIM_TAG, LANG = args.sim, args.lang
+    if args.out:
+        FIG = cc.pathlib.Path(args.out).resolve()
     matplotlib.use("Agg")
-    FIG.mkdir(exist_ok=True)
+    FIG.mkdir(parents=True, exist_ok=True)
     data = collect()
     for pal in PALETTES:
         for case in ORDER:
             sheet(case, data[case], pal)
         summary(data, pal)
     keys = ("real_mean", "sim_mean", "diff", "sim_mean_previous_camera", "edge_real_px", "edge_sim_px")
-    rows = {c: {k: round(data[c][k], 2) for k in keys if k in data[c]} for c in ORDER}
-    (FIG / "figures.json").write_text(json.dumps({"sim_tag": SIM_TAG, "camera": CAMERA[SIM_TAG],
+    rows = {c: {k: round(data[c][k], 3) for k in keys if k in data[c]} for c in ORDER}
+    (FIG / "figures.json").write_text(json.dumps({"sim_tag": SIM_TAG, "camera": tx("camera")[SIM_TAG],
                                                   "mean_apparent_t_c_water_region_and_edges": rows,
                                                   "window_c": WINDOW_C, "reference_frame": REF_FRAME}, indent=1))
     print(json.dumps(rows, indent=1))

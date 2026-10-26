@@ -1,0 +1,147 @@
+{
+ "rgb_calibration": {
+  "K": [
+   [
+    992.572871,
+    0.0,
+    633.595116
+   ],
+   [
+    0.0,
+    993.226432,
+    475.618961
+   ],
+   [
+    0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "dist": [
+   -0.4448657494,
+   0.2603371017,
+   0.0011241232,
+   -0.0017513185,
+   -0.1007693884
+  ],
+  "polynomial_invertible_to_r": 1.1141
+ },
+ "cases": {
+  "hot_water_50": {
+   "photo": "000000_1792793928.391811891.png",
+   "real_cup_px": {
+    "top_row": 469.5,
+    "bottom_row": 591.096018735363,
+    "height_px": 121.59601873536303,
+    "bottom_width_px": 91.5,
+    "centre_col_bottom": 621.25,
+    "rim_shadow_row": 476.0,
+    "band_rows": [
+     577,
+     584
+    ],
+    "bottom_method": "contact-shadow half drop",
+    "note": "foot width = printed band extent (the band stops ~1-3 px short of the foot's edges)"
+   },
+   "sim_cup_px": {
+    "top_row": 459.5,
+    "bottom_row": 572.5,
+    "height_px": 113.0,
+    "bottom_width_px": 92.0,
+    "top_width_px": 123.0,
+    "centre_col_bottom": 630.5,
+    "centre_col_top": 631.0
+   },
+   "sim_minus_real_px": {
+    "centre_col_bottom": 9.25,
+    "bottom_row": -18.6,
+    "top_row": -10.0,
+    "bottom_width_px": 0.5,
+    "height_px": -8.6
+   },
+   "valid_fraction_of_real_frame": 0.9797322591145833,
+   "thermal_render_check_max_abs_k": 0.0,
+   "mean_water_t_c": {
+    "real": 66.93643188476562,
+    "sim": 62.98710632324219
+   }
+  },
+  "cold_water_95": {
+   "photo": "000000_1792795948.540247158.png",
+   "real_cup_px": {
+    "top_row": 476.5,
+    "bottom_row": 541.5,
+    "height_px": 65.0,
+    "bottom_width_px": 48.0,
+    "centre_col_bottom": 607.5,
+    "rim_shadow_row": 480.0,
+    "band_rows": [
+     536,
+     538
+    ],
+    "bottom_method": "band + strip scaled from 50 cm (estimate)",
+    "note": "foot width = printed band extent (the band stops ~1-3 px short of the foot's edges)"
+   },
+   "sim_cup_px": {
+    "top_row": 480.5,
+    "bottom_row": 540.5,
+    "height_px": 60.0,
+    "bottom_width_px": 50.0,
+    "top_width_px": 67.0,
+    "centre_col_bottom": 614.5,
+    "centre_col_top": 615.0
+   },
+   "sim_minus_real_px": {
+    "centre_col_bottom": 7.0,
+    "bottom_row": -1.0,
+    "top_row": 4.0,
+    "bottom_width_px": 2.0,
+    "height_px": -5.0
+   },
+   "valid_fraction_of_real_frame": 0.9797322591145833,
+   "thermal_render_check_max_abs_k": 0.0,
+   "mean_water_t_c": {
+    "real": 13.846116065979004,
+    "sim": 11.88333511352539
+   }
+  }
+ },
+ "table": [
+  {
+   "case": "Hot water, 50 cm",
+   "real_c": 66.936,
+   "sim_c": 62.987,
+   "diff_k": 3.949,
+   "independent": "no (calibration fitted here)",
+   "edge_real_px": 13.5,
+   "edge_sim_px": 12.0
+  },
+  {
+   "case": "Hot water, 95 cm",
+   "real_c": 51.957,
+   "sim_c": 55.274,
+   "diff_k": -3.317,
+   "independent": "yes",
+   "edge_real_px": 12.0,
+   "edge_sim_px": 10.25
+  },
+  {
+   "case": "Cold water, 50 cm",
+   "real_c": 12.866,
+   "sim_c": 11.744,
+   "diff_k": 1.121,
+   "independent": "no (calibration fitted here)",
+   "edge_real_px": 13.25,
+   "edge_sim_px": 12.0
+  },
+  {
+   "case": "Cold water, 95 cm",
+   "real_c": 13.846,
+   "sim_c": 11.883,
+   "diff_k": 1.963,
+   "independent": "yes",
+   "edge_real_px": 13.75,
+   "edge_sim_px": 10.25
+  }
+ ]
+}
