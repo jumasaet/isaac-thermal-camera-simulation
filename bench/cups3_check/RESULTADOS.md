@@ -363,3 +363,116 @@ vaso, con `b` la fila de contacto con la mesa (su borde inferior medido) y las c
    cámara tiene un offset de carcasa (+0,28 K) y un cuenco de viñeteo con parámetros PENDIENTES (del Boson).
 6. **Geometría.** El cabeceo de la cadena LiDAR→térmica falla ~2°, y se corrige con las siluetas. La altura de la
    cámara depende solo del LiDAR (3,29 cm). La guiñada de 6° del fondo no está en la escena.
+
+---
+
+# Ampliación 2026-10-28 (tarde): colores del RGB simulado y FPS del camino GPU
+
+## Colores del RGB simulado
+
+`task2_render.py` (diccionario `RGB` y `RGB_LIGHT_SCALE`). Solo cambia lo visible:
+- mesa: madera clara (0,62, 0,45, 0,28);
+- vaso caliente: rojo suave;
+- vaso templado: amarillo suave;
+- vaso frío: azul suave;
+- fondo: blanco mate (0,90).
+
+**Luces.** Con solo el `displayColor` no basta: las luces de `nave_stage` (domo 600, distante 2500) están dimensionadas
+para la nave del banco y saturan esta escena pequeña a un único crema. La mesa ya tenía color y salía blanca. Las
+dos luces se multiplican por 0,3. La cámara térmica no las ve: lee ids de instancia, distancia y las temperaturas
+prescritas.
+
+**La térmica simulada no cambia: diferencia 0.** Re-render completo comparado con el anterior:
+- `apparent_t_0..7` y `scene_apparent_t_0..7`: idénticos bit a bit (máx. |Δ| = 0,0);
+- `apparent_t_ref_0..7`, rehechos por `task2_compare.py`: idénticos;
+- `ids.npy`: cambia la numeración de las instancias entre sesiones de Kit, pero es una permutación uno a uno de
+  las mismas 9 instancias, es decir, la misma geometría;
+- los resultados de las tareas 2 a 4 salen iguales.
+
+Hojas rehechas: `figures/cups3_sheet_{inferno,gray}.png`.
+
+## FPS del camino GPU con la CellPlus
+
+**Montaje.**
+- `fps_run.py` ejecuta **sin cambios** `bench/render_cost/code/rebase_2026-10-22/ref/run_ref.py` (ver su
+  `NOTES.md`), con tres sustituciones:
+  - la escena de tres vasos (`fps_scene.py`, sacada de `out/sim/report.json` y `scene.yaml`);
+  - `cellplus_ctc006_lwir_cups.yaml` con `supersample_factor: k`;
+  - la LUT de esta banda.
+- Headless, térmica + RGB, RealTimePathTracing.
+- Trayectoria de 240 poses: el frame 0 es la pose de la tarea 2 y después hay un vaivén lateral de ±1 cm, para
+  que la cámara nunca esté quieta.
+- `fps_measure.sh`: dos sesiones de Kit por factor, intercaladas (1, 2, 4, 1, 2, 4). Cada una con 60 iteraciones
+  de calentamiento, 2 pasadas cronometradas de 240 frames y una pasada de perfil (sincronización tras cada bloque).
+- `fps_summary.py`: tabla e imágenes.
+
+**Antes de medir:**
+- Sin procesos de Isaac, pytest ni cómputo en la GPU (4 %). Había una sesión de Claude registrada
+  (`airix-ros2-workshop`), pero inactiva y sin procesos.
+- Escritorio (navegador, VS Code), carga media 0,4–4 durante las medidas.
+- `powerprofilesctl set performance`: EPP `performance`; el governor sigue diciendo `powersave`, como es normal con
+  `intel_pstate`.
+
+**Desenfoque por capas: NO existe en el camino GPU.**
+- La etapa 3 de `full/fullgpu.py` convoluciona con `PipelineConfig.psf`, el núcleo enfocado (difracción + gaussiana
+  de aberración de 80 µm).
+- El banco de desenfoque (`defocus_model: hopkins`, `defocus_apply: layered`, y también `global`) solo lo usa el
+  camino host: `irsim.pipeline.frame` → `irsim.optics.layered`.
+- **Medido sin desenfoque y sin sustituirlo por nada.**
+- Por eso las corridas van con `--no-check`: la comprobación contra `run_frame` difiere justo en el desenfoque.
+
+**Fallo encontrado en `src/`.**
+- `irsim_isaac.pipeline.warp_stages.launch_optics` pasa 9 argumentos a `_optics_kernel`, que desde SC.34 (7efb966d)
+  recibe 8: sobra `terms.lb_housing`. La etapa 3 Warp del repositorio falla al lanzarse.
+- No hay test sin GPU que la ejercite.
+- Aquí se midió con el kernel fusionado del propio banco (`--optics fused`, el de `measure3.sh`, verificado contra
+  `run_frame` el 23-10). No está arreglado en `src/`.
+
+**Resultados.** 240 × 2 pasadas × 2 sesiones por factor:
+- en todos los frames, desfase de lectura 1;
+- 0 lecturas anómalas y 0 frames perdidos;
+- la reducción del RGB en el dispositivo es exactamente la media en caja del host (k = 2 y 4).
+
+| supersample | render | FPS medio | mín | máx | ms/frame (p95) | render | lectura | procesado |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 640×480 | **53,3** | 37,1 | 59,0 | 18,8 (20,1) | 10,5 | 2,6 | 5,7 |
+| 2 | 1280×960 | **34,4** | 28,2 | 36,4 | 29,1 (30,5) | 15,7 | 3,2 | 10,3 |
+| 4 | 2560×1920 | **11,9** | 7,0 | 12,2 | 84,2 (87,2) | 37,0 | 5,5 | 41,6 |
+
+**Cómo se agrupan los bloques:**
+- **render** = escribir la pose + `orchestrator.step`;
+- **lectura** = anotadores + sello + descarga al host;
+- **procesado** = tablas + etapas 1–2 + etapas 3–6/ADC/M9 + `synchronize`.
+
+**Lo que no hay que leer de más en el desglose.** El render corre en la misma GPU y de forma asíncrona, así que la
+espera al render cae en el primer bloque que necesita su salida. El total por frame sí es fiable. En la pasada de
+perfil (sincronizando tras cada bloque):
+- a k = 4, «etapas 1–2» sube a 26 ms y «etapas 3–6» baja a 15 ms;
+- a k = 2, 4,7 y 6,2 ms;
+- a k = 1, 0,7 y 4,0 ms.
+
+**Valores por sesión** (estables, < 1 % entre sesiones):
+- k = 1: 53,7 / 52,5 / 54,3 / 52,7 fps;
+- k = 2: 34,4 / 34,2 / 34,5 / 34,4 fps;
+- k = 4: 11,9 / 11,9 / 11,9 / 11,9 fps.
+
+Los mínimos de 37 y 7 fps son frames sueltos; el p05 está en 51 / 33 / 11,5 fps.
+
+**Efecto en los bordes** (`figures/cups3_fps_supersample.png`). Misma pose (frame 0), códigos de 8 bits frente a
+k = 4:
+
+| | térmica: media en el frame / ventana del borde (máx) | RGB: media en el frame / ventana del borde (máx) |
+|---|---|---|
+| k = 1 | 0,025 / 0,43 (6) | 0,72 / 1,64 (31) |
+| k = 2 | 0,007 / 0,08 (2) | 0,43 / 0,93 (10) |
+
+- **En la térmica el supersample casi no se ve.** La PSF enfocada (σ ≈ 3,3 px) ya difumina más que el escalonado
+  de k = 1, y k = 2 queda a < 0,1 código de k = 4.
+- **En el RGB sí:** k = 1 deja escalones en el borde inclinado del vaso, y k = 2 los quita casi todos.
+- **Para esta cámara, k = 2 da casi la calidad de k = 4 a 34 fps.** Por encima de los 30 Hz de la CTC-006, pero con
+  poco margen. k = 1 llega a 53 fps.
+- Ninguno incluye desenfoque. Con él, que solo existe en el host, la térmica se difuminaría aún más; la
+  sensibilidad al supersample quedaría todavía menor.
+
+Archivos: `out/fps/FPS.md`, `out/fps/fps_summary.json`, `out/fps/{A,B}_k{1,2,4}/report.json` y sus logs,
+`out/fps/frames_k*_{thermal,rgb}.png`, `out/fps/measure.log` (estado de la máquina antes de cada sesión).

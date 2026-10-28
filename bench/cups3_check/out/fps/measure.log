@@ -1,0 +1,32 @@
+== A_k1 2026-10-28T15:08:15+09:00 | load average: 2.11, 1.11, 0.68 | epp performance | gpu 14 %, 210 MHz, 57
+A_k1 rc=0
+[A_k1 #0 timed  ]  53.70 fps (min 44.9 max 58.4 sd 2.06) |  18.62 ms (p95 20.01 max 22.25) = pose 1.21 + render 9.19 + get_data 1.78 + fresh 0.08 + tables 2.02 + s12 0.63 + gpu 2.96 + sync 0.02 + download 0.55 + store 0.17 + publish 0.00 | m9_clock=0.12 m9_dri
+[A_k1 #1 timed  ]  52.48 fps (min 37.6 max 57.9 sd 2.89) |  19.05 ms (p95 20.49 max 26.57) = pose 1.23 + render 9.39 + get_data 1.85 + fresh 0.08 + tables 2.07 + s12 0.65 + gpu 3.04 + sync 0.03 + download 0.56 + store 0.17 + publish 0.00 | m9_clock=0.12 m9_dri
+[A_k1 #2 profile]  51.14 fps (min 45.9 max 55.0 sd 1.74) |  19.56 ms (p95 20.87 max 21.80) = pose 1.18 + render 9.15 + get_data 1.77 + fresh 0.08 + tables 2.01 + s12 0.66 + gpu 3.98 + sync 0.01 + download 0.54 + store 0.17 + publish 0.00 | m9_clock=0.13 m9_dri
+== A_k2 2026-10-28T15:09:15+09:00 | load average: 3.25, 1.62, 0.89 | epp performance | gpu 36 %, 1725 MHz, 58
+A_k2 rc=0
+[A_k2 #0 timed  ]  34.37 fps (min 29.2 max 36.3 sd 0.99) |  29.10 ms (p95 30.76 max 34.24) = pose 1.19 + render 14.50 + get_data 2.40 + fresh 0.08 + tables 2.00 + s12 0.63 + gpu 7.35 + sync 0.24 + download 0.54 + store 0.17 + publish 0.00 | m9_clock=0.12 m9_dr
+[A_k2 #1 timed  ]  34.22 fps (min 28.2 max 36.4 sd 1.11) |  29.22 ms (p95 30.95 max 35.46) = pose 1.21 + render 14.54 + get_data 2.40 + fresh 0.08 + tables 2.01 + s12 0.63 + gpu 7.40 + sync 0.24 + download 0.55 + store 0.17 + publish 0.00 | m9_clock=0.11 m9_dr
+[A_k2 #2 profile]  31.63 fps (min 29.1 max 33.3 sd 0.71) |  31.62 ms (p95 33.11 max 34.31) = pose 1.18 + render 14.44 + get_data 2.37 + fresh 0.08 + tables 1.97 + s12 4.70 + gpu 6.15 + sync 0.03 + download 0.53 + store 0.16 + publish 0.00 | m9_clock=0.14 m9_dr
+== A_k4 2026-10-28T15:10:23+09:00 | load average: 4.02, 2.27, 1.17 | epp performance | gpu 52 %, 1965 MHz, 63
+A_k4 rc=0
+[A_k4 #0 timed  ]  11.88 fps (min 11.0 max 12.2 sd 0.23) |  84.18 ms (p95 88.92 max 91.29) = pose 1.24 + render 35.83 + get_data 4.53 + fresh 0.08 + tables 1.99 + s12 0.62 + gpu 23.24 + sync 15.91 + download 0.57 + store 0.17 + publish 0.00 | m9_clock=0.11 m9_
+[A_k4 #1 timed  ]  11.91 fps (min 11.1 max 12.2 sd 0.15) |  83.94 ms (p95 85.42 max 90.01) = pose 1.24 + render 35.59 + get_data 4.61 + fresh 0.08 + tables 1.98 + s12 0.62 + gpu 23.19 + sync 15.90 + download 0.57 + store 0.16 + publish 0.00 | m9_clock=0.11 m9_
+[A_k4 #2 profile]  11.74 fps (min 11.3 max 12.1 sd 0.13) |  85.21 ms (p95 86.85 max 88.57) = pose 1.22 + render 35.58 + get_data 4.56 + fresh 0.08 + tables 1.99 + s12 26.27 + gpu 14.77 + sync 0.04 + download 0.53 + store 0.16 + publish 0.00 | m9_clock=0.16 m9_
+== B_k1 2026-10-28T15:12:33+09:00 | load average: 2.97, 2.50, 1.40 | epp performance | gpu 4 %, 1950 MHz, 67
+B_k1 rc=0
+[B_k1 #0 timed  ]  54.28 fps (min 46.7 max 59.0 sd 2.18) |  18.42 ms (p95 19.70 max 21.39) = pose 1.16 + render 9.08 + get_data 1.77 + fresh 0.08 + tables 2.01 + s12 0.63 + gpu 2.95 + sync 0.02 + download 0.54 + store 0.17 + publish 0.00 | m9_clock=0.11 m9_dri
+[B_k1 #1 timed  ]  52.68 fps (min 37.1 max 58.9 sd 3.13) |  18.98 ms (p95 20.35 max 26.93) = pose 1.20 + render 9.36 + get_data 1.82 + fresh 0.08 + tables 2.08 + s12 0.65 + gpu 3.03 + sync 0.02 + download 0.55 + store 0.18 + publish 0.00 | m9_clock=0.12 m9_dri
+[B_k1 #2 profile]  51.22 fps (min 45.9 max 55.9 sd 1.82) |  19.52 ms (p95 20.70 max 21.79) = pose 1.18 + render 9.14 + get_data 1.78 + fresh 0.08 + tables 2.00 + s12 0.66 + gpu 3.97 + sync 0.01 + download 0.54 + store 0.17 + publish 0.00 | m9_clock=0.13 m9_dri
+== B_k2 2026-10-28T15:13:09+09:00 | load average: 4.45, 2.91, 1.58 | epp performance | gpu 25 %, 1725 MHz, 61
+B_k2 rc=0
+[B_k2 #0 timed  ]  34.50 fps (min 31.7 max 36.1 sd 0.71) |  28.99 ms (p95 30.00 max 31.53) = pose 1.17 + render 14.36 + get_data 2.34 + fresh 0.08 + tables 2.00 + s12 0.62 + gpu 7.42 + sync 0.28 + download 0.54 + store 0.17 + publish 0.00 | m9_clock=0.12 m9_dr
+[B_k2 #1 timed  ]  34.42 fps (min 32.0 max 36.0 sd 0.72) |  29.06 ms (p95 30.18 max 31.26) = pose 1.19 + render 14.42 + get_data 2.37 + fresh 0.08 + tables 1.99 + s12 0.62 + gpu 7.43 + sync 0.23 + download 0.55 + store 0.17 + publish 0.00 | m9_clock=0.12 m9_dr
+[B_k2 #2 profile]  31.70 fps (min 30.2 max 33.5 sd 0.59) |  31.54 ms (p95 32.55 max 33.15) = pose 1.18 + render 14.34 + get_data 2.34 + fresh 0.08 + tables 2.01 + s12 4.72 + gpu 6.15 + sync 0.03 + download 0.54 + store 0.17 + publish 0.00 | m9_clock=0.14 m9_dr
+== B_k4 2026-10-28T15:13:56+09:00 | load average: 4.06, 3.02, 1.69 | epp performance | gpu 45 %, 1965 MHz, 64
+B_k4 rc=0
+[B_k4 #0 timed  ]  11.85 fps (min 7.0 max 12.2 sd 0.38) |  84.38 ms (p95 88.05 max 142.65) = pose 1.23 + render 36.05 + get_data 4.81 + fresh 0.08 + tables 1.97 + s12 0.63 + gpu 23.16 + sync 15.71 + download 0.58 + store 0.17 + publish 0.00 | m9_clock=0.11 m9_
+[B_k4 #1 timed  ]  11.86 fps (min 11.0 max 12.2 sd 0.19) |  84.30 ms (p95 86.40 max 90.58) = pose 1.23 + render 35.71 + get_data 4.89 + fresh 0.08 + tables 1.97 + s12 0.62 + gpu 23.30 + sync 15.75 + download 0.57 + store 0.18 + publish 0.00 | m9_clock=0.11 m9_
+[B_k4 #2 profile]  11.67 fps (min 10.6 max 12.0 sd 0.16) |  85.68 ms (p95 87.57 max 94.50) = pose 1.22 + render 35.54 + get_data 4.90 + fresh 0.08 + tables 1.97 + s12 26.19 + gpu 15.02 + sync 0.04 + download 0.54 + store 0.17 + publish 0.00 | m9_clock=0.16 m9_
+== end 2026-10-28T15:15:47+09:00 | load average: 2.46, 2.72, 1.72 | epp performance | gpu 0 %, 1950 MHz, 70
+ALLDONE

@@ -55,6 +55,13 @@ RENDER_IDX = np.linspace(0, len(TR) - 1, 8).round().astype(int)
 S0 = 1.0  # scene time of the first real frame; the warm-up frames before it see the 'before' temperatures
 PRIM = {"cold": "Cold", "warm": "Warm", "hot": "Hot"}
 PAPER = HERE.parent / "cups_check" / "materials" / "paper_cup.yaml"
+# Visible (RGB) look only: displayColor per part and the two lights' intensity. Nothing here reaches the thermal
+# camera (it reads instance ids, distance and the prescribed temperatures), which task2_render's thermal planes
+# confirm bit for bit across a colour change (RESULTADOS.md). nave_stage's lights (dome 600, distant 2500) are sized
+# for the hangar bench and wash this small white scene out to one cream; RGB_LIGHT_SCALE brings it into range.
+RGB = {"Background": (0.90, 0.90, 0.90), "BackWall": (0.80, 0.80, 0.78), "Table": (0.62, 0.45, 0.28),
+       "cold": (0.45, 0.62, 0.90), "warm": (0.92, 0.82, 0.42), "hot": (0.90, 0.45, 0.42)}
+RGB_LIGHT_SCALE = 0.3
 
 
 # -- copied from bench/cups_check/task3_render_cups.py (that script reads sys.argv at import) ---------------
@@ -147,19 +154,19 @@ def objects() -> tuple[list[dict], dict]:
     lat_c = 0.5 * (b["left_edge_m"] + b["right_edge_m"])
     width = b["left_edge_m"] - b["right_edge_m"]
     objs = [
-        dict(name="BackWall", kind="box", centre=(-2.5, 0.0, 0.9), size=(0.02, 6.0, 2.4), rgb=(0.8, 0.8, 0.78)),
+        dict(name="BackWall", kind="box", centre=(-2.5, 0.0, 0.9), size=(0.02, 6.0, 2.4), rgb=RGB["BackWall"]),
         dict(name="Background", kind="box", centre=(-d_board - 0.01, -lat_c, b["top_m"] / 2), size=(0.02, width, b["top_m"]),
-             rgb=(0.92, 0.92, 0.92)),
+             rgb=RGB["Background"]),
         dict(name="Table", kind="box", centre=((0.3 - d_board) / 2, 0.0, -0.01), size=(0.3 + d_board, 1.8, 0.02),
-             rgb=(0.75, 0.62, 0.45)),
+             rgb=RGB["Table"]),
     ]
     thermal = {"BackWall": ("concrete_white", None), "Background": ("concrete_white", None), "Table": ("plywood", None)}
     for cup in c3.CUPS:
         g = GEO["lidar"]["cups"][cup]
         centre = (-g["axis_forward_m"], -POSE["axis_left_m"][cup], 0.0)  # stage: -X forward, +Y right
-        objs.append(dict(name=f"{PRIM[cup]}Wet", kind="frustum", centre=centre, z=(0.0, WATER_LINE_M), rgb=(0.9, 0.9, 0.88)))
+        objs.append(dict(name=f"{PRIM[cup]}Wet", kind="frustum", centre=centre, z=(0.0, WATER_LINE_M), rgb=RGB[cup]))
         objs.append(dict(name=f"{PRIM[cup]}Dry", kind="frustum", centre=centre, z=(WATER_LINE_M, c3.CUP_HEIGHT_M),
-                         rgb=(0.95, 0.95, 0.93)))
+                         rgb=RGB[cup]))
         thermal[f"{PRIM[cup]}Wet"] = ("paper_cup", cup)
         thermal[f"{PRIM[cup]}Dry"] = ("paper_cup", cup + ":dry")
     return objs, thermal
@@ -253,6 +260,8 @@ def main() -> None:
     patch_library()
     patch_stage()
     patch_roll(POSE["camera_roll_deg"])
+    cm.ns.DOME_INTENSITY *= RGB_LIGHT_SCALE
+    cm.ns.DISTANT_INTENSITY *= RGB_LIGHT_SCALE
     objs, thermal = objects()
     scene_yaml = write_scene(thermal, write_weather())
     th = math.radians(POSE["camera_pitch_up_deg"])
