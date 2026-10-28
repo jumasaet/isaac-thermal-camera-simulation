@@ -1,0 +1,45 @@
+{
+ "cups3_sheet_inferno.png": {
+  "real_frame_index": 53,
+  "render": 4,
+  "t_since_first_s": 13.226,
+  "window_c": [
+   5.0,
+   70.0
+  ],
+  "rgb_real": "000053_1793087232.838368217.png",
+  "colormap": "inferno"
+ },
+ "cups3_sheet_gray.png": {
+  "real_frame_index": 53,
+  "render": 4,
+  "t_since_first_s": 13.226,
+  "window_c": [
+   5.0,
+   70.0
+  ],
+  "rgb_real": "000053_1793087232.838368217.png",
+  "colormap": "gray"
+ },
+ "cups3_results_table.png": {
+  "rows": [
+   "Role in the calibration",
+   "Probe water T, mean of 8 instants (\u00b0C)",
+   "Real apparent T, calibrated (\u00b0C)",
+   "Simulated apparent T (\u00b0C)",
+   "Error real \u2212 sim (K)",
+   "   at first / last frame (K)",
+   "Task 1: surface T \u2212 probe (K), 68 %",
+   "Table reflection \u03c1_near / \u03c1_mirror",
+   "SSIM / LPIPS, cup + reflection window",
+   "Silhouette real \u2212 sim, rim / bottom (px)",
+   "SSIM, full frame",
+   "SSIM, cups crop",
+   "LPIPS, full frame",
+   "LPIPS, cups crop",
+   "SSIM change, crop, 2 / 4 px shift",
+   "LPIPS change, crop, 2 / 4 px shift",
+   "Spearman (cold, warm, hot, board)"
+  ]
+ }
+}

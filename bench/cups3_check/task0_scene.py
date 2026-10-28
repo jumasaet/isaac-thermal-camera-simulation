@@ -59,7 +59,7 @@ def fit_plane(q: np.ndarray, tol: float, seed: int = 0, iters: int = 3000) -> tu
             best = (int(inl.sum()), inl)
     x = q[best[1]]
     c = x.mean(0)
-    n = np.linalg.svd(x - c)[2][2]
+    n = np.linalg.svd(x - c, full_matrices=False)[2][2]  # full_matrices=True would build an N x N U (~13 GB)
     return c, n, best[0]
 
 

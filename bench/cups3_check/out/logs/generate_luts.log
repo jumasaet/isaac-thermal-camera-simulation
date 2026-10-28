@@ -1,0 +1,6 @@
+cellplus_ctc006_lwir_cups: band lwir 8.0-14.0 um, 16001 entries 200-1000 K @ 0.050 K, float32
+  response: cellplus_ctc007_response_ESTIMATED.csv sha256 7de0a66be793… half-power 8.00-14.00 um
+  Lb(300 K) = 54.9221 W/m2/sr; top-hat closed form 54.9335 (-0.02 %, -13.6 mK equivalent)
+  Lb(600 K) = 616.8516 W/m2/sr; top-hat closed form 616.6509 (+0.03 %, +74.2 mK equivalent)
+  wrote bench/camera_preview/lut/bc4146a85c50bb6f_lut.json (+ 4 .npy, 4 .f32), band_hash bc4146a85c50bb6f
+1/1 bundle(s) written to bench/camera_preview/lut

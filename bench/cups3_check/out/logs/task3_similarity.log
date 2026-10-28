@@ -1,0 +1,131 @@
+/home/jumasaet/miniconda3/envs/vision/lib/python3.10/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/home/jumasaet/miniconda3/envs/vision/lib/python3.10/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=AlexNet_Weights.IMAGENET1K_V1`. You can also use `weights=AlexNet_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+/home/jumasaet/.cache/irsim_pylibs/lpips/lpips.py:107: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  self.load_state_dict(torch.load(model_path, map_location='cpu'), strict=False)
+{
+ "alignment": {
+  "global_shift_rows_cols_px": [
+   1.0,
+   0.0
+  ],
+  "silhouette_real_minus_sim_px": {
+   "cold": {
+    "top_row": -2.23,
+    "bottom_row": 1.82,
+    "centre_col": -0.16,
+    "height_px": 4.05,
+    "width_top10_px": -5.37,
+    "width_bottom10_px": 1.53
+   },
+   "warm": {
+    "top_row": 0.05,
+    "bottom_row": 0.43,
+    "centre_col": -0.09,
+    "height_px": 0.38,
+    "width_top10_px": -4.69,
+    "width_bottom10_px": 1.66
+   },
+   "hot": {
+    "top_row": -1.87,
+    "bottom_row": 1.83,
+    "centre_col": -0.03,
+    "height_px": 3.7,
+    "width_top10_px": -4.49,
+    "width_bottom10_px": 1.09
+   }
+  },
+  "local_per_cup_middle_pair": {
+   "cold": {
+    "window_rows_cols": [
+     [
+      171,
+      351
+     ],
+     [
+      40,
+      190
+     ]
+    ],
+    "best_shift_rows_cols_px": [
+     3,
+     0
+    ],
+    "ssim_as_rendered": 0.975,
+    "ssim_registered": 0.9773,
+    "lpips_as_rendered": 0.063,
+    "lpips_registered": 0.0565
+   },
+   "warm": {
+    "window_rows_cols": [
+     [
+      168,
+      346
+     ],
+     [
+      217,
+      367
+     ]
+    ],
+    "best_shift_rows_cols_px": [
+     2,
+     -1
+    ],
+    "ssim_as_rendered": 0.99,
+    "ssim_registered": 0.9908,
+    "lpips_as_rendered": 0.0495,
+    "lpips_registered": 0.0475
+   },
+   "hot": {
+    "window_rows_cols": [
+     [
+      164,
+      342
+     ],
+     [
+      394,
+      544
+     ]
+    ],
+    "best_shift_rows_cols_px": [
+     0,
+     -1
+    ],
+    "ssim_as_rendered": 0.9246,
+    "ssim_registered": 0.9253,
+    "lpips_as_rendered": 0.1594,
+    "lpips_registered": 0.16
+   }
+  }
+ },
+ "reference_levels_primary_window": {
+  "real_vs_next_real_frame": {
+   "ssim_full": 0.9997,
+   "lpips_full": 0.0002,
+   "ssim_crop": 0.9997,
+   "lpips_crop": 0.0002
+  },
+  "real_vs_itself_shifted_1px": {
+   "ssim_full": 0.9988,
+   "lpips_full": 0.0018,
+   "ssim_crop": 0.9982,
+   "lpips_crop": 0.003
+  },
+  "real_vs_itself_shifted_2px": {
+   "ssim_full": 0.9974,
+   "lpips_full": 0.0038,
+   "ssim_crop": 0.9952,
+   "lpips_crop": 0.0074
+  },
+  "real_vs_itself_shifted_4px": {
+   "ssim_full": 0.9937,
+   "lpips_full": 0.0083,
+   "ssim_crop": 0.9864,
+   "lpips_crop": 0.0177
+  }
+ }
+}
+primary_5_70C {"ssim_full": [0.9863, 0.9858, 0.9868], "lpips_full": [0.0577, 0.056, 0.0596], "ssim_crop": [0.9698, 0.9686, 0.9712], "lpips_crop": [0.1006, 0.0974, 0.103]} {"ssim_full": [0.9864, 0.9859, 0.987], "lpips_full": [0.0572, 0.0555, 0.059], "ssim_crop": [0.9701, 0.9689, 0.9716], "lpips_crop": [0.0987, 0.0955, 0.101]}
+secondary_20_40C {"ssim_full": [0.9155, 0.9152, 0.9159], "lpips_full": [0.1946, 0.1928, 0.1966], "ssim_crop": [0.8722, 0.8714, 0.8739], "lpips_crop": [0.2425, 0.2403, 0.2446]} {"ssim_full": [0.9153, 0.915, 0.9157], "lpips_full": [0.1945, 0.1931, 0.1962], "ssim_crop": [0.8717, 0.871, 0.8734], "lpips_crop": [0.2416, 0.2398, 0.2437]}
+{"ssim_change_at_2px": -0.0018, "lpips_change_at_2px": 0.0024, "ssim_change_at_4px": -0.0068, "lpips_change_at_4px": 0.0086} {"real_c": {"cold": 8.57, "warm": 34.42, "hot": 64.38, "board": 23.93}, "sim_c": {"cold": 8.21, "warm": 35.06, "hot": 66.47, "board": 23.79}, "spearman": 1.0, "kendall": 1.0}
