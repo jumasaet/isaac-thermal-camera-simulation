@@ -131,14 +131,14 @@ def lidar_geometry(case: str, regions: dict) -> dict:
             best = (int(inl.sum()), inl)
     x = q[best[1]]
     c = x.mean(0)
-    n = np.linalg.svd(x - c)[2][2]
+    n = np.linalg.svd(x - c, full_matrices=False)[2][2]  # full_matrices=True would build an N x N U
     up = n if n[1] < 0 else -n  # OpenCV camera: +y is down, so "up" has negative y
     h_cam = float(-(c @ up))  # camera origin above the plane
     # Board: a vertical plane ~1 m ahead.
     mb = img & (v > 60) & (v < 220) & (u > 150) & (u < 500) & (pt[:, 2] > 0.98) & (pt[:, 2] < 1.2)
     b = pt[mb]
     cb = b.mean(0)
-    nb = np.linalg.svd(b - cb)[2][2]
+    nb = np.linalg.svd(b - cb, full_matrices=False)[2][2]
     nb *= np.sign(nb[2])
     # Cup front surface: points inside the cup's half-width columns and plateau-ish rows, 1-5 cm above the
     # table, in front of the board.

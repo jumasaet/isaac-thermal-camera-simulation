@@ -98,11 +98,13 @@ Para ver exactamente qué hemos añadido: `git diff --stat origin/main...HEAD`.
 | `camera_preview/` | 23-oct. Primera vez que el simulador corre con la cámara Cellplus | **`common.py` es el camino de render que usan todos los experimentos de vasos** (arranca Kit, lee el G-buffer y llama a `run_frame`). `lut/` guarda la LUT de la banda (fuera de git, se regenera). Lo demás es la comparación de la trayectoria de referencia y la plantilla de dos vasos |
 | `cups_check/` | 26-oct. Dos vasos (agua fría y caliente, 4 casos; datos `thermal_specs/cali_board_new/`) | Calibración, geometría, comparación real-simulado y ruido, más la medida del desenfoque de la lente, que dio el YAML CTC-006. **Los tres vasos reutilizan** de aquí `cups_common.py` (radiometría, LiDAR), `task2_geometry.py` (siluetas) y `materials/paper_cup.yaml` (el material del papel). `presentation/` son las figuras de la presentación semanal |
 | `cups3_check/` | 28-oct. **Tres vasos** (frío, templado y caliente; datos `thermal_specs/three_cups_experiments/sync_cups/`) | El experimento de la §3. `run_all.sh` lo corre entero. También están la medida de fps del camino GPU (`fps_*`) y la vista exterior del montaje (`make_world.py`, `render_world.py`) |
-| `render_cost/` | 8 al 23-oct. Cuánto cuesta renderizar (fps) | Código copiado de sesiones antiguas. **`code/rebase_2026-10-22/` es la versión viva**: `camera_preview/common.py` usa de ahí `demo/nave_stage.py` (construye la escena en Isaac), `lite/lite.py` y `env_isothermal.yaml`. Las demás subcarpetas de `code/` son copias del 11-oct, que solo valen como historia |
+| `render_cost/` | 8 al 23-oct. Cuánto cuesta renderizar (fps) | Código copiado de sesiones antiguas. **`code/rebase_2026-10-22/` es la versión viva**: `camera_preview/common.py` usa de ahí `demo/nave_stage.py` (construye la escena en Isaac), `lite/lite.py` y `env_isothermal.yaml`. Las demás subcarpetas de `code/` son copias del 11-oct, que solo valen como historia; `code/lite_prototype/` es el primer kernel GPU, descartado |
 
 Cada carpeta tiene un `RESULTADOS.md` o un `README.md` con lo que se hizo y lo que salió. Dentro, `out/` son
 salidas (JSON, PNG y logs), `figures/` son las figuras finales y `logs/` los registros de cada corrida. Los arrays
-`.npy`/`.npz`, las LUT y los vídeos no están en git (`bench/.gitignore`): se regeneran.
+`.npy`/`.npz`, las LUT y los vídeos no están en git (`bench/.gitignore`): se regeneran. Los frames y vídeos en bruto
+de las medidas de coste de render del 11-oct (7,6 GB) y las secuencias de la trayectoria de referencia están
+archivados fuera del repo, en `~/archivo_irsim/outputs_prev/` y `~/archivo_irsim/outputs/`.
 
 **Cuidado al borrar:** los tres vasos dependen de `camera_check/`, `camera_preview/`, `cups_check/` y
 `render_cost/code/rebase_2026-10-22/`. Ninguna de esas carpetas es prescindible.
@@ -174,7 +176,8 @@ pequeños quieren decir que una persona apenas notaría la diferencia.
 
 **Fuera de `run_all.sh`** (son aparte y más lentos):
 - `fps_measure.sh` → `fps_summary.py`: la velocidad del camino GPU, ~8 minutos, con la máquina en reposo;
-- `render_world.py` → `make_world.py`: la vista exterior del montaje.
+- `render_world.py` (Kit, ~1 min) → `make_world.py`: la vista exterior del montaje con el campo de visión de las dos
+  cámaras, en `figures/cups3_world*.png`.
 
 ---
 
@@ -205,10 +208,10 @@ los `scripts/render_*.py`. Los experimentos de vasos no la usan, porque necesita
 
 | síntoma | causa | qué hacer |
 |---|---|---|
-| `Killed` en una tarea, o `Out of memory: Killed process` en `journalctl -k` | Falta RAM. Hasta el 28-oct la tarea 0 llegaba a 15 GB por una SVD completa innecesaria (corregido: ahora 0,5 GB). `bench/cups_check/task2_geometry.py` todavía tiene el mismo fallo | Cerrar otras sesiones de Isaac y repetir |
+| `Killed` en una tarea, o `Out of memory: Killed process` en `journalctl -k` | Falta RAM. Hasta el 28-oct la tarea 0 llegaba a 15 GB por una SVD completa innecesaria (corregido: ahora 0,5 GB; el mismo arreglo en `bench/cups_check/task2_geometry.py` la baja de 0,56 a 0,27 GB) | Cerrar otras sesiones de Isaac y repetir |
 | Kit aborta al arrancar con `PyUnicode_IS_READY` o `Could not import rosidl_typesupport_c` | Las variables del ROS 2 del sistema (`/opt/ros/humble`) se cuelan en el Python de Isaac | Lanzar con `env -u LD_LIBRARY_PATH -u PYTHONPATH -u AMENT_PREFIX_PATH -u ROS_DISTRO -u ROS_VERSION -u ROS_PYTHON_VERSION`. `run_all.sh` ya lo hace |
 | `pytest` muere enseguida con `No module named 'lark'` | pytest carga los plugins de ROS | `export PYTEST_DISABLE_PLUGIN_AUTOLOAD=1` |
-| `make check` falla en lint o en algunos tests que nombran `kernel.py`, `scripts/*inspection_bench*`… | Archivos sin versionar de la carpeta de trabajo | No son de la rama. Se comprueba con `git status` |
+| `make check` falla en lint o en algunos tests que nombran `scripts/*inspection_bench*`, `configs/scenes/inspection_bench.yaml`… | Archivos sin versionar de la carpeta de trabajo | No son de la rama. Se comprueba con `git status` |
 | `FileNotFoundError: no LUT bundle …` o `StaleLUTError` al renderizar | Falta la LUT de la banda, o se hizo con otra banda o respuesta espectral | Borrar `bench/camera_preview/lut/` y correr `run_all.sh` |
 | `ModuleNotFoundError: lpips` en la tarea 3 | El Python de Isaac no tiene torch; la tarea 3 usa el conda `vision` más `~/.cache/irsim_pylibs` | `run_all.sh` lo instala. Si se borró `~/.cache`, lo reinstala solo |
 | Un script de `bench/render_cost/code/` no encuentra `/tmp/...` | 33 archivos de esa copia apuntan al scratchpad de una sesión que ya no existe (`code/rebase_2026-10-22/NOTES.md`) | Reescribir esas rutas antes de usarlos. Los tres vasos no usan esas rutas |

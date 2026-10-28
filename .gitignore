@@ -19,8 +19,11 @@ data/assets/
 data/lut/*.npy
 data/lut/*.json
 data/lut/*.f32
-outputs/
+outputs*/
 captures/
+thermal_specs/
+# Editor settings and the C++ IntelliSense cache (~850 MB), per machine.
+.vscode/
 
 # The built site (`make site`). It is an artefact: the generator, the stylesheet and the
 # gallery manifest under site/ are tracked, the 20 MB of re-encoded media it produces is not.

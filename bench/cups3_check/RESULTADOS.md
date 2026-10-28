@@ -476,3 +476,13 @@ k = 4:
 
 Archivos: `out/fps/FPS.md`, `out/fps/fps_summary.json`, `out/fps/{A,B}_k{1,2,4}/report.json` y sus logs,
 `out/fps/frames_k*_{thermal,rgb}.png`, `out/fps/measure.log` (estado de la máquina antes de cada sesión).
+
+## Vista exterior del montaje simulado
+
+`figures/cups3_world.png`: el equivalente de `bench/cups_check/presentation/world_cold_water_95.png` para los
+tres vasos.
+- `render_world.py` (Kit) construye la escena de `task2_render.py`, con la pose, el alabeo y los colores de la hoja
+  RGB. Coloca la cámara RGB con la calibración RGB-térmica, pone cajas en los dos centros ópticos (marcadores, no
+  cuerpos modelados) y renderiza una cámara exterior diagonal y elevada.
+- `make_world.py` dibuja con las funciones de `make_presentation.py` el campo de visión real (con distorsión) de
+  cada cámara, en el plano de los vasos (0,51 m), y etiqueta cada vaso con sus lecturas de sonda.
