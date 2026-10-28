@@ -1,0 +1,153 @@
+{
+ "calibration": {
+  "geps_counts_per_w_m2_sr": 53.232,
+  "geps_cold_only": 52.014,
+  "geps_hot_only": 53.536,
+  "hot_over_cold_minus_1_pct": 2.93,
+  "birge_ratio": 0.93,
+  "weights_rel": {
+   "cold": 0.2,
+   "hot": 0.8
+  },
+  "g_with_eps_0.93": 57.239,
+  "sitf_counts_per_k_at_300k": 47.95,
+  "contrast_ratio_hot_over_cold_measured": 3.3934,
+  "contrast_ratio_predicted_radiance": 3.3083,
+  "contrast_ratio_predicted_kelvin": 2.5452
+ },
+ "warm_test": {
+  "surface_t_c_mean": 35.023,
+  "probe_c_mean": 35.519,
+  "error_surface_k_mean": -0.496,
+  "error_surface_k_first_last_frame": [
+   -0.963,
+   0.156
+  ],
+  "error_surface_k_frame_std": 0.389,
+  "apparent_t_c_mean": 34.279,
+  "expected_apparent_t_c_mean": 34.743,
+  "error_apparent_k_mean": -0.465,
+  "error_apparent_k_first_last_frame": [
+   -0.902,
+   0.146
+  ]
+ },
+ "in_recording_change": {
+  "cold": {
+   "measured_k_over_recording": 0.286,
+   "rate_k_per_min_after_2s": 0.288,
+   "minutes_for_the_reading_change_at_that_rate": 3.8,
+   "assumed_k_over_recording": 1.1,
+   "measured_mean_c": 7.71,
+   "assumed_mean_c": 7.29
+  },
+  "warm": {
+   "measured_k_over_recording": -0.176,
+   "rate_k_per_min_after_2s": -0.301,
+   "minutes_for_the_reading_change_at_that_rate": 4.3,
+   "assumed_k_over_recording": -1.3,
+   "measured_mean_c": 35.02,
+   "assumed_mean_c": 35.52
+  },
+  "hot": {
+   "measured_k_over_recording": -1.148,
+   "rate_k_per_min_after_2s": -2.305,
+   "minutes_for_the_reading_change_at_that_rate": 3.0,
+   "assumed_k_over_recording": -7.0,
+   "measured_mean_c": 66.26,
+   "assumed_mean_c": 66.17
+  }
+ },
+ "one_at_a_time_shift_of_warm_error_k": {
+  "hot reading +-0.5 K": [
+   -0.117,
+   0.118
+  ],
+  "cold reading +-0.5 K": [
+   0.062,
+   -0.059
+  ],
+  "warm reading +-0.5 K": [
+   0.5,
+   -0.5
+  ],
+  "air 23.4 / 24.4 C": [
+   -0.436,
+   0.443
+  ],
+  "board apparent T_air -+0.5 K": [
+   -0.469,
+   0.476
+  ],
+  "wall factor k 0.85 / 1.0": [
+   -0.027,
+   0.0
+  ],
+  "ROI upper / lower half": [
+   0.041,
+   -0.06
+  ],
+  "timing: all at 'before' / all at 'after'": [
+   0.244,
+   -0.223
+  ]
+ },
+ "mc_A_linear_in_time": {
+  "warm_err_surface_k_p2.5_16_50_84_97.5": [
+   -1.689,
+   -1.117,
+   -0.52,
+   0.093,
+   0.688
+  ],
+  "warm_err_apparent_k_p2.5_16_50_84_97.5": [
+   -1.457,
+   -0.987,
+   -0.483,
+   0.017,
+   0.494
+  ],
+  "geps_p2.5_16_50_84_97.5": [
+   53.273,
+   54.65,
+   58.068,
+   61.843,
+   63.616
+  ],
+  "warm_err_surface_std_k": 0.607
+ },
+ "mc_B_anywhere_between_readings": {
+  "warm_err_surface_k_p2.5_16_50_84_97.5": [
+   -2.143,
+   -1.348,
+   -0.511,
+   0.342,
+   1.184
+  ],
+  "warm_err_apparent_k_p2.5_16_50_84_97.5": [
+   -1.915,
+   -1.219,
+   -0.472,
+   0.275,
+   0.986
+  ],
+  "geps_p2.5_16_50_84_97.5": [
+   51.343,
+   54.334,
+   58.52,
+   62.995,
+   66.866
+  ],
+  "warm_err_surface_std_k": 0.847
+ },
+ "apparent_t_c_mean_per_cup": {
+  "cold": 8.935,
+  "warm": 34.279,
+  "hot": 63.699
+ },
+ "expected_apparent_t_c_mean_per_cup": {
+  "cold": 8.55,
+  "warm": 34.743,
+  "hot": 63.616
+ }
+}

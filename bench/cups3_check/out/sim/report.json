@@ -1,0 +1,441 @@
+{
+ "sensor_yaml": "/home/jumasaet/isaac-thermal-camera-simulation/bench/camera_check/cellplus_ctc006_lwir_cups.yaml",
+ "frame_rate_hz": 30.0,
+ "t_air_c": 23.9,
+ "paper_eps_lwir": 0.93,
+ "water_line_m": 0.0483,
+ "dry_fraction": {
+  "cold": 0.237,
+  "warm": 0.949,
+  "hot": 0.67
+ },
+ "camera_position": [
+  0.0,
+  0.0,
+  0.0329
+ ],
+ "camera_look": [
+  -0.9998566961576574,
+  0.0,
+  0.01692888503989769
+ ],
+ "camera_roll_deg": 1.298,
+ "hfov_deg": 54.080499394486715,
+ "vfov_deg": 41.89448896613136,
+ "render_product_w_h": [
+  2560,
+  1920
+ ],
+ "defocus_min_distance_m": 0.3,
+ "objects": [
+  {
+   "name": "BackWall",
+   "kind": "box",
+   "centre": [
+    -2.5,
+    0.0,
+    0.9
+   ],
+   "size": [
+    0.02,
+    6.0,
+    2.4
+   ],
+   "rgb": [
+    0.8,
+    0.8,
+    0.78
+   ]
+  },
+  {
+   "name": "Background",
+   "kind": "box",
+   "centre": [
+    -1.0176,
+    -0.03900000000000001,
+    0.2595
+   ],
+   "size": [
+    0.02,
+    0.9359999999999999,
+    0.519
+   ],
+   "rgb": [
+    0.92,
+    0.92,
+    0.92
+   ]
+  },
+  {
+   "name": "Table",
+   "kind": "box",
+   "centre": [
+    -0.3538,
+    0.0,
+    -0.01
+   ],
+   "size": [
+    1.3076,
+    1.8,
+    0.02
+   ],
+   "rgb": [
+    0.75,
+    0.62,
+    0.45
+   ]
+  },
+  {
+   "name": "ColdWet",
+   "kind": "frustum",
+   "centre": [
+    -0.4943,
+    -0.1796,
+    0.0
+   ],
+   "z": [
+    0.0,
+    0.0483
+   ],
+   "rgb": [
+    0.9,
+    0.9,
+    0.88
+   ]
+  },
+  {
+   "name": "ColdDry",
+   "kind": "frustum",
+   "centre": [
+    -0.4943,
+    -0.1796,
+    0.0
+   ],
+   "z": [
+    0.0483,
+    0.06
+   ],
+   "rgb": [
+    0.95,
+    0.95,
+    0.93
+   ]
+  },
+  {
+   "name": "WarmWet",
+   "kind": "frustum",
+   "centre": [
+    -0.511,
+    -0.0323,
+    0.0
+   ],
+   "z": [
+    0.0,
+    0.0483
+   ],
+   "rgb": [
+    0.9,
+    0.9,
+    0.88
+   ]
+  },
+  {
+   "name": "WarmDry",
+   "kind": "frustum",
+   "centre": [
+    -0.511,
+    -0.0323,
+    0.0
+   ],
+   "z": [
+    0.0483,
+    0.06
+   ],
+   "rgb": [
+    0.95,
+    0.95,
+    0.93
+   ]
+  },
+  {
+   "name": "HotWet",
+   "kind": "frustum",
+   "centre": [
+    -0.525,
+    0.117,
+    0.0
+   ],
+   "z": [
+    0.0,
+    0.0483
+   ],
+   "rgb": [
+    0.9,
+    0.9,
+    0.88
+   ]
+  },
+  {
+   "name": "HotDry",
+   "kind": "frustum",
+   "centre": [
+    -0.525,
+    0.117,
+    0.0
+   ],
+   "z": [
+    0.0483,
+    0.06
+   ],
+   "rgb": [
+    0.95,
+    0.95,
+    0.93
+   ]
+  }
+ ],
+ "renders": [
+  {
+   "render": 0,
+   "real_frame_index": 0,
+   "t_since_first_s": 0.0,
+   "cups": {
+    "cold": {
+     "t_surface_c": 6.8,
+     "roi_pixels": 2139,
+     "scene_apparent_t_c": 8.107,
+     "apparent_t_c": 8.617
+    },
+    "warm": {
+     "t_surface_c": 36.1,
+     "roi_pixels": 2278,
+     "scene_apparent_t_c": 35.282,
+     "apparent_t_c": 35.351
+    },
+    "hot": {
+     "t_surface_c": 69.3,
+     "roi_pixels": 2065,
+     "scene_apparent_t_c": 66.557,
+     "apparent_t_c": 66.674
+    }
+   },
+   "board_scene_apparent_t_c": 23.9,
+   "board_apparent_t_c": 24.286
+  },
+  {
+   "render": 1,
+   "real_frame_index": 13,
+   "t_since_first_s": 1.292,
+   "cups": {
+    "cold": {
+     "t_surface_c": 6.849,
+     "roi_pixels": 2139,
+     "scene_apparent_t_c": 8.153,
+     "apparent_t_c": 8.661
+    },
+    "warm": {
+     "t_surface_c": 36.042,
+     "roi_pixels": 2278,
+     "scene_apparent_t_c": 35.228,
+     "apparent_t_c": 35.295
+    },
+    "hot": {
+     "t_surface_c": 68.986,
+     "roi_pixels": 2065,
+     "scene_apparent_t_c": 66.26,
+     "apparent_t_c": 66.376
+    }
+   },
+   "board_scene_apparent_t_c": 23.9,
+   "board_apparent_t_c": 24.284
+  },
+  {
+   "render": 2,
+   "real_frame_index": 27,
+   "t_since_first_s": 4.096,
+   "cups": {
+    "cold": {
+     "t_surface_c": 6.956,
+     "roi_pixels": 2139,
+     "scene_apparent_t_c": 8.251,
+     "apparent_t_c": 8.752
+    },
+    "warm": {
+     "t_surface_c": 35.915,
+     "roi_pixels": 2278,
+     "scene_apparent_t_c": 35.109,
+     "apparent_t_c": 35.176
+    },
+    "hot": {
+     "t_surface_c": 68.304,
+     "roi_pixels": 2065,
+     "scene_apparent_t_c": 65.615,
+     "apparent_t_c": 65.73
+    }
+   },
+   "board_scene_apparent_t_c": 23.9,
+   "board_apparent_t_c": 24.284
+  },
+  {
+   "render": 3,
+   "real_frame_index": 40,
+   "t_since_first_s": 8.498,
+   "cups": {
+    "cold": {
+     "t_surface_c": 7.125,
+     "roi_pixels": 2139,
+     "scene_apparent_t_c": 8.405,
+     "apparent_t_c": 8.903
+    },
+    "warm": {
+     "t_surface_c": 35.716,
+     "roi_pixels": 2278,
+     "scene_apparent_t_c": 34.923,
+     "apparent_t_c": 34.989
+    },
+    "hot": {
+     "t_surface_c": 67.234,
+     "roi_pixels": 2065,
+     "scene_apparent_t_c": 64.602,
+     "apparent_t_c": 64.719
+    }
+   },
+   "board_scene_apparent_t_c": 23.9,
+   "board_apparent_t_c": 24.284
+  },
+  {
+   "render": 4,
+   "real_frame_index": 53,
+   "t_since_first_s": 13.226,
+   "cups": {
+    "cold": {
+     "t_surface_c": 7.305,
+     "roi_pixels": 2139,
+     "scene_apparent_t_c": 8.571,
+     "apparent_t_c": 9.067
+    },
+    "warm": {
+     "t_surface_c": 35.503,
+     "roi_pixels": 2278,
+     "scene_apparent_t_c": 34.723,
+     "apparent_t_c": 34.788
+    },
+    "hot": {
+     "t_surface_c": 66.085,
+     "roi_pixels": 2065,
+     "scene_apparent_t_c": 63.515,
+     "apparent_t_c": 63.63
+    }
+   },
+   "board_scene_apparent_t_c": 23.9,
+   "board_apparent_t_c": 24.281
+  },
+  {
+   "render": 5,
+   "real_frame_index": 66,
+   "t_since_first_s": 22.314,
+   "cups": {
+    "cold": {
+     "t_surface_c": 7.652,
+     "roi_pixels": 2139,
+     "scene_apparent_t_c": 8.889,
+     "apparent_t_c": 9.378
+    },
+    "warm": {
+     "t_surface_c": 35.093,
+     "roi_pixels": 2278,
+     "scene_apparent_t_c": 34.34,
+     "apparent_t_c": 34.405
+    },
+    "hot": {
+     "t_surface_c": 63.876,
+     "roi_pixels": 2065,
+     "scene_apparent_t_c": 61.426,
+     "apparent_t_c": 61.551
+    }
+   },
+   "board_scene_apparent_t_c": 23.9,
+   "board_apparent_t_c": 24.278
+  },
+  {
+   "render": 6,
+   "real_frame_index": 80,
+   "t_since_first_s": 25.595,
+   "cups": {
+    "cold": {
+     "t_surface_c": 7.778,
+     "roi_pixels": 2139,
+     "scene_apparent_t_c": 9.004,
+     "apparent_t_c": 9.504
+    },
+    "warm": {
+     "t_surface_c": 34.945,
+     "roi_pixels": 2278,
+     "scene_apparent_t_c": 34.201,
+     "apparent_t_c": 34.266
+    },
+    "hot": {
+     "t_surface_c": 63.079,
+     "roi_pixels": 2065,
+     "scene_apparent_t_c": 60.672,
+     "apparent_t_c": 60.798
+    }
+   },
+   "board_scene_apparent_t_c": 23.9,
+   "board_apparent_t_c": 24.284
+  },
+  {
+   "render": 7,
+   "real_frame_index": 93,
+   "t_since_first_s": 28.8,
+   "cups": {
+    "cold": {
+     "t_surface_c": 7.9,
+     "roi_pixels": 2139,
+     "scene_apparent_t_c": 9.111,
+     "apparent_t_c": 9.597
+    },
+    "warm": {
+     "t_surface_c": 34.8,
+     "roi_pixels": 2278,
+     "scene_apparent_t_c": 34.072,
+     "apparent_t_c": 34.135
+    },
+    "hot": {
+     "t_surface_c": 62.3,
+     "roi_pixels": 2065,
+     "scene_apparent_t_c": 59.973,
+     "apparent_t_c": 60.095
+    }
+   },
+   "board_scene_apparent_t_c": 23.9,
+   "board_apparent_t_c": 24.275
+  }
+ ],
+ "silhouette": {
+  "cold": {
+   "top_row": 203.5,
+   "bottom_row": 280.0,
+   "height_px": 76.5,
+   "width_top10_px": 78.25,
+   "width_bottom10_px": 58.75,
+   "centre_col": 116.12
+  },
+  "warm": {
+   "top_row": 198.75,
+   "bottom_row": 276.5,
+   "height_px": 77.75,
+   "width_top10_px": 84.0,
+   "width_bottom10_px": 63.25,
+   "centre_col": 292.62
+  },
+  "hot": {
+   "top_row": 196.5,
+   "bottom_row": 270.75,
+   "height_px": 74.25,
+   "width_top10_px": 80.0,
+   "width_bottom10_px": 60.0,
+   "centre_col": 469.5
+  }
+ }
+}

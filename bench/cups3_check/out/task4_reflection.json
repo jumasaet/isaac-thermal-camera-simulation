@@ -1,0 +1,257 @@
+{
+ "definition": "(counts are linear in band radiance, so ratios of count differences are radiance ratios; no gain,\nno emissivity and no temperature enter):\n\n  For each cup, with b = the cup's bottom row (its contact line with the table, measured on the mean frame,\n  out/scene_geometry.json) and the columns of its water ROI (central half of its width):\n\n      rho(d) = [ c(b + d) - c_table(b + d) ] / [ c(b - d) - c_board(b - d) ]\n\n  - c(r): median counts of row r over those columns;\n  - c(b + d): the table at d rows BELOW the contact line, where a mirror would show the cup's wall at d rows\n    ABOVE it (camera 3.3 cm over a flat table: the reflected image is the cup flipped about its contact row);\n  - c_table(r): the table's own level on that row -- median of two strips 20-45 px outside the cup's 50 %\n    outline, left and right (the warm cup's right strip is dropped if the steel ruler crosses it, see\n    `ruler_check`);\n  - c_board(r): the board plane (cups3_common.board_plane) on that row at the cup's centre.\n\n  Reported per cup: the profile rho(d) and\n\n      rho_near   = median of rho(d) for d = 15..27 rows  (the lower wall, ~1.2-2.2 cm up; ~85-86 deg incidence)\n      rho_mirror = median of rho(d) for d = 15 .. (b - top of the water ROI)  (the whole wetted wall)\n\n  d starts at 15 rows so that the cup's own blurred bottom edge (Gaussian sigma ~5-6 px) leaks < 1 % into the\n  reflection rows. For a smooth, specular table at T_air in an isothermal room rho is the table's specular\n  reflectance at that incidence angle (diluted by the blur); 0 means no reflection.\n\n  The same numbers on the simulated frames (out/sim/apparent_t_*.npy, converted to band radiance) show what the\n  simulator gives today (rough plywood, environment-only reflections: expect ~0).",
+ "d_near_rows": [
+  15,
+  27
+ ],
+ "ruler_check": {
+  "table_left_minus_right_counts": {
+   "cold": -20.52,
+   "warm": -11.0,
+   "hot": -4.18
+  },
+  "warm_right_strip_dropped": false
+ },
+ "real": {
+  "cold": {
+   "bottom_row": 281.82,
+   "water_roi": [
+    228,
+    277,
+    100,
+    133
+   ],
+   "d_range_rows": [
+    15,
+    54
+   ],
+   "rho_near": 0.35,
+   "rho_mirror": 0.229,
+   "rho_near_frame_std": 0.003,
+   "rho_mirror_frame_std": 0.002,
+   "rho_max": 0.418,
+   "d_at_max": 15,
+   "incidence_deg_near": [
+    84.6,
+    83.5
+   ],
+   "incidence_deg_mirror": [
+    84.6,
+    81.1
+   ],
+   "cup_contrast_counts_median": -651.1,
+   "table_strips": "left and right",
+   "profile_rho": [
+    0.418,
+    0.412,
+    0.397,
+    0.384,
+    0.373,
+    0.366,
+    0.35,
+    0.342,
+    0.333,
+    0.323,
+    0.304,
+    0.297,
+    0.292,
+    0.287,
+    0.277,
+    0.267,
+    0.262,
+    0.252,
+    0.24,
+    0.231,
+    0.226,
+    0.216,
+    0.21,
+    0.203,
+    0.198,
+    0.196,
+    0.196,
+    0.19,
+    0.187,
+    0.18,
+    0.169,
+    0.165,
+    0.166,
+    0.161,
+    0.152,
+    0.15,
+    0.15,
+    0.149,
+    0.144,
+    0.145
+   ]
+  },
+  "warm": {
+   "bottom_row": 276.93,
+   "water_roi": [
+    213,
+    267,
+    275,
+    311
+   ],
+   "d_range_rows": [
+    15,
+    64
+   ],
+   "rho_near": 0.395,
+   "rho_mirror": 0.228,
+   "rho_near_frame_std": 0.002,
+   "rho_mirror_frame_std": 0.002,
+   "rho_max": 0.425,
+   "d_at_max": 15,
+   "incidence_deg_near": [
+    84.8,
+    83.7
+   ],
+   "incidence_deg_mirror": [
+    84.8,
+    80.3
+   ],
+   "cup_contrast_counts_median": 508.7,
+   "table_strips": "left and right",
+   "profile_rho": [
+    0.425,
+    0.421,
+    0.414,
+    0.414,
+    0.407,
+    0.402,
+    0.395,
+    0.386,
+    0.375,
+    0.362,
+    0.355,
+    0.35,
+    0.341,
+    0.327,
+    0.315,
+    0.31,
+    0.302,
+    0.292,
+    0.283,
+    0.278,
+    0.269,
+    0.259,
+    0.246,
+    0.24,
+    0.231,
+    0.225,
+    0.215,
+    0.209,
+    0.204,
+    0.198,
+    0.192,
+    0.186,
+    0.181,
+    0.178,
+    0.172,
+    0.171,
+    0.171,
+    0.165,
+    0.161,
+    0.16,
+    0.155,
+    0.154,
+    0.147,
+    0.145,
+    0.144,
+    0.145,
+    0.142,
+    0.14,
+    0.141,
+    0.137
+   ]
+  },
+  "hot": {
+   "bottom_row": 272.58,
+   "water_roi": [
+    216,
+    267,
+    453,
+    487
+   ],
+   "d_range_rows": [
+    15,
+    57
+   ],
+   "rho_near": 0.395,
+   "rho_mirror": 0.286,
+   "rho_near_frame_std": 0.001,
+   "rho_mirror_frame_std": 0.002,
+   "rho_max": 0.45,
+   "d_at_max": 15,
+   "incidence_deg_near": [
+    84.9,
+    83.8
+   ],
+   "incidence_deg_mirror": [
+    84.9,
+    81.0
+   ],
+   "cup_contrast_counts_median": 2215.7,
+   "table_strips": "left and right",
+   "profile_rho": [
+    0.45,
+    0.443,
+    0.435,
+    0.425,
+    0.415,
+    0.405,
+    0.395,
+    0.385,
+    0.376,
+    0.364,
+    0.354,
+    0.344,
+    0.333,
+    0.324,
+    0.313,
+    0.305,
+    0.296,
+    0.286,
+    0.279,
+    0.272,
+    0.265,
+    0.259,
+    0.255,
+    0.248,
+    0.242,
+    0.238,
+    0.234,
+    0.23,
+    0.229,
+    0.23,
+    0.23,
+    0.23,
+    0.234,
+    0.238,
+    0.243,
+    0.25,
+    0.257,
+    0.266,
+    0.278,
+    0.288,
+    0.294,
+    0.31,
+    0.325
+   ]
+  }
+ },
+ "sim": {
+  "cold": {
+   "rho_near": 0.003,
+   "rho_mirror": 0.003
+  },
+  "warm": {
+   "rho_near": -0.003,
+   "rho_mirror": -0.003
+  },
+  "hot": {
+   "rho_near": -0.001,
+   "rho_mirror": -0.001
+  }
+ }
+}

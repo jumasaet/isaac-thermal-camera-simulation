@@ -1,0 +1,206 @@
+{
+ "lidar": {
+  "camera_height_above_table_m": 0.0329,
+  "camera_pitch_up_deg": 3.021,
+  "camera_roll_deg": 1.404,
+  "table_inliers": 8833,
+  "board": {
+   "distance_m": 1.0076,
+   "yaw_deg": 6.07,
+   "left_edge_m": 0.507,
+   "right_edge_m": -0.429,
+   "top_m": 0.519,
+   "n_points": 53768
+  },
+  "cups": {
+   "cold": {
+    "n_points": 516,
+    "front_depth_m": 0.4645,
+    "front_height_m": 0.0371,
+    "axis_forward_m": 0.4943,
+    "axis_left_m": 0.1796,
+    "nearest_base_point_range_m": 0.4998,
+    "axis_left_lidar_m": 0.1764
+   },
+   "warm": {
+    "n_points": 477,
+    "front_depth_m": 0.4792,
+    "front_height_m": 0.0385,
+    "axis_forward_m": 0.511,
+    "axis_left_m": 0.0323,
+    "nearest_base_point_range_m": 0.4865,
+    "axis_left_lidar_m": 0.0242
+   },
+   "hot": {
+    "n_points": 448,
+    "front_depth_m": 0.4941,
+    "front_height_m": 0.0366,
+    "axis_forward_m": 0.525,
+    "axis_left_m": -0.117,
+    "nearest_base_point_range_m": 0.5129,
+    "axis_left_lidar_m": -0.1172
+   }
+  }
+ },
+ "image_pose": {
+  "camera_height_above_table_m": 0.0329,
+  "camera_pitch_up_deg": 0.97,
+  "camera_roll_deg": 1.298,
+  "camera_yaw_left_deg": 0.0,
+  "axis_left_m": {
+   "cold": 0.1796,
+   "warm": 0.0323,
+   "hot": -0.117
+  },
+  "axis_left_minus_lidar_mm": {
+   "cold": 3.2,
+   "warm": 8.1,
+   "hot": 0.2
+  },
+  "residuals_px_top_bottom_col": [
+   2.31,
+   -1.8,
+   0.11,
+   0.07,
+   -0.51,
+   -0.01,
+   1.85,
+   -1.89,
+   -0.04
+  ],
+  "rms_px": 1.33,
+  "lidar_pose_residuals_px": [
+   23.88,
+   19.79,
+   3.82,
+   22.03,
+   21.68,
+   10.44,
+   23.31,
+   19.91,
+   0.78
+  ],
+  "lidar_pose_rms_px": 18.2
+ },
+ "silhouettes": {
+  "cold": {
+   "measured": {
+    "width_top10_px": 72.88,
+    "width_bottom10_px": 60.28,
+    "height_px": 80.55,
+    "top_row": 201.27,
+    "bottom_row": 281.82,
+    "centre_col": 115.96
+   },
+   "model_at_image_pose": {
+    "width_top10_px": 78.23,
+    "width_bottom10_px": 58.99,
+    "height_px": 76.43,
+    "top_row": 203.58,
+    "bottom_row": 280.02,
+    "centre_col": 116.02
+   },
+   "size_error_pct": {
+    "width_top10_px": -6.8,
+    "width_bottom10_px": 2.2,
+    "height_px": 5.4
+   }
+  },
+  "warm": {
+   "measured": {
+    "width_top10_px": 79.31,
+    "width_bottom10_px": 64.91,
+    "height_px": 78.13,
+    "top_row": 198.8,
+    "bottom_row": 276.93,
+    "centre_col": 292.53
+   },
+   "model_at_image_pose": {
+    "width_top10_px": 83.97,
+    "width_bottom10_px": 63.28,
+    "height_px": 77.55,
+    "top_row": 198.87,
+    "bottom_row": 276.42,
+    "centre_col": 292.58
+   },
+   "size_error_pct": {
+    "width_top10_px": -5.5,
+    "width_bottom10_px": 2.6,
+    "height_px": 0.7
+   }
+  },
+  "hot": {
+   "measured": {
+    "width_top10_px": 75.51,
+    "width_bottom10_px": 61.09,
+    "height_px": 77.95,
+    "top_row": 194.63,
+    "bottom_row": 272.58,
+    "centre_col": 469.47
+   },
+   "model_at_image_pose": {
+    "width_top10_px": 79.92,
+    "width_bottom10_px": 60.23,
+    "height_px": 74.21,
+    "top_row": 196.48,
+    "bottom_row": 270.7,
+    "centre_col": 469.46
+   },
+   "size_error_pct": {
+    "width_top10_px": -5.5,
+    "width_bottom10_px": 1.4,
+    "height_px": 5.0
+   }
+  }
+ },
+ "water": {
+  "cold": {
+   "rim_row": 201.34,
+   "water_line_row": 216.53,
+   "dry_band_px": 15.19,
+   "px_per_mm_on_wall": 1.346,
+   "dry_band_mm": 11.3,
+   "water_depth_mm": 48.7,
+   "dry_level_fraction_of_wet": 0.237,
+   "blur_sigma_px": 5.95,
+   "fit_rms_counts": 4.61,
+   "band_held_mm": null
+  },
+  "warm": {
+   "rim_row": 200.16,
+   "water_line_row": 215.36,
+   "dry_band_px": 15.2,
+   "px_per_mm_on_wall": 1.299,
+   "dry_band_mm": 11.7,
+   "water_depth_mm": 48.3,
+   "dry_level_fraction_of_wet": 0.949,
+   "blur_sigma_px": 6.72,
+   "fit_rms_counts": 2.91,
+   "band_held_mm": 11.7
+  },
+  "hot": {
+   "rim_row": 195.14,
+   "water_line_row": 210.38,
+   "dry_band_px": 15.25,
+   "px_per_mm_on_wall": 1.262,
+   "dry_band_mm": 12.1,
+   "water_depth_mm": 47.9,
+   "dry_level_fraction_of_wet": 0.67,
+   "blur_sigma_px": 4.9,
+   "fit_rms_counts": 16.5,
+   "band_held_mm": null
+  },
+  "warm_free": {
+   "rim_row": 199.24,
+   "water_line_row": 206.0,
+   "dry_band_px": 6.76,
+   "px_per_mm_on_wall": 1.299,
+   "dry_band_mm": 5.2,
+   "water_depth_mm": 54.8,
+   "dry_level_fraction_of_wet": 0.821,
+   "blur_sigma_px": 6.41,
+   "fit_rms_counts": 2.88,
+   "band_held_mm": null
+  }
+ }
+}

@@ -85,8 +85,11 @@ sensor:
     height: 480
     pitch_um: 24.0                               # [DS]
     fill_factor: 0.90                            # PENDIENTE (Boson)
-    frame_rate_hz: 30.0                          # [DS] CTC-006 = 30 Hz (confirmed unit). The lab recording
-                                                 # runs at 10.0 Hz [DATA]: the capture tool's rate, not the core's
+    frame_rate_hz: 30.0                          # [DS] CTC-006 = 30 Hz (confirmed unit). The ~10 Hz seen in the
+                                                 # recordings comes from the synchronisation to the 10 Hz LiDAR
+                                                 # (one set per scan, sets dropped when a camera is > 33 ms off;
+                                                 # thermal_specs/three_cups_experiments/sync_cups/fps_summary.json),
+                                                 # not from the core (bench/cups3_check, 2026-10-28)
     bit_depth: 14                                # [INFO] "16383 - raw sensor counts"; the files hold
                                                  # 16383 - raw (invert_raw: true), higher = hotter
     thermal_time_constant_ms: 8.0                # PENDIENTE (Boson). Datasheet "latency 1 ms" is the
