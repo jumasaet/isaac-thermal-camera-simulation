@@ -121,7 +121,6 @@ archivados fuera del repo, en `~/archivo_irsim/outputs_prev/` y `~/archivo_irsim
 | `three_cups_experiments/sync_cups/` | **los tres vasos**: 96 sets sincronizados con 96 nubes LiDAR, 94 frames térmicos y 93 RGB, más `thermal_info.json` (ajustes de la cámara). Solo **92 frames térmicos son distintos**: dos sets repiten el frame de cámara del anterior (80/81, 88/89), y en otros tres se perdió al escribir la térmica o la RGB, no al sincronizar (`data_check/RESULTADOS.md`) | `cups3_check/` |
 | `three_cups_experiments/cups/` | **otra grabación**, empezada 3,5 min después de `sync_cups`, **no su versión sin sincronizar**: 10 min de térmica, 30 s de LiDAR y RGB en PNG y luego en crudo `.pgm` (11 GB). Las tres modalidades solo coinciden 4,4 s | todavía nada |
 | `three_cups_experiments/covered_thermal/` | la cámara **tapada**: 354 s a 30 Hz, `denoise: 80` (6,4 GB) | todavía nada |
-| `three_cups_experiments/sync_cups.zip` | el zip original, idéntico byte a byte a `sync_cups/` | nada |
 
 Los frames térmicos son `int16` de 480 × 640 en **cuentas crudas de 14 bits**: un número más alto es más caliente.
 No son imágenes, así que no se abren con un visor. Los nombres son `<índice>_<hora unix>.npy`.

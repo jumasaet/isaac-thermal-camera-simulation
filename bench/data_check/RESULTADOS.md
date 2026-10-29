@@ -28,10 +28,10 @@ Horas en UTC. «Frecuencia» es la de los archivos guardados (n − 1 entre la d
 | `sync_cups/thermal` | térmica `.npy` | **94** | ídem | 28,8 s | 3,2 Hz | faltan los sets 59 y 71; **los sets 80 = 81 y 88 = 89 son el mismo frame** |
 | `sync_cups/thermal_color` | vista PNG | 94 | ídem | | | los mismos huecos y duplicados que `thermal` |
 | `sync_cups/rgb` | RGB `.png` 1280 × 960 | **93** | ídem | | 3,2 Hz | faltan los sets 59, 71 y 91; **88 = 89** |
-| `sync_cups.zip` | | 382 entradas | | | | **idéntico a `sync_cups/`** (CRC y tamaño de las 382 entradas) |
+| `sync_cups.zip` | | 382 entradas | | | | **idéntico a `sync_cups/`** (CRC y tamaño de las 382 entradas). **Borrado el 29-oct.** |
 | `cups/lidar` | LiDAR | 300 | 07:50:28 → 07:50:58 | 29,9 s | 10,0 Hz | ninguno |
 | `cups/thermal` | térmica | 7454 | 07:50:53 → 08:00:47 | 594 s | 12,5 Hz | la cámara manda 30 Hz: 7743 frames perdidos por USB según su log, y 2119 recibidos que no se escribieron (huecos en el índice) |
-| `cups/thermal_color` | vista PNG | 630 | 07:50:53 → 08:00:03 | | 1,1 Hz | solo 1 de cada 12. **`008641_1793088003.068578481.png` está cortado** (56 KiB, sin `IEND`) |
+| `cups/thermal_color` | vista PNG | 630 | 07:50:53 → 08:00:03 | | 1,1 Hz | solo 1 de cada 12. **`008641_1793088003.068578481.png` estaba cortado** (56 KiB, sin `IEND`; borrado el 29-oct., quedan 629) |
 | `cups/rgb` | RGB `.png` | 633 | 07:50:40 → 07:51:43 | 63 s | 10,0 Hz | — |
 | `cups/rgb_raw` | RGB Bayer crudo `.pgm` | 4384 | 07:51:43 → 08:00:47 | 544 s | 8,1 Hz | continúa el índice del RGB (1737 → 17192): a partir de ahí la grabadora guardó el crudo en lugar del PNG |
 | `covered_thermal/thermal` | térmica, **cámara tapada** | 10 533 | 08:01:59 → 08:07:52 | 354 s | **29,8 Hz** | ninguno; 72 frames perdidos por USB según su log, ni un hueco en el índice |
@@ -152,7 +152,9 @@ veces:
 
 ## 4. Qué borraría y qué conservaría (propuesta; no se ha borrado nada)
 
-### Borrar sin perder información
+### Borrar sin perder información — **hecho el 29-oct.**
+
+Los dos archivos de esta tabla se borraron el 29-oct., con la confirmación del usuario.
 
 | qué | tamaño | motivo |
 |---|---|---|
