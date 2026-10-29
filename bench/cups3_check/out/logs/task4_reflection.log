@@ -241,16 +241,16 @@
  },
  "sim": {
   "cold": {
-   "rho_near": 0.003,
-   "rho_mirror": 0.003
+   "rho_near": 0.0,
+   "rho_mirror": 0.0
   },
   "warm": {
-   "rho_near": -0.003,
-   "rho_mirror": -0.003
+   "rho_near": 0.0,
+   "rho_mirror": -0.0
   },
   "hot": {
-   "rho_near": -0.001,
-   "rho_mirror": -0.001
+   "rho_near": 0.0,
+   "rho_mirror": -0.0
   }
  }
 }

@@ -411,7 +411,7 @@ vaso, con `b` la fila de contacto con la mesa (su borde inferior medido) y las c
    cuerpo negro de referencia.
 3. **ε del papel no medida.** No afecta a la temperatura de superficie, pero sí a la aparente.
 4. **`denoise: 80`.** El ruido del YAML es de denoise 40. **Medido el 29-oct. (tarea 6)**: cambia poco, y los valores
-   están en `bench/camera_check/cellplus_ctc006_lwir_cups3.yaml`. Las tareas 1–5 siguen con el YAML anterior.
+   están en `bench/camera_check/cellplus_ctc006_lwir_cups3.yaml`, que usan las tareas 2–5 desde el 29-oct. (abajo, «YAML nuevo por defecto»).
 5. **El simulador no tiene** el reflejo en la mesa, la sala detrás del fondo, la columna de vapor ni la regla. Con el
    YAML anterior, su cámara tiene un offset de carcasa (+0,28 K) y un cuenco de viñeteo. **Los dos salen de un mismo
    desacuerdo de temperaturas de carcasa y desaparecen con el YAML nuevo (tarea 7)**; los valores de la Boson siguen
@@ -547,7 +547,8 @@ tres vasos.
 # Ampliación 2026-10-29: ruido a `denoise: 80` y desfase de carcasa
 
 El YAML nuevo es **`bench/camera_check/cellplus_ctc006_lwir_cups3.yaml`**: la copia de `cellplus_ctc006_lwir_cups.yaml`
-con tres cambios, marcados `[DATA cups3]`. El anterior no se ha tocado, y las tareas 1 a 5 lo siguen usando.
+con tres cambios, marcados `[DATA cups3]`. El anterior no se ha tocado. Desde la tarde del 29-oct. es el YAML por defecto de
+las tareas 2–5 (sección siguiente).
 
 | campo | antes (`..._cups.yaml`) | **ahora (`..._cups3.yaml`)** | de dónde |
 |---|---|---|---|
@@ -684,3 +685,29 @@ CUPS3_SENSOR_YAML=$PWD/bench/camera_check/cellplus_ctc006_lwir_cups3.yaml CUPS3_
 - **Referir al fondo deja de hacer falta.** Sin referir, el error del templado pasa de −0,513 a −0,418 K y coincide
   con el referido: ya no hay cuenco que quitar.
 - El −0,42 K que queda es el de la prueba de la tarea 1 (−0,46 K en aparente), no de la cámara simulada.
+
+## YAML nuevo por defecto (29-oct., tarde)
+
+`SENSOR_YAML` en `cups3_common.py` apunta ahora a `cellplus_ctc006_lwir_cups3.yaml`, y se ha reejecutado `FROM=2`
+(tareas 2–7; `out/sim/` y las hojas de `figures/` son las del YAML nuevo). La banda y la respuesta espectral son las
+mismas, así que la LUT y las tareas 0–1 no cambian. El ruido se re-muestrea en cada corrida, así que las cifras de
+tercera decimal se mueven algo entre corridas.
+
+| | YAML anterior | **YAML nuevo (por defecto)** |
+|---|---|---|
+| error real − sim, frío (residuo de calibración) | +0,398 K | **+0,388 K** |
+| **error real − sim, templado (independiente)** | −0,428 K | **−0,417 K** |
+| error real − sim, caliente (residuo de calibración) | +0,282 K | **+0,278 K** |
+| ídem sin referir al fondo, frío / templado / caliente | −0,050 / −0,513 / +0,102 K | **+0,386 / −0,418 / +0,278 K** |
+| fondo: cámara simulada − escena | +0,282 K | **−0,000 K** |
+| SSIM, frame completo / recorte (5–70 °C) | 0,9864 / 0,9702 | **0,9869 / 0,9704** |
+| LPIPS, frame completo / recorte (5–70 °C) | 0,0574 / 0,1000 | **0,0569 / 0,0998** |
+| SSIM / LPIPS recorte, ventana 20–40 °C | 0,873 / 0,242 | **0,876 / 0,239** |
+| SSIM local del vaso caliente (par central) | 0,925 | 0,925 |
+| ρ de la mesa en el simulado (tarea 4) | 0,00 | 0,00 |
+
+- Coincide con la comprobación de la tarea 7 (mismas cifras de `sim_cups3yaml/`): el desfase desaparece, los errores
+  por vaso se mueven ≤ 0,011 K y ya no hace falta referir al fondo.
+- SSIM y LPIPS mejoran en la tercera o cuarta decimal; la mejora mayor es en la ventana 20–40 °C (fondo y mesa),
+  donde se ve el cuenco de viñeteo que ya no está. Lo que falta hasta 1 sigue siendo el reflejo en la mesa, la sala y
+  la textura del ruido.

@@ -1,5 +1,5 @@
 {
- "sensor_yaml": "/home/jumasaet/isaac-thermal-camera-simulation/bench/camera_check/cellplus_ctc006_lwir_cups.yaml",
+ "sensor_yaml": "/home/jumasaet/isaac-thermal-camera-simulation/bench/camera_check/cellplus_ctc006_lwir_cups3.yaml",
  "frame_rate_hz": 30.0,
  "t_air_c": 23.9,
  "paper_eps_lwir": 0.93,
@@ -204,23 +204,23 @@
      "t_surface_c": 7.35,
      "roi_pixels": 2139,
      "scene_apparent_t_c": 8.612,
-     "apparent_t_c": 9.118
+     "apparent_t_c": 8.674
     },
     "warm": {
      "t_surface_c": 35.45,
      "roi_pixels": 2278,
      "scene_apparent_t_c": 34.674,
-     "apparent_t_c": 34.744
+     "apparent_t_c": 34.652
     },
     "hot": {
      "t_surface_c": 65.8,
      "roi_pixels": 2065,
      "scene_apparent_t_c": 63.245,
-     "apparent_t_c": 63.367
+     "apparent_t_c": 63.192
     }
    },
    "board_scene_apparent_t_c": 23.9,
-   "board_apparent_t_c": 24.286
+   "board_apparent_t_c": 23.906
   },
   {
    "render": 1,
@@ -231,23 +231,23 @@
      "t_surface_c": 7.35,
      "roi_pixels": 2139,
      "scene_apparent_t_c": 8.612,
-     "apparent_t_c": 9.117
+     "apparent_t_c": 8.669
     },
     "warm": {
      "t_surface_c": 35.45,
      "roi_pixels": 2278,
      "scene_apparent_t_c": 34.674,
-     "apparent_t_c": 34.742
+     "apparent_t_c": 34.651
     },
     "hot": {
      "t_surface_c": 65.8,
      "roi_pixels": 2065,
      "scene_apparent_t_c": 63.245,
-     "apparent_t_c": 63.366
+     "apparent_t_c": 63.191
     }
    },
    "board_scene_apparent_t_c": 23.9,
-   "board_apparent_t_c": 24.284
+   "board_apparent_t_c": 23.904
   },
   {
    "render": 2,
@@ -258,23 +258,23 @@
      "t_surface_c": 7.35,
      "roi_pixels": 2139,
      "scene_apparent_t_c": 8.612,
-     "apparent_t_c": 9.11
+     "apparent_t_c": 8.665
     },
     "warm": {
      "t_surface_c": 35.45,
      "roi_pixels": 2278,
      "scene_apparent_t_c": 34.674,
-     "apparent_t_c": 34.741
+     "apparent_t_c": 34.649
     },
     "hot": {
      "t_surface_c": 65.8,
      "roi_pixels": 2065,
      "scene_apparent_t_c": 63.245,
-     "apparent_t_c": 63.364
+     "apparent_t_c": 63.189
     }
    },
    "board_scene_apparent_t_c": 23.9,
-   "board_apparent_t_c": 24.284
+   "board_apparent_t_c": 23.904
   },
   {
    "render": 3,
@@ -285,23 +285,23 @@
      "t_surface_c": 7.35,
      "roi_pixels": 2139,
      "scene_apparent_t_c": 8.612,
-     "apparent_t_c": 9.108
+     "apparent_t_c": 8.663
     },
     "warm": {
      "t_surface_c": 35.45,
      "roi_pixels": 2278,
      "scene_apparent_t_c": 34.674,
-     "apparent_t_c": 34.74
+     "apparent_t_c": 34.648
     },
     "hot": {
      "t_surface_c": 65.8,
      "roi_pixels": 2065,
      "scene_apparent_t_c": 63.245,
-     "apparent_t_c": 63.364
+     "apparent_t_c": 63.19
     }
    },
    "board_scene_apparent_t_c": 23.9,
-   "board_apparent_t_c": 24.284
+   "board_apparent_t_c": 23.905
   },
   {
    "render": 4,
@@ -312,23 +312,23 @@
      "t_surface_c": 7.35,
      "roi_pixels": 2139,
      "scene_apparent_t_c": 8.612,
-     "apparent_t_c": 9.108
+     "apparent_t_c": 8.66
     },
     "warm": {
      "t_surface_c": 35.45,
      "roi_pixels": 2278,
      "scene_apparent_t_c": 34.674,
-     "apparent_t_c": 34.738
+     "apparent_t_c": 34.646
     },
     "hot": {
      "t_surface_c": 65.8,
      "roi_pixels": 2065,
      "scene_apparent_t_c": 63.245,
-     "apparent_t_c": 63.361
+     "apparent_t_c": 63.185
     }
    },
    "board_scene_apparent_t_c": 23.9,
-   "board_apparent_t_c": 24.281
+   "board_apparent_t_c": 23.9
   },
   {
    "render": 5,
@@ -339,23 +339,23 @@
      "t_surface_c": 7.35,
      "roi_pixels": 2139,
      "scene_apparent_t_c": 8.612,
-     "apparent_t_c": 9.102
+     "apparent_t_c": 8.656
     },
     "warm": {
      "t_surface_c": 35.45,
      "roi_pixels": 2278,
      "scene_apparent_t_c": 34.674,
-     "apparent_t_c": 34.739
+     "apparent_t_c": 34.646
     },
     "hot": {
      "t_surface_c": 65.8,
      "roi_pixels": 2065,
      "scene_apparent_t_c": 63.245,
-     "apparent_t_c": 63.366
+     "apparent_t_c": 63.193
     }
    },
    "board_scene_apparent_t_c": 23.9,
-   "board_apparent_t_c": 24.278
+   "board_apparent_t_c": 23.898
   },
   {
    "render": 6,
@@ -366,23 +366,23 @@
      "t_surface_c": 7.35,
      "roi_pixels": 2139,
      "scene_apparent_t_c": 8.612,
-     "apparent_t_c": 9.115
+     "apparent_t_c": 8.667
     },
     "warm": {
      "t_surface_c": 35.45,
      "roi_pixels": 2278,
      "scene_apparent_t_c": 34.674,
-     "apparent_t_c": 34.738
+     "apparent_t_c": 34.646
     },
     "hot": {
      "t_surface_c": 65.8,
      "roi_pixels": 2065,
      "scene_apparent_t_c": 63.245,
-     "apparent_t_c": 63.365
+     "apparent_t_c": 63.194
     }
    },
    "board_scene_apparent_t_c": 23.9,
-   "board_apparent_t_c": 24.284
+   "board_apparent_t_c": 23.904
   },
   {
    "render": 7,
@@ -393,23 +393,23 @@
      "t_surface_c": 7.35,
      "roi_pixels": 2139,
      "scene_apparent_t_c": 8.612,
-     "apparent_t_c": 9.101
+     "apparent_t_c": 8.656
     },
     "warm": {
      "t_surface_c": 35.45,
      "roi_pixels": 2278,
      "scene_apparent_t_c": 34.674,
-     "apparent_t_c": 34.736
+     "apparent_t_c": 34.643
     },
     "hot": {
      "t_surface_c": 65.8,
      "roi_pixels": 2065,
      "scene_apparent_t_c": 63.245,
-     "apparent_t_c": 63.362
+     "apparent_t_c": 63.185
     }
    },
    "board_scene_apparent_t_c": 23.9,
-   "board_apparent_t_c": 24.275
+   "board_apparent_t_c": 23.894
   }
  ],
  "silhouette": {

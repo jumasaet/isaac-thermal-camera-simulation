@@ -25,7 +25,9 @@ REPO = HERE.parents[1]
 OUT = HERE / "out"
 FIG = HERE / "figures"
 DATA = REPO / "thermal_specs" / "three_cups_experiments" / "sync_cups"
-SENSOR_YAML = REPO / "bench" / "camera_check" / "cellplus_ctc006_lwir_cups.yaml"
+# Since 2026-10-29: the denoise-80 noise (task 6) and the housing calibrated in place (task 7). Same band and
+# spectral response as cellplus_ctc006_lwir_cups.yaml, so the band LUT and tasks 0-1 do not change.
+SENSOR_YAML = REPO / "bench" / "camera_check" / "cellplus_ctc006_lwir_cups3.yaml"
 # A variant run (task 7: another sensor YAML) renders into out/<CUPS3_SIM_DIR> and task2_compare writes
 # task2_comparison_<CUPS3_SIM_DIR>.{json,png}; unset, everything is as before (out/sim, task2_comparison.*).
 SENSOR_YAML = pathlib.Path(os.environ.get("CUPS3_SENSOR_YAML", SENSOR_YAML))

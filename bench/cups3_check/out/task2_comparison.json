@@ -23,21 +23,21 @@
   "cold": {
    "sign": -1,
    "peak_rc": [
-    241,
-    137
+    248,
+    117
    ],
-   "peak_contrast_counts": 11.5,
+   "peak_contrast_counts": 11.6,
    "plateau_rows": [
-    224,
-    270
+    225,
+    272
    ],
    "half_width_cols": [
     83,
     148
    ],
    "water": [
-    226,
-    270,
+    227,
+    272,
     99,
     133
    ]
@@ -45,13 +45,13 @@
   "warm": {
    "sign": 1,
    "peak_rc": [
-    229,
-    271
+    225,
+    285
    ],
    "peak_contrast_counts": 9.2,
    "plateau_rows": [
     206,
-    267
+    269
    ],
    "half_width_cols": [
     256,
@@ -59,7 +59,7 @@
    ],
    "water": [
     208,
-    267,
+    269,
     274,
     312
    ]
@@ -67,22 +67,22 @@
   "hot": {
    "sign": 1,
    "peak_rc": [
-    228,
-    488
+    240,
+    469
    ],
-   "peak_contrast_counts": 38.1,
+   "peak_contrast_counts": 38.0,
    "plateau_rows": [
-    214,
-    262
+    215,
+    263
    ],
    "half_width_cols": [
-    436,
+    437,
     504
    ],
    "water": [
-    216,
-    262,
-    453,
+    217,
+    263,
+    454,
     488
    ]
   }
@@ -111,24 +111,24 @@
     9.138
    ],
    "sim_board_referenced_c": [
-    8.627,
-    8.626,
     8.636,
-    8.627,
-    8.622,
+    8.638,
+    8.642,
+    8.636,
     8.631,
-    8.626,
-    8.61
+    8.638,
+    8.638,
+    8.62
    ],
    "sim_raw_apparent_t_c": [
-    9.082,
-    9.078,
-    9.078,
-    9.074,
-    9.069,
-    9.067,
-    9.076,
-    9.066
+    8.647,
+    8.645,
+    8.64,
+    8.637,
+    8.632,
+    8.627,
+    8.641,
+    8.629
    ],
    "sim_scene_apparent_t_c": [
     8.612,
@@ -150,14 +150,14 @@
     8.604,
     8.604
    ],
-   "error_real_minus_sim_k_mean": 0.398,
+   "error_real_minus_sim_k_mean": 0.388,
    "error_real_minus_sim_k_first_last": [
-    0.077,
-    0.528
+    0.068,
+    0.517
    ],
-   "error_real_minus_sim_raw_k_mean": -0.05,
+   "error_real_minus_sim_raw_k_mean": 0.386,
    "error_real_minus_sim_scene_k_mean": 0.411,
-   "sim_camera_minus_scene_k_mean": 0.014,
+   "sim_camera_minus_scene_k_mean": 0.023,
    "sim_scene_minus_expected_k_max_abs": 0.008
   },
   "warm": {
@@ -183,24 +183,24 @@
     34.155
    ],
    "sim_board_referenced_c": [
-    34.649,
-    34.651,
-    34.65,
-    34.651,
-    34.651,
-    34.655,
-    34.647,
-    34.646
+    34.639,
+    34.641,
+    34.639,
+    34.64,
+    34.642,
+    34.644,
+    34.636,
+    34.637
    ],
    "sim_raw_apparent_t_c": [
-    34.739,
-    34.738,
-    34.737,
-    34.736,
-    34.734,
-    34.735,
-    34.734,
-    34.732
+    34.645,
+    34.644,
+    34.642,
+    34.642,
+    34.639,
+    34.639,
+    34.638,
+    34.636
    ],
    "sim_scene_apparent_t_c": [
     34.674,
@@ -222,14 +222,14 @@
     34.679,
     34.679
    ],
-   "error_real_minus_sim_k_mean": -0.428,
+   "error_real_minus_sim_k_mean": -0.417,
    "error_real_minus_sim_k_first_last": [
-    -0.326,
-    -0.491
+    -0.316,
+    -0.481
    ],
-   "error_real_minus_sim_raw_k_mean": -0.513,
+   "error_real_minus_sim_raw_k_mean": -0.418,
    "error_real_minus_sim_scene_k_mean": -0.451,
-   "sim_camera_minus_scene_k_mean": -0.024,
+   "sim_camera_minus_scene_k_mean": -0.034,
    "sim_scene_minus_expected_k_max_abs": 0.005
   },
   "hot": {
@@ -255,24 +255,24 @@
     62.975
    ],
    "sim_board_referenced_c": [
-    63.205,
-    63.212,
-    63.202,
+    63.208,
+    63.216,
+    63.206,
+    63.211,
     63.207,
-    63.203,
-    63.214,
-    63.207,
-    63.208
+    63.218,
+    63.21,
+    63.212
    ],
    "sim_raw_apparent_t_c": [
-    63.39,
-    63.389,
-    63.386,
-    63.386,
-    63.381,
-    63.389,
-    63.389,
-    63.383
+    63.213,
+    63.213,
+    63.211,
+    63.212,
+    63.205,
+    63.212,
+    63.212,
+    63.205
    ],
    "sim_scene_apparent_t_c": [
     63.245,
@@ -294,18 +294,18 @@
     63.262,
     63.262
    ],
-   "error_real_minus_sim_k_mean": 0.282,
+   "error_real_minus_sim_k_mean": 0.278,
    "error_real_minus_sim_k_first_last": [
-    0.87,
-    -0.233
+    0.867,
+    -0.237
    ],
-   "error_real_minus_sim_raw_k_mean": 0.102,
+   "error_real_minus_sim_raw_k_mean": 0.278,
    "error_real_minus_sim_scene_k_mean": 0.244,
-   "sim_camera_minus_scene_k_mean": -0.038,
+   "sim_camera_minus_scene_k_mean": -0.034,
    "sim_scene_minus_expected_k_max_abs": 0.017
   }
  },
- "sim_board_raw_minus_scene_k": 0.282,
+ "sim_board_raw_minus_scene_k": -0.0,
  "warm_uncertainty_from_task1_apparent_k_p16_50_84": [
   -0.987,
   -0.481,
