@@ -12,8 +12,8 @@ irsim.pipeline.frame.run_frame; same frustum author, same paper material), chang
   - each cup in two parts: the wetted wall up to the water line read off the thermal profiles (12 mm under the
     rim -> 4.8 cm) at the probe temperature, and the dry band above at T_air + f (T_water - T_air), f measured
     on the same profiles (cold 0.21, warm 0.96, hot 0.67);
-  - temperatures prescribed per target as a linear ramp from the 'before' reading at the first frame to the
-    'after' reading at the last (the stated assumption, the same as task 1); the frames rendered are 8 of the
+  - temperatures prescribed per target, constant at the mean of the 'before' and 'after' probe readings
+    (the readings carry no time; the same as task 1); the frames rendered are 8 of the
     94 real ones, at their own times;
   - board: the LiDAR's (1.008 m, 0.94 m wide, 0.52 m tall, its 6 deg yaw left out -- the room is isothermal, so
     the yaw changes nothing but the edge position); a back wall at 2.5 m; table (plywood) to the board;
@@ -173,11 +173,12 @@ def objects() -> tuple[list[dict], dict]:
 
 
 def schedule_c(tag) -> tuple[float, float]:
-    """(T at the first frame, T at the last frame), C."""
+    """(T at the first frame, T at the last frame), C: equal, the mean of the two probe readings (their times
+    are unknown, so there is no ramp)."""
     if tag is None:
         return c3.T_AIR_C, c3.T_AIR_C
     cup, _, part = tag.partition(":")
-    a, b = c3.T_PROBE_C[cup]
+    a = b = c3.T_MEAN_C[cup]
     if part == "dry":
         f = DRY_FRACTION[cup]
         return c3.T_AIR_C + f * (a - c3.T_AIR_C), c3.T_AIR_C + f * (b - c3.T_AIR_C)

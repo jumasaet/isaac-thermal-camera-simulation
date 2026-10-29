@@ -89,7 +89,7 @@ def draw(mode: str) -> None:
         top = np.array([o["centre"][0], o["centre"][1], c3.CUP_HEIGHT_M + 0.012])
         u, v = mp.project(m_ext, e["fx_px"], e["w"], e["h"], top[None])[0]
         a, b = c3.T_PROBE_C[cup]
-        text = f"{cup}\n{a:g} → {b:g} °C" if mode == "full" else f"{a:g} °C"
+        text = f"{cup}\n{a:g} / {b:g} °C (mean {c3.T_MEAN_C[cup]:g})" if mode == "full" else f"{c3.T_MEAN_C[cup]:g} °C"
         ax.annotate(text, (u, v), xytext=offsets[cup], textcoords="offset points", ha="center",
                     fontsize=9.5, color="k", arrowprops=dict(arrowstyle="-", color="0.25", lw=0.8),
                     bbox=dict(fc="w", alpha=0.8, lw=0))

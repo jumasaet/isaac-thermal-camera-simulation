@@ -201,22 +201,22 @@
    "t_since_first_s": 0.0,
    "cups": {
     "cold": {
-     "t_surface_c": 6.8,
+     "t_surface_c": 7.35,
      "roi_pixels": 2139,
-     "scene_apparent_t_c": 8.107,
-     "apparent_t_c": 8.617
+     "scene_apparent_t_c": 8.612,
+     "apparent_t_c": 9.118
     },
     "warm": {
-     "t_surface_c": 36.1,
+     "t_surface_c": 35.45,
      "roi_pixels": 2278,
-     "scene_apparent_t_c": 35.282,
-     "apparent_t_c": 35.351
+     "scene_apparent_t_c": 34.674,
+     "apparent_t_c": 34.744
     },
     "hot": {
-     "t_surface_c": 69.3,
+     "t_surface_c": 65.8,
      "roi_pixels": 2065,
-     "scene_apparent_t_c": 66.557,
-     "apparent_t_c": 66.674
+     "scene_apparent_t_c": 63.245,
+     "apparent_t_c": 63.367
     }
    },
    "board_scene_apparent_t_c": 23.9,
@@ -228,22 +228,22 @@
    "t_since_first_s": 1.292,
    "cups": {
     "cold": {
-     "t_surface_c": 6.849,
+     "t_surface_c": 7.35,
      "roi_pixels": 2139,
-     "scene_apparent_t_c": 8.153,
-     "apparent_t_c": 8.661
+     "scene_apparent_t_c": 8.612,
+     "apparent_t_c": 9.117
     },
     "warm": {
-     "t_surface_c": 36.042,
+     "t_surface_c": 35.45,
      "roi_pixels": 2278,
-     "scene_apparent_t_c": 35.228,
-     "apparent_t_c": 35.295
+     "scene_apparent_t_c": 34.674,
+     "apparent_t_c": 34.742
     },
     "hot": {
-     "t_surface_c": 68.986,
+     "t_surface_c": 65.8,
      "roi_pixels": 2065,
-     "scene_apparent_t_c": 66.26,
-     "apparent_t_c": 66.376
+     "scene_apparent_t_c": 63.245,
+     "apparent_t_c": 63.366
     }
    },
    "board_scene_apparent_t_c": 23.9,
@@ -255,22 +255,22 @@
    "t_since_first_s": 4.096,
    "cups": {
     "cold": {
-     "t_surface_c": 6.956,
+     "t_surface_c": 7.35,
      "roi_pixels": 2139,
-     "scene_apparent_t_c": 8.251,
-     "apparent_t_c": 8.752
+     "scene_apparent_t_c": 8.612,
+     "apparent_t_c": 9.11
     },
     "warm": {
-     "t_surface_c": 35.915,
+     "t_surface_c": 35.45,
      "roi_pixels": 2278,
-     "scene_apparent_t_c": 35.109,
-     "apparent_t_c": 35.176
+     "scene_apparent_t_c": 34.674,
+     "apparent_t_c": 34.741
     },
     "hot": {
-     "t_surface_c": 68.304,
+     "t_surface_c": 65.8,
      "roi_pixels": 2065,
-     "scene_apparent_t_c": 65.615,
-     "apparent_t_c": 65.73
+     "scene_apparent_t_c": 63.245,
+     "apparent_t_c": 63.364
     }
    },
    "board_scene_apparent_t_c": 23.9,
@@ -282,22 +282,22 @@
    "t_since_first_s": 8.498,
    "cups": {
     "cold": {
-     "t_surface_c": 7.125,
+     "t_surface_c": 7.35,
      "roi_pixels": 2139,
-     "scene_apparent_t_c": 8.405,
-     "apparent_t_c": 8.903
+     "scene_apparent_t_c": 8.612,
+     "apparent_t_c": 9.108
     },
     "warm": {
-     "t_surface_c": 35.716,
+     "t_surface_c": 35.45,
      "roi_pixels": 2278,
-     "scene_apparent_t_c": 34.923,
-     "apparent_t_c": 34.989
+     "scene_apparent_t_c": 34.674,
+     "apparent_t_c": 34.74
     },
     "hot": {
-     "t_surface_c": 67.234,
+     "t_surface_c": 65.8,
      "roi_pixels": 2065,
-     "scene_apparent_t_c": 64.602,
-     "apparent_t_c": 64.719
+     "scene_apparent_t_c": 63.245,
+     "apparent_t_c": 63.364
     }
    },
    "board_scene_apparent_t_c": 23.9,
@@ -309,22 +309,22 @@
    "t_since_first_s": 13.226,
    "cups": {
     "cold": {
-     "t_surface_c": 7.305,
+     "t_surface_c": 7.35,
      "roi_pixels": 2139,
-     "scene_apparent_t_c": 8.571,
-     "apparent_t_c": 9.067
+     "scene_apparent_t_c": 8.612,
+     "apparent_t_c": 9.108
     },
     "warm": {
-     "t_surface_c": 35.503,
+     "t_surface_c": 35.45,
      "roi_pixels": 2278,
-     "scene_apparent_t_c": 34.723,
-     "apparent_t_c": 34.788
+     "scene_apparent_t_c": 34.674,
+     "apparent_t_c": 34.738
     },
     "hot": {
-     "t_surface_c": 66.085,
+     "t_surface_c": 65.8,
      "roi_pixels": 2065,
-     "scene_apparent_t_c": 63.515,
-     "apparent_t_c": 63.63
+     "scene_apparent_t_c": 63.245,
+     "apparent_t_c": 63.361
     }
    },
    "board_scene_apparent_t_c": 23.9,
@@ -336,22 +336,22 @@
    "t_since_first_s": 22.314,
    "cups": {
     "cold": {
-     "t_surface_c": 7.652,
+     "t_surface_c": 7.35,
      "roi_pixels": 2139,
-     "scene_apparent_t_c": 8.889,
-     "apparent_t_c": 9.378
+     "scene_apparent_t_c": 8.612,
+     "apparent_t_c": 9.102
     },
     "warm": {
-     "t_surface_c": 35.093,
+     "t_surface_c": 35.45,
      "roi_pixels": 2278,
-     "scene_apparent_t_c": 34.34,
-     "apparent_t_c": 34.405
+     "scene_apparent_t_c": 34.674,
+     "apparent_t_c": 34.739
     },
     "hot": {
-     "t_surface_c": 63.876,
+     "t_surface_c": 65.8,
      "roi_pixels": 2065,
-     "scene_apparent_t_c": 61.426,
-     "apparent_t_c": 61.551
+     "scene_apparent_t_c": 63.245,
+     "apparent_t_c": 63.366
     }
    },
    "board_scene_apparent_t_c": 23.9,
@@ -363,22 +363,22 @@
    "t_since_first_s": 25.595,
    "cups": {
     "cold": {
-     "t_surface_c": 7.778,
+     "t_surface_c": 7.35,
      "roi_pixels": 2139,
-     "scene_apparent_t_c": 9.004,
-     "apparent_t_c": 9.504
+     "scene_apparent_t_c": 8.612,
+     "apparent_t_c": 9.115
     },
     "warm": {
-     "t_surface_c": 34.945,
+     "t_surface_c": 35.45,
      "roi_pixels": 2278,
-     "scene_apparent_t_c": 34.201,
-     "apparent_t_c": 34.266
+     "scene_apparent_t_c": 34.674,
+     "apparent_t_c": 34.738
     },
     "hot": {
-     "t_surface_c": 63.079,
+     "t_surface_c": 65.8,
      "roi_pixels": 2065,
-     "scene_apparent_t_c": 60.672,
-     "apparent_t_c": 60.798
+     "scene_apparent_t_c": 63.245,
+     "apparent_t_c": 63.365
     }
    },
    "board_scene_apparent_t_c": 23.9,
@@ -390,22 +390,22 @@
    "t_since_first_s": 28.8,
    "cups": {
     "cold": {
-     "t_surface_c": 7.9,
+     "t_surface_c": 7.35,
      "roi_pixels": 2139,
-     "scene_apparent_t_c": 9.111,
-     "apparent_t_c": 9.597
+     "scene_apparent_t_c": 8.612,
+     "apparent_t_c": 9.101
     },
     "warm": {
-     "t_surface_c": 34.8,
+     "t_surface_c": 35.45,
      "roi_pixels": 2278,
-     "scene_apparent_t_c": 34.072,
-     "apparent_t_c": 34.135
+     "scene_apparent_t_c": 34.674,
+     "apparent_t_c": 34.736
     },
     "hot": {
-     "t_surface_c": 62.3,
+     "t_surface_c": 65.8,
      "roi_pixels": 2065,
-     "scene_apparent_t_c": 59.973,
-     "apparent_t_c": 60.095
+     "scene_apparent_t_c": 63.245,
+     "apparent_t_c": 63.362
     }
    },
    "board_scene_apparent_t_c": 23.9,

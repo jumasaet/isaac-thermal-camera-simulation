@@ -35,7 +35,7 @@ def results_rows(t1: dict, t2: dict, t3: dict, t4: dict) -> tuple[list[str], lis
     loc = t3["alignment"]["local_per_cup_middle_pair"]
     sil = t3["alignment"]["silhouette_real_minus_sim_px"]
     w = t1["warm_test"]
-    a = t1["mc_A_linear_in_time"]["warm_err_surface_k_p2.5_16_50_84_97.5"]
+    a = t1["mc_A_mean_of_readings"]["warm_err_surface_k_p2.5_16_50_84_97.5"]
     rows = [
         ["Role in the calibration"] + ["reference", "INDEPENDENT test", "reference"],
         ["Probe water T, mean of 8 instants (°C)"] + [f"{mean(cups[c]['probe_c']):.2f}" for c in c3.CUPS],
@@ -160,8 +160,8 @@ def main() -> None:
         ax2 = fig.add_subplot(sub[1])
         draw_table(ax2, head2, rows2, [0.44, 0.22, 0.34], fs=8)
         ax2.text(0.0, 0.12, "Calibration: hot cup, cold cup and the board at the air temperature (23.9 °C);\n"
-                 "the warm cup is the independent test. Probe temperatures interpolated linearly\n"
-                 "between the first and the last frame (the data show the cups changed less).\n"
+                 "the warm cup is the independent test. Each cup held at the mean of its\n"
+                 "two probe readings (they carry no time).\n"
                  "Real and simulated thermal images are both board-referenced apparent temperature.",
                  transform=ax2.transAxes, fontsize=8.5, color="0.3", va="bottom")
         fig.suptitle("Three paper cups (cold, warm, hot) at 0.5 m — real vs simulated LWIR, Cellplus CTC-006-VGA",

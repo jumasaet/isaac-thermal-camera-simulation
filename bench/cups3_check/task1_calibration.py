@@ -16,8 +16,9 @@ Model (docs/physics-model.md §3.2 (b), §9.3: the bolometer is linear in band r
   - T_s = T_air + k (T_water - T_air): k < 1 is the drop across the wet paper wall (water-side film + paper
     vs the outside film). Nominal k = 1. Any k common to the three cups is absorbed into G eps to first order,
     so the warm-cup test barely sees it; the Monte Carlo carries it.
-  - T_water per frame: linear in time between the first frame (before reading) and the last (after reading)
-    -- the stated assumption. The data contradict it (see `in_recording_change`); scenario B drops it.
+  - T_water per frame: constant, the mean of the 'before' and 'after' readings. The readings carry no time, and
+    the data contradict placing them at the first and last frame (see `in_recording_change`: hot -1.15 K over
+    the recording, not -7 K). Scenario A is this; scenario B lets each cup sit anywhere between its readings.
 
 Calibration: G eps per cup = mean over frames of dc / (L_B(T_s) - L_B(T_air)); joint G eps = inverse-variance
 mean of the two (variance from 0.5 K on each reading). Then for the warm cup, per frame:
@@ -131,9 +132,9 @@ def main() -> None:
         change[cup] = {"measured_k_over_recording": round(float(slope * tr[-1]), 3),
                        "rate_k_per_min_after_2s": round(float(rate), 3),
                        "minutes_for_the_reading_change_at_that_rate": round(float((b - a) / rate), 1),
-                       "assumed_k_over_recording": round(b - a, 2),
+                       "reading_change_k": round(b - a, 2),
                        "measured_mean_c": round(float(ts_meas.mean()), 2),
-                       "assumed_mean_c": round(float(tw[cup].mean()), 2)}
+                       "prescribed_c": round(float(tw[cup].mean()), 2)}
     # Each cup's apparent temperature per frame (eps = 0.93 -> G), for task 2
     app = {cup: apparent_c(dc[cup], geps, c3.T_AIR_C, EPS_PAPER) for cup in c3.CUPS}
     app_exp = {cup: expected_apparent_c(nom["ts"][cup], c3.T_AIR_C, EPS_PAPER) for cup in c3.CUPS}
@@ -178,8 +179,8 @@ def main() -> None:
             tw_ = {}
             for cup in c3.CUPS:
                 a, b = (v + rng.normal(0, SIGMA_READING_K) for v in c3.T_PROBE_C[cup])
-                if scenario == "A":
-                    tw_[cup] = a + (b - a) * tr / tr[-1]
+                if scenario == "A":  # constant at the mean of the two (independently noisy) readings
+                    tw_[cup] = np.full_like(tr, (a + b) / 2)
                 else:  # B: anywhere between the readings, constant over the 29 s
                     tw_[cup] = np.full_like(tr, a + (b - a) * rng.uniform())
             r = calibrate(dc_, tw_, t_air, k, t_bg)
@@ -235,14 +236,14 @@ def main() -> None:
         "expected_apparent_t_c_mean_per_cup": {c: round(float(app_exp[c].mean()), 3) for c in c3.CUPS},
         "in_recording_change": change,
         "one_at_a_time_shift_of_warm_error_k": oat,
-        "mc_A_linear_in_time": mc_a, "mc_B_anywhere_between_readings": mc_b,
+        "mc_A_mean_of_readings": mc_a, "mc_B_anywhere_between_readings": mc_b,
         "mc_inputs": {"readings_sigma_k": SIGMA_READING_K, "air_sigma_k": SIGMA_AIR_K, "board_vs_air_sigma_k": 0.3,
                       "wall_factor_k": [0.85, 1.0], "eps": [0.90, 0.96], "roi": list(var), "n": N_MC},
         "board_plane_residual_rms_counts": round(float(np.std(frames[:, yy, xx] - c3.plane_at(coef, yy, xx))), 2),
     }
     (c3.OUT / "task1_calibration.json").write_text(json.dumps(rep, indent=1))
     print(json.dumps({k: rep[k] for k in ("calibration", "warm_test", "in_recording_change",
-                                          "one_at_a_time_shift_of_warm_error_k", "mc_A_linear_in_time",
+                                          "one_at_a_time_shift_of_warm_error_k", "mc_A_mean_of_readings",
                                           "mc_B_anywhere_between_readings", "apparent_t_c_mean_per_cup",
                                           "expected_apparent_t_c_mean_per_cup")}, indent=1))
     plot(tr, dc, tw, nom, t_app_w, t_app_exp, geps, rep)
@@ -268,7 +269,7 @@ def plot(tr, dc, tw, nom, t_app_w, t_app_exp, geps, rep) -> None:
     ax.set_title("Calibration: hot, cold, board; warm cup held out", fontsize=10)
     ax.legend(fontsize=8)
     ax = axs[1]
-    ax.plot(tr, nom["ts"]["warm"], "-", color="k", lw=1, label="probe, linear in time (assumed)")
+    ax.plot(tr, nom["ts"]["warm"], "-", color="k", lw=1, label="probe, mean of the two readings (prescribed)")
     ax.plot(tr, nom["ts_warm_meas"], ".", ms=3, color=col["warm"], label="calibrated surface T (ε-free)")
     ax.plot(tr, t_app_exp, "--", color="0.4", lw=1, label="expected apparent (ε 0.93)")
     ax.plot(tr, t_app_w, ".", ms=3, color="#7f3b08", label="calibrated apparent (ε 0.93)")
@@ -282,8 +283,8 @@ def plot(tr, dc, tw, nom, t_app_w, t_app_exp, geps, rep) -> None:
     for cup in c3.CUPS:
         ts_meas = c3.band_l_inv(c3.band_l(c3.c2k(c3.T_AIR_C)) + dc[cup] / geps) - 273.15
         ax.plot(tr, ts_meas - ts_meas[0], ".", ms=3, color=col[cup], label=f"{cup}: calibrated")
-        ax.plot(tr, tw[cup] - tw[cup][0], "-", color=col[cup], lw=1, label=f"{cup}: assumed")
-    ax.set_title("Change during the 29 s: data vs linear-in-time assumption", fontsize=10)
+        ax.plot(tr, tw[cup] - tw[cup][0], "-", color=col[cup], lw=1, label=f"{cup}: prescribed")
+    ax.set_title("Change during the 29 s: calibrated data vs constant prescribed T", fontsize=10)
     ax.set_xlabel("time since first frame [s]")
     ax.set_ylabel("K relative to the first frame")
     ax.legend(fontsize=7, ncol=2)

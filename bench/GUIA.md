@@ -168,6 +168,18 @@ Todas las salidas quedan en `bench/cups3_check/out/`, y los logs en `out/logs/<t
 idénticas. **LPIPS** es una distancia «perceptual», calculada con una red neuronal: 0 significa idénticas, y valores
 pequeños quieren decir que una persona apenas notaría la diferencia.
 
+**Las temperaturas de los vasos: las lecturas no tienen hora.** De cada vaso hay dos lecturas de la sonda, una
+antes y otra después de grabar (caliente 69,3 → 62,3 °C, templado 36,1 → 34,8, frío 6,8 → 7,9). **No se anotó a qué hora
+se tomó ninguna.** La primera versión las trató como si fueran el primer y el último frame y unió ambas con una recta,
+pero los datos lo desmienten: el caliente bajó **1,15 K** en los 29 s de grabación, no 7 K. Las lecturas distan unos
+3–4 min entre sí, y la grabación cae en algún punto del medio. Como no se sabe dónde, cada vaso se pone a **temperatura
+constante, igual a la media de sus dos lecturas**: caliente 65,8 °C, templado 35,45 °C, frío 7,35 °C (`T_MEAN_C` en
+`cups3_common.py`). Se usa igual en la calibración (tarea 1) y en el render (tarea 2), para que el simulador reciba lo
+mismo que la calibración real. La media es el punto central del intervalo, el que menos se equivoca si no hay otro
+dato, y la calibración confirma que la grabación cae cerca de él (ver `RESULTADOS.md`). Consecuencia: la bajada real del
+caliente (1,1 K) se ve como una deriva suave del error real − sim; no es un fallo del simulador. Una sonda con hora, o
+dejada dentro del agua, lo resolvería.
+
 **Qué mirar primero:**
 1. `figures/cups3_sheet_inferno.png`: lo real y lo simulado, lado a lado, con la tabla de resultados.
 2. `out/task2_comparison.json` → `cups.warm.error_real_minus_sim_k_mean`: el error del vaso independiente. Hoy
@@ -189,7 +201,7 @@ algo hay que tocar uno de estos sitios y volver a correr desde la tarea que lo l
 
 | quiero cambiar | dónde | después correr |
 |---|---|---|
-| **temperaturas** del agua (sonda antes → después) y del aire | `cups3_check/cups3_common.py`: `T_PROBE_C` y `T_AIR_C` | `FROM=1` (cambian la calibración y el render) |
+| **temperaturas** del agua (lecturas antes y después; se usa su media, `T_MEAN_C`) y del aire | `cups3_check/cups3_common.py`: `T_PROBE_C` y `T_AIR_C` | `FROM=1` (cambian la calibración y el render) |
 | tamaño del vaso | `cups3_common.py`: `CUP_TOP_DIAMETER_M`, `CUP_BOTTOM_DIAMETER_M`, `CUP_HEIGHT_M` | `FROM=0` |
 | **objetos**: añadir o quitar, tamaño y posición de fondo, mesa y pared | `task2_render.py`, función `objects()`. Cada objeto es un `dict` con `name`, `kind` (`box`, `frustum` = tronco de cono…), `centre` (x, y, z en metros), `size` o `z`, y su color `rgb` | `FROM=2` |
 | **material** térmico de cada objeto | `task2_render.py`, `objects()`, diccionario `thermal`: `"Table": ("plywood", None)`. Los materiales están en `configs/materials/`; el papel, en `bench/cups_check/materials/paper_cup.yaml` (ahí está su emisividad) | `FROM=2` |
@@ -220,7 +232,7 @@ los `scripts/render_*.py`. Los experimentos de vasos no la usan, porque necesita
 | El vaso cercano y el fondo salen con el mismo desenfoque | El desenfoque por capas reparte sus 8 capas entre la mesa a 3 cm y el fondo a 1 m | `CUPS_MIN_DISTANCE_M=0.3` (ya en `run_all.sh`) pone un suelo a la distancia |
 | El camino GPU (fps) no coincide con el de CPU | El camino GPU no tiene desenfoque por capas | Es esperado; por eso se mide con `--no-check` |
 | Los números de objeto de `out/sim/ids.npy` cambian entre corridas | Kit numera las instancias de otra forma en cada sesión | Es la misma geometría; los scripts usan nombres, no números |
-| La temperatura del vaso caliente deriva −2 → +3 K entre el primer y el último frame | El supuesto de cambio lineal en 29 s entre las lecturas de la sonda no se cumple (las lecturas distaban 3–4 min) | Limitación de los datos, no del simulador. Explicado en `RESULTADOS.md` |
+| El error real − sim del vaso caliente baja ~1,1 K entre el primer y el último frame | El simulador lo mantiene a la media de las dos lecturas (no tienen hora) y el vaso real se enfría de verdad | Limitación de los datos, no del simulador. Antes (rampa entre lecturas) era una deriva falsa de −2 → +3 K. Ver §3 y `RESULTADOS.md` |
 | La cámara simulada lee el fondo +0,3 K de más | Autoemisión de lente y carcasa, con parámetros `PENDIENTE` (copiados de la Boson) | Las comparaciones refieren las dos imágenes al fondo, así que no afecta al resultado |
 | El ruido simulado no se parece al real | El YAML tiene el ruido medido con `denoise: 40`, y los tres vasos se grabaron con `denoise: 80` | Pendiente de volver a medir |
 | Una medida de fps sale más baja de lo normal | Otra carga en la máquina (pytest, otra sesión de Isaac) o la CPU en modo ahorro | Máquina en reposo y `powerprofilesctl set performance` |

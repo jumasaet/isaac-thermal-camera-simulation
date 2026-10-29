@@ -52,10 +52,10 @@
      3,
      0
     ],
-    "ssim_as_rendered": 0.975,
-    "ssim_registered": 0.9773,
-    "lpips_as_rendered": 0.063,
-    "lpips_registered": 0.0565
+    "ssim_as_rendered": 0.9753,
+    "ssim_registered": 0.9776,
+    "lpips_as_rendered": 0.0627,
+    "lpips_registered": 0.0563
    },
    "warm": {
     "window_rows_cols": [
@@ -72,10 +72,10 @@
      2,
      -1
     ],
-    "ssim_as_rendered": 0.99,
+    "ssim_as_rendered": 0.9901,
     "ssim_registered": 0.9908,
-    "lpips_as_rendered": 0.0495,
-    "lpips_registered": 0.0475
+    "lpips_as_rendered": 0.0493,
+    "lpips_registered": 0.0474
    },
    "hot": {
     "window_rows_cols": [
@@ -92,10 +92,10 @@
      0,
      -1
     ],
-    "ssim_as_rendered": 0.9246,
-    "ssim_registered": 0.9253,
-    "lpips_as_rendered": 0.1594,
-    "lpips_registered": 0.16
+    "ssim_as_rendered": 0.9251,
+    "ssim_registered": 0.9259,
+    "lpips_as_rendered": 0.159,
+    "lpips_registered": 0.1595
    }
   }
  },
@@ -113,19 +113,19 @@
    "lpips_crop": 0.003
   },
   "real_vs_itself_shifted_2px": {
-   "ssim_full": 0.9974,
+   "ssim_full": 0.9975,
    "lpips_full": 0.0038,
    "ssim_crop": 0.9952,
-   "lpips_crop": 0.0074
+   "lpips_crop": 0.0073
   },
   "real_vs_itself_shifted_4px": {
-   "ssim_full": 0.9937,
+   "ssim_full": 0.9938,
    "lpips_full": 0.0083,
-   "ssim_crop": 0.9864,
-   "lpips_crop": 0.0177
+   "ssim_crop": 0.9865,
+   "lpips_crop": 0.0176
   }
  }
 }
-primary_5_70C {"ssim_full": [0.9863, 0.9858, 0.9868], "lpips_full": [0.0577, 0.056, 0.0596], "ssim_crop": [0.9698, 0.9686, 0.9712], "lpips_crop": [0.1006, 0.0974, 0.103]} {"ssim_full": [0.9864, 0.9859, 0.987], "lpips_full": [0.0572, 0.0555, 0.059], "ssim_crop": [0.9701, 0.9689, 0.9716], "lpips_crop": [0.0987, 0.0955, 0.101]}
-secondary_20_40C {"ssim_full": [0.9155, 0.9152, 0.9159], "lpips_full": [0.1946, 0.1928, 0.1966], "ssim_crop": [0.8722, 0.8714, 0.8739], "lpips_crop": [0.2425, 0.2403, 0.2446]} {"ssim_full": [0.9153, 0.915, 0.9157], "lpips_full": [0.1945, 0.1931, 0.1962], "ssim_crop": [0.8717, 0.871, 0.8734], "lpips_crop": [0.2416, 0.2398, 0.2437]}
-{"ssim_change_at_2px": -0.0018, "lpips_change_at_2px": 0.0024, "ssim_change_at_4px": -0.0068, "lpips_change_at_4px": 0.0086} {"real_c": {"cold": 8.57, "warm": 34.42, "hot": 64.38, "board": 23.93}, "sim_c": {"cold": 8.21, "warm": 35.06, "hot": 66.47, "board": 23.79}, "spearman": 1.0, "kendall": 1.0}
+primary_5_70C {"ssim_full": [0.9864, 0.9862, 0.9868], "lpips_full": [0.0574, 0.0562, 0.0585], "ssim_crop": [0.9702, 0.9697, 0.9711], "lpips_crop": [0.1, 0.0982, 0.1006]} {"ssim_full": [0.9865, 0.9863, 0.9869], "lpips_full": [0.0569, 0.0556, 0.058], "ssim_crop": [0.9705, 0.9699, 0.9715], "lpips_crop": [0.0982, 0.0963, 0.0987]}
+secondary_20_40C {"ssim_full": [0.9161, 0.9157, 0.9165], "lpips_full": [0.1938, 0.1923, 0.1955], "ssim_crop": [0.8728, 0.8721, 0.8739], "lpips_crop": [0.2419, 0.2405, 0.2434]} {"ssim_full": [0.9158, 0.9155, 0.9163], "lpips_full": [0.1937, 0.1925, 0.1952], "ssim_crop": [0.8723, 0.8716, 0.8736], "lpips_crop": [0.2408, 0.2392, 0.2426]}
+{"ssim_change_at_2px": -0.0019, "lpips_change_at_2px": 0.0024, "ssim_change_at_4px": -0.0068, "lpips_change_at_4px": 0.0086} {"real_c": {"cold": 8.67, "warm": 34.36, "hot": 64.16, "board": 23.93}, "sim_c": {"cold": 8.71, "warm": 34.45, "hot": 63.16, "board": 23.79}, "spearman": 1.0, "kendall": 1.0}

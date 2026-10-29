@@ -1,67 +1,67 @@
 {
  "calibration": {
-  "geps_counts_per_w_m2_sr": 53.232,
-  "geps_cold_only": 52.014,
-  "geps_hot_only": 53.536,
-  "hot_over_cold_minus_1_pct": 2.93,
-  "birge_ratio": 0.93,
+  "geps_counts_per_w_m2_sr": 53.565,
+  "geps_cold_only": 52.164,
+  "geps_hot_only": 53.918,
+  "hot_over_cold_minus_1_pct": 3.36,
+  "birge_ratio": 1.07,
   "weights_rel": {
-   "cold": 0.2,
-   "hot": 0.8
+   "cold": 0.201,
+   "hot": 0.799
   },
-  "g_with_eps_0.93": 57.239,
-  "sitf_counts_per_k_at_300k": 47.95,
+  "g_with_eps_0.93": 57.597,
+  "sitf_counts_per_k_at_300k": 48.25,
   "contrast_ratio_hot_over_cold_measured": 3.3934,
-  "contrast_ratio_predicted_radiance": 3.3083,
-  "contrast_ratio_predicted_kelvin": 2.5452
+  "contrast_ratio_predicted_radiance": 3.283,
+  "contrast_ratio_predicted_kelvin": 2.5317
  },
  "warm_test": {
-  "surface_t_c_mean": 35.023,
-  "probe_c_mean": 35.519,
-  "error_surface_k_mean": -0.496,
+  "surface_t_c_mean": 34.957,
+  "probe_c_mean": 35.45,
+  "error_surface_k_mean": -0.493,
   "error_surface_k_first_last_frame": [
-   -0.963,
-   0.156
+   -0.38,
+   -0.559
   ],
-  "error_surface_k_frame_std": 0.389,
-  "apparent_t_c_mean": 34.279,
-  "expected_apparent_t_c_mean": 34.743,
-  "error_apparent_k_mean": -0.465,
+  "error_surface_k_frame_std": 0.064,
+  "apparent_t_c_mean": 34.217,
+  "expected_apparent_t_c_mean": 34.679,
+  "error_apparent_k_mean": -0.461,
   "error_apparent_k_first_last_frame": [
-   -0.902,
-   0.146
+   -0.356,
+   -0.523
   ]
  },
  "in_recording_change": {
   "cold": {
-   "measured_k_over_recording": 0.286,
-   "rate_k_per_min_after_2s": 0.288,
+   "measured_k_over_recording": 0.284,
+   "rate_k_per_min_after_2s": 0.286,
    "minutes_for_the_reading_change_at_that_rate": 3.8,
-   "assumed_k_over_recording": 1.1,
-   "measured_mean_c": 7.71,
-   "assumed_mean_c": 7.29
+   "reading_change_k": 1.1,
+   "measured_mean_c": 7.82,
+   "prescribed_c": 7.35
   },
   "warm": {
-   "measured_k_over_recording": -0.176,
-   "rate_k_per_min_after_2s": -0.301,
+   "measured_k_over_recording": -0.175,
+   "rate_k_per_min_after_2s": -0.299,
    "minutes_for_the_reading_change_at_that_rate": 4.3,
-   "assumed_k_over_recording": -1.3,
-   "measured_mean_c": 35.02,
-   "assumed_mean_c": 35.52
+   "reading_change_k": -1.3,
+   "measured_mean_c": 34.96,
+   "prescribed_c": 35.45
   },
   "hot": {
-   "measured_k_over_recording": -1.148,
-   "rate_k_per_min_after_2s": -2.305,
-   "minutes_for_the_reading_change_at_that_rate": 3.0,
-   "assumed_k_over_recording": -7.0,
-   "measured_mean_c": 66.26,
-   "assumed_mean_c": 66.17
+   "measured_k_over_recording": -1.143,
+   "rate_k_per_min_after_2s": -2.294,
+   "minutes_for_the_reading_change_at_that_rate": 3.1,
+   "reading_change_k": -7.0,
+   "measured_mean_c": 66.04,
+   "prescribed_c": 65.8
   }
  },
  "one_at_a_time_shift_of_warm_error_k": {
   "hot reading +-0.5 K": [
-   -0.117,
-   0.118
+   -0.116,
+   0.117
   ],
   "cold reading +-0.5 K": [
    0.062,
@@ -72,47 +72,47 @@
    -0.5
   ],
   "air 23.4 / 24.4 C": [
-   -0.436,
-   0.443
+   -0.437,
+   0.444
   ],
   "board apparent T_air -+0.5 K": [
-   -0.469,
-   0.476
+   -0.47,
+   0.478
   ],
   "wall factor k 0.85 / 1.0": [
    -0.027,
    0.0
   ],
   "ROI upper / lower half": [
-   0.041,
-   -0.06
+   0.04,
+   -0.059
   ],
   "timing: all at 'before' / all at 'after'": [
-   0.244,
-   -0.223
+   0.241,
+   -0.226
   ]
  },
- "mc_A_linear_in_time": {
+ "mc_A_mean_of_readings": {
   "warm_err_surface_k_p2.5_16_50_84_97.5": [
-   -1.689,
-   -1.117,
-   -0.52,
-   0.093,
-   0.688
+   -1.681,
+   -1.114,
+   -0.516,
+   0.097,
+   0.691
   ],
   "warm_err_apparent_k_p2.5_16_50_84_97.5": [
    -1.457,
    -0.987,
-   -0.483,
-   0.017,
-   0.494
+   -0.481,
+   0.019,
+   0.5
   ],
   "geps_p2.5_16_50_84_97.5": [
-   53.273,
-   54.65,
-   58.068,
-   61.843,
-   63.616
+   53.601,
+   54.993,
+   58.423,
+   62.225,
+   64.006
   ],
   "warm_err_surface_std_k": 0.607
  },
@@ -141,13 +141,13 @@
   "warm_err_surface_std_k": 0.847
  },
  "apparent_t_c_mean_per_cup": {
-  "cold": 8.935,
-  "warm": 34.279,
-  "hot": 63.699
+  "cold": 9.036,
+  "warm": 34.217,
+  "hot": 63.485
  },
  "expected_apparent_t_c_mean_per_cup": {
-  "cold": 8.55,
-  "warm": 34.743,
-  "hot": 63.616
+  "cold": 8.604,
+  "warm": 34.679,
+  "hot": 63.262
  }
 }

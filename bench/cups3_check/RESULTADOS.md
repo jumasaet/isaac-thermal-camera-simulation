@@ -1,6 +1,6 @@
 # Tres vasos (frío, templado, caliente): calibración con prueba independiente, real frente a simulado, similitud y reflejo
 
-Fecha: 2026-10-28. Datos: `thermal_specs/three_cups_experiments/sync_cups/`. Todo está en este directorio, salvo un
+Fecha: 2026-10-28; **rehecho el 2026-10-29 con la temperatura constante** (ver «Cambio del 29-oct.» abajo). Datos: `thermal_specs/three_cups_experiments/sync_cups/`. Todo está en este directorio, salvo un
 comentario corregido en `bench/camera_check/cellplus_ctc006_lwir_cups.yaml` (la cadencia, abajo). Nada en `src/` ni en `configs/`.
 
 | Paso | Script | Intérprete | Salida (`out/`, `figures/`) |
@@ -17,6 +17,52 @@ comentario corregido en `bench/camera_check/cellplus_ctc006_lwir_cups.yaml` (la 
 superficie de referencia del fondo y radiancia de banda. La radiometría y la geometría LiDAR→térmica vienen de
 `bench/cups_check/cups_common.py` (mismo rig, mismos ficheros de calibración). Los `.npy` no se versionan
 (`bench/.gitignore`); se regeneran con los scripts.
+
+---
+
+## Cambio del 29-oct.: temperatura constante en lugar de rampa
+
+La primera versión interpolaba cada vaso en línea recta entre la lectura «antes» (en el primer frame) y la «después»
+(en el último), como si las lecturas se hubieran tomado al empezar y acabar la grabación. Los datos lo contradicen
+(sección «Lo que los datos dicen…»: el caliente bajó 1,15 K en los 29 s, no 7 K), y **las lecturas no tienen hora**.
+Como no se sabe cuándo se tomó cada una, ahora cada vaso va a **temperatura constante, la media de sus dos lecturas**:
+caliente 65,8 °C, templado 35,45 °C, frío 7,35 °C. Es en la calibración (tarea 1), en el render (tarea 2) y en todo lo
+que cuelga de ellos. El resto (geometría, tarea 0, reflejo de la tarea 4) no depende de las temperaturas y no cambia.
+
+| | antes (rampa) | **ahora (media)** |
+|---|---|---|
+| **error del templado, prueba independiente**, superficie (media de 94 frames) | −0,50 K | **−0,49 K** |
+| ídem, aparente (ε 0,93) | −0,47 K | **−0,46 K** |
+| ídem, primer / último frame (superficie) | −0,96 / +0,16 K | **−0,38 / −0,56 K** |
+| ídem, Monte Carlo A, aparente [68 %] | [−0,99; +0,02] K | [−0,99; +0,02] K |
+| G·ε (cuentas por W m⁻² sr⁻¹) | 53,23 | **53,57** |
+| frío solo / caliente solo (difieren) | 52,01 / 53,54 (2,9 %) | 52,16 / 53,92 (3,4 %) |
+| **error real − sim, frío** (media de 8 instantes) | +0,35 K | **+0,40 K** |
+| **error real − sim, templado** (independiente) | −0,43 K | **−0,43 K** |
+| **error real − sim, caliente** | +0,16 K | **+0,28 K** |
+| deriva del error del caliente, primer → último de los 8 instantes | −2,23 → +3,25 K (rango 5,5 K) | **+0,87 → −0,23 K (rango 1,1 K)** |
+| ídem, desviación típica del error del caliente | 2,03 K | **0,40 K** |
+| rango del error en el frío / templado | 0,74 / 1,04 K | 0,45 / 0,18 K |
+| SSIM, frame completo / recorte (5–70 °C) | 0,986 / 0,970 | 0,986 / 0,970 |
+| LPIPS, frame completo / recorte (5–70 °C) | 0,058 / 0,101 | 0,057 / 0,100 |
+| SSIM / LPIPS en la ventana 20–40 °C, recorte | 0,872 / 0,243 | 0,873 / 0,242 |
+
+**Cómo leerlo.**
+- **El error del templado no cambia** (−0,43 K frente a −0,43 K; −0,46 frente a −0,47 en aparente): lo que sí se
+  mueve es su deriva dentro de la grabación, que se reduce de 1,1 K a 0,2 K. La media ya cuadraba, porque la
+  grabación cae hacia el centro del intervalo entre lecturas. La incertidumbre sigue siendo la misma: el −0,5 K
+  está a ~0,9 σ de cero.
+- **Los errores del frío y del caliente suben unas décimas** (+0,05 y +0,12 K). Son residuos de la calibración, no
+  pruebas: con la media, la calibración usa 65,8 en lugar de la rampa, y G·ε cambia un 0,6 %.
+- **La deriva del caliente era un artefacto de la rampa.** Ahora el simulador está quieto y el vaso real baja 1,1 K
+  (de 64,07 °C aparentes en los 3 primeros frames a 62,98 en los 3 últimos), así que el error real − sim pasa de
+  +0,87 a −0,23 K. Esa pendiente es **la bajada real del vaso, no un fallo del simulador**: no se reproduce porque
+  sin horas de lectura no se puede prescribir. Ya no hay un ±3 K que no existe en los datos.
+- **SSIM y LPIPS casi no se mueven** (≤ 0,001 y ≤ 0,001): están dominadas por el contenido que falta (reflejo,
+  ruido, bordes) y no por 1–2 K en un vaso, en una ventana de 65 K.
+- **La correlación de rango sigue en 1,00 en los 8 pares.**
+
+Los valores «antes» de las secciones de abajo se han sustituido por los nuevos; solo esta tabla guarda los antiguos.
 
 ---
 
@@ -109,19 +155,19 @@ con desenfoque gaussiano.
   - La temperatura de superficie `T_s` sale **sin depender de ε**.
   - La aparente (lectura con ε = 1) usa `G = G·ε / 0,93`.
 - **ROI del agua:** la meseta ≥ 90 % del pico en la columna central, y la mitad central del ancho.
-- **Temperatura del agua por frame:** lineal entre la lectura «antes» en el primer frame y la «después» en el
-  último, como pediste. `T_s = T_agua` (factor de pared k = 1).
+- **Temperatura del agua por frame:** constante, la media de las lecturas «antes» y «después» (las lecturas no
+  tienen hora). `T_s = T_agua` (factor de pared k = 1).
 
 ### Calibración (caliente + frío + fondo)
 
 | | valor |
 |---|---|
-| **G·ε** | **53,23 cuentas por W m⁻² sr⁻¹** |
-| solo el frío / solo el caliente | 52,01 / 53,54: **difieren un 2,9 %** (razón de Birge 0,93, con ±0,5 K por lectura) |
-| G con ε = 0,93 | 57,24; SITF **47,9 cuentas/K a 300 K** (la sesión anterior: 52,9) |
+| **G·ε** | **53,57 cuentas por W m⁻² sr⁻¹** |
+| solo el frío / solo el caliente | 52,16 / 53,92: **difieren un 3,4 %** (razón de Birge 1,07, con ±0,5 K por lectura) |
+| G con ε = 0,93 | 57,60; SITF **48,3 cuentas/K a 300 K** (la sesión anterior: 52,9) |
 | cociente de contrastes caliente/frío, medido | **3,393** |
-| predicho, lineal en radiancia | 3,308 |
-| predicho, lineal en kelvin | 2,545 |
+| predicho, lineal en radiancia | 3,283 |
+| predicho, lineal en kelvin | 2,532 |
 
 - **Esta vez las tres lecturas sí son coherentes** entre sí, a diferencia de `bench/cups_check`, donde diferían un 23 %.
 - El modelo en radiancia es claramente el bueno: el lineal en kelvin falla un 25 % en el cociente.
@@ -132,9 +178,9 @@ con desenfoque gaussiano.
 
 | | calibrado | sonda | **error** |
 |---|---|---|---|
-| T de superficie (sin ε), media de 94 frames | 35,02 °C | 35,52 °C | **−0,50 K** |
-| T aparente (ε = 0,93) frente a `L_B⁻¹(ε L_B(T_w) + (1−ε) L_B(T_aire))` | 34,28 °C | 34,74 °C | **−0,47 K** |
-| error en el primer / último frame (superficie) | | | −0,96 / +0,16 K |
+| T de superficie (sin ε), media de 94 frames | 34,96 °C | 35,45 °C | **−0,49 K** |
+| T aparente (ε = 0,93) frente a `L_B⁻¹(ε L_B(T_w) + (1−ε) L_B(T_aire))` | 34,22 °C | 34,68 °C | **−0,46 K** |
+| error en el primer / último frame (superficie) | | | −0,38 / −0,56 K |
 
 ### Incertidumbre
 
@@ -148,7 +194,7 @@ Monte Carlo, 20 000 muestras (`task1_calibration.json`, `mc_*`):
 
 | escenario | error de superficie, mediana [68 %] [95 %] | error aparente [68 %] |
 |---|---|---|
-| **A: lineal en el tiempo (el supuesto)** | **−0,52 K [−1,12; +0,09] [−1,69; +0,69]** | −0,48 K [−0,99; +0,02] |
+| **A: constante, la media de las lecturas (el supuesto)** | **−0,52 K [−1,11; +0,10] [−1,68; +0,69]** | −0,48 K [−0,99; +0,02] |
 | B: cada vaso en cualquier punto entre sus dos lecturas, constante | −0,51 K [−1,35; +0,34] [−2,14; +1,18] | −0,47 K [−1,22; +0,28] |
 
 El −0,5 K está a ~0,9 σ de cero. **La prueba pasa dentro de la incertidumbre.**
@@ -160,7 +206,7 @@ Desglose, un factor cada vez (desplazamiento del error del templado):
 | lectura del templado ±0,5 K | ∓0,50 K |
 | fondo frente al aire ±0,5 K | ±0,47 K |
 | aire ±0,5 K | ±0,44 K |
-| todas las lecturas en «antes» / en «después» | +0,24 / −0,22 K |
+| todas las lecturas en «antes» / en «después» | +0,24 / −0,23 K |
 | lectura del caliente ±0,5 K | ±0,12 K |
 | lectura del frío ±0,5 K | ∓0,06 K |
 | ROI mitad superior / inferior | +0,04 / −0,06 K |
@@ -168,24 +214,25 @@ Desglose, un factor cada vez (desplazamiento del error del templado):
 
 Dominan la propia lectura del templado y la temperatura que se supone en el fondo y el aire.
 
-### Lo que los datos dicen del supuesto lineal en el tiempo
+### Lo que los datos dicen de la rampa entre lecturas (por eso se usa la media)
 
-**Los datos lo contradicen.** Cambio de cada vaso durante los 29 s, leído de la propia calibración (superficie, sin ε):
+**Los datos contradicen la rampa de la primera versión.** Cambio de cada vaso durante los 29 s, leído de la propia calibración (superficie, sin ε):
 
-| vaso | medido | supuesto |
+| vaso | medido | que daría la rampa (descartada) |
 |---|---|---|
-| frío | +0,29 K | +1,1 K |
+| frío | +0,28 K | +1,1 K |
 | templado | −0,18 K | −1,3 K |
-| caliente | −1,15 K | **−7,0 K** |
+| caliente | −1,14 K | **−7,0 K** |
 
 - Las lecturas se tomaron con minutos de separación, no en los 29 s de la grabación. Al ritmo medido después del
   transitorio inicial (frío +0,29, templado −0,30, caliente −2,3 K/min), el cambio entre las dos lecturas lleva
   **3,8 / 4,3 / 3,0 min**. Los tres vasos dan lo mismo: las lecturas se tomaron con **~3–4 min** de separación, y
   probablemente a la vez en los tres.
-- Las medias sí cuadran (caliente 66,26 °C frente a 66,17 °C supuesto), porque la grabación cae hacia el centro del
-  intervalo. Por eso **G·ε apenas se ve afectado** (escenario B).
-- Lo que sí produce el supuesto es la deriva del error del templado durante la grabación (−0,96 → +0,16 K) y la del
-  caliente en la tarea 2.
+- Las medias sí cuadran (la propia calibración da hoy caliente 66,04 °C frente a 65,8 °C prescritos; templado 34,96
+  frente a 35,45; frío 7,82 frente a 7,35), porque la grabación cae hacia el centro del intervalo. Por eso **G·ε apenas
+  se ve afectado** (escenario B) y **se usa la media**.
+- Lo que producía la rampa era una deriva falsa: la del error del templado durante la grabación (−0,96 → +0,16 K,
+  ahora −0,38 → −0,56 K) y la del caliente en la tarea 2.
 - En los primeros ~1,5 s el frío sube 0,35 K, el caliente baja 0,25 K y el templado baja 0,1 K; después se quedan
   casi quietos. No es un cambio común de ganancia: en proporción es 1,9 / 0,8 / 0,3 %. **Hipótesis (no
   comprobada):** el agua se acababa de remover con la sonda y la pared se relaja al pararse la convección.
@@ -196,7 +243,7 @@ Dominan la propia lectura del templado y la temperatura que se supone en el fond
 
 **Escena** (`task2_render.py`):
 - tres troncos de cono de papel (ε 0,93) con la geometría de la tarea 0;
-- pared mojada hasta 4,83 cm a la temperatura de la sonda, en rampa lineal (el mismo supuesto);
+- pared mojada hasta 4,83 cm a la temperatura constante de la media de las dos lecturas (el mismo supuesto);
 - franja seca con las fracciones medidas;
 - fondo con las medidas del LiDAR, sin la guiñada (la sala es isoterma, así que la guiñada solo movería sus bordes);
 - pared trasera a 2,5 m;
@@ -215,9 +262,9 @@ Se renderizan **8 instantes**, los de los frames reales 0, 13, 27, 40, 53, 66, 8
 
 | vaso | ¿independiente? | sonda (media) | real calibrado | simulado | **error real − sim** | primer / último frame |
 |---|---|---|---|---|---|---|
-| frío | no (calibra) | 7,30 °C | 8,92 °C | 8,58 °C | **+0,35 K** | +0,48 / −0,07 |
-| **templado** | **sí** | 35,51 °C | 34,28 °C | 34,71 °C | **−0,43 K** | −0,87 / +0,17 |
-| caliente | no (calibra) | 66,15 °C | 63,70 °C | 63,54 °C | **+0,16 K** | −2,23 / +3,25 |
+| frío | no (calibra) | 7,35 °C | 9,02 °C | 8,63 °C | **+0,40 K** | +0,08 / +0,53 |
+| **templado** | **sí** | 35,45 °C | 34,22 °C | 34,65 °C | **−0,43 K** | −0,33 / −0,49 |
+| caliente | no (calibra) | 65,80 °C | 63,49 °C | 63,21 °C | **+0,28 K** | +0,87 / −0,23 |
 
 - **El único error independiente es el del templado.** El frío y el caliente fijaron la calibración real con las
   mismas temperaturas que recibe el simulador, así que su error es el residuo de la calibración, no una prueba.
@@ -227,9 +274,10 @@ Se renderizan **8 instantes**, los de los frames reales 0, 13, 27, 40, 53, 66, 8
   - su cámara, referida al fondo, cambia los vasos en +0,01 / −0,02 / −0,04 K: el desenfoque les quita un poco de
     contraste;
   - el error del templado (−0,43 K) es la prueba de la tarea 1 (−0,47 K) vista a través del simulador.
-- Sin referir el simulado al fondo, los errores serían −0,10 / −0,51 / −0,02 K.
-- **La deriva del caliente** (−2,2 → +3,3 K) es entera del supuesto de 7 K en 29 s. El simulador sigue la rampa
-  supuesta y el vaso real baja 1,1 K.
+- Sin referir el simulado al fondo, los errores serían −0,10 / −0,51 / −0,02 K (valores de la primera versión; no se han rehecho).
+- **La deriva del caliente** es ahora +0,87 → −0,23 K (desviación típica 0,40 K; con la rampa era −2,2 → +3,3 K,
+  desviación 2,03 K). El simulador está quieto y el vaso real baja 1,1 K en los 29 s: esa pendiente es la bajada
+  real, que no se puede prescribir sin hora de lectura.
 - **Un intento descartado:** con un plano como referencia del fondo, en lugar de la superficie cuadrática, quedaba la
   curvatura del cuenco de la cámara simulada (−0,16 K en el templado, que está centrado).
 
@@ -246,9 +294,9 @@ referida al fondo, en la **misma ventana**: `x = clip((T − 5 °C) / 65 K, 0, 1
 
 | ventana 5–70 °C, 8 pares (rango) | SSIM | LPIPS |
 |---|---|---|
-| frame completo | **0,986** (0,986–0,987) | **0,058** (0,056–0,060) |
-| recorte de los vasos | **0,970** (0,969–0,971) | **0,101** (0,097–0,103) |
-| con la ventana 20–40 °C (fondo y mesa): completo / recorte | 0,916 / 0,872 | 0,195 / 0,243 |
+| frame completo | **0,986** (0,986–0,987) | **0,057** (0,056–0,059) |
+| recorte de los vasos | **0,970** (0,970–0,971) | **0,100** (0,098–0,101) |
+| con la ventana 20–40 °C (fondo y mesa): completo / recorte | 0,916 / 0,873 | 0,194 / 0,242 |
 
 **Correlación de rango** del brillo de los tres vasos y el fondo: **Spearman = Kendall = 1,00 en los 8 pares**. El
 orden es el mismo en real y simulado: frío < fondo < templado < caliente.
@@ -265,8 +313,8 @@ más altos por el reflejo y ~5 px más estrechos en el borde que el modelo de 7/
 
 | | SSIM recorte | LPIPS recorte |
 |---|---|---|
-| tal cual | 0,970 | 0,101 |
-| registrado (mejor desplazamiento global en ±4 px: +1 fila) | 0,970 | 0,099 |
+| tal cual | 0,970 | 0,100 |
+| registrado (mejor desplazamiento global en ±4 px: +1 fila) | 0,971 | 0,098 |
 | desplazar 2 px / 4 px (rejilla en el par central) | −0,002 / −0,007 | +0,002 / +0,009 |
 | referencia: real contra el frame real siguiente | 0,9997 | 0,0002 |
 | referencia: real contra sí mismo desplazado 1 / 2 / 4 px | 0,998 / 0,995 / 0,986 | 0,003 / 0,007 / 0,018 |
@@ -275,9 +323,9 @@ Ventana alrededor de cada vaso y su reflejo (par central), SSIM / LPIPS tal cual
 
 | vaso | desplazamiento local | SSIM | LPIPS |
 |---|---|---|---|
-| frío | (3, 0) px | 0,975 → 0,977 | 0,063 → 0,057 |
-| templado | (2, −1) px | 0,990 → 0,991 | 0,050 → 0,048 |
-| caliente | (0, −1) px | 0,925 → 0,925 | 0,159 → 0,160 |
+| frío | (3, 0) px | 0,975 → 0,978 | 0,063 → 0,056 |
+| templado | (2, −1) px | 0,990 → 0,991 | 0,049 → 0,047 |
+| caliente | (0, −1) px | 0,925 → 0,926 | 0,159 → 0,160 |
 
 **Conclusión: la desalineación pesa poco.**
 - Registrar mejora la SSIM en < 0,001 y el LPIPS en ~0,002 (en local, como mucho 0,002 y 0,006).
@@ -343,7 +391,7 @@ vaso, con `b` la fila de contacto con la mesa (su borde inferior medido) y las c
   - el mapa real − simulado en K;
   - el detalle en 20–40 °C;
   - dos tablas de resultados (por vaso y global).
-  - Instante: frame 53, a 13,2 s.
+  - Instante: frame 53, a 13,2 s. Las temperaturas de sonda de las tablas son las medias de las dos lecturas.
 - `figures/cups3_results_table.png`: las tablas solas.
 - `out/task1_calibration.png`, `out/task2_comparison.png`, `out/task3_similarity.png`, `out/task4_reflection.png` y
   `out/scene_geometry.png`: las figuras de diagnóstico de cada tarea.
@@ -352,9 +400,11 @@ vaso, con `b` la fila de contacto con la mesa (su borde inferior medido) y las c
 
 ## Limitaciones
 
-1. **Hora de las lecturas.** El supuesto lineal en 29 s contradice los datos (−1,15 K medido frente a −7 K supuesto
-   en el caliente; las lecturas distan ~3–4 min). No mueve la calibración, porque las medias cuadran, pero sí las derivas por frame. Una sonda
-   registrada con hora, o dejada dentro del agua, lo resolvería.
+1. **Hora de las lecturas.** No tienen hora, y las lecturas distan ~3–4 min (el caliente bajó 1,15 K en los 29 s,
+   no los 7 K entre lecturas). Por eso cada vaso va a la media de sus dos lecturas. El error de cada vaso lleva
+   la incertidumbre de ese valor (hasta ±3,5 K en el caliente, ±0,65 K en el templado, según dónde cayera la
+   grabación) y la bajada real del caliente (1,1 K) no se puede reproducir. Una sonda registrada con hora, o dejada
+   dentro del agua, lo resolvería.
 2. **Fondo y aire.** Que el fondo esté a 23,9 °C pesa ±0,47 K por cada 0,5 K en el resultado del templado. No hay
    cuerpo negro de referencia.
 3. **ε del papel no medida.** No afecta a la temperatura de superficie, pero sí a la aparente.

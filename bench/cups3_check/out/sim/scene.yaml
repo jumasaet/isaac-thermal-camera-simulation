@@ -13,9 +13,9 @@ scene:
     - {name: back_wall, solver: prescribed, schedule_s: [0.0, 1.0, 29.800, 89.800], schedule_k: [297.050, 297.050, 297.050, 297.050]}  # 23.90 -> 23.90 C, concrete_white
     - {name: background, solver: prescribed, schedule_s: [0.0, 1.0, 29.800, 89.800], schedule_k: [297.050, 297.050, 297.050, 297.050]}  # 23.90 -> 23.90 C, concrete_white
     - {name: table, solver: prescribed, schedule_s: [0.0, 1.0, 29.800, 89.800], schedule_k: [297.050, 297.050, 297.050, 297.050]}  # 23.90 -> 23.90 C, plywood
-    - {name: cold_wet, solver: prescribed, schedule_s: [0.0, 1.0, 29.800, 89.800], schedule_k: [279.950, 279.950, 281.050, 281.050]}  # 6.80 -> 7.90 C, paper_cup
-    - {name: cold_dry, solver: prescribed, schedule_s: [0.0, 1.0, 29.800, 89.800], schedule_k: [292.997, 292.997, 293.258, 293.258]}  # 19.85 -> 20.11 C, paper_cup
-    - {name: warm_wet, solver: prescribed, schedule_s: [0.0, 1.0, 29.800, 89.800], schedule_k: [309.250, 309.250, 307.950, 307.950]}  # 36.10 -> 34.80 C, paper_cup
-    - {name: warm_dry, solver: prescribed, schedule_s: [0.0, 1.0, 29.800, 89.800], schedule_k: [308.628, 308.628, 307.394, 307.394]}  # 35.48 -> 34.24 C, paper_cup
-    - {name: hot_wet, solver: prescribed, schedule_s: [0.0, 1.0, 29.800, 89.800], schedule_k: [342.450, 342.450, 335.450, 335.450]}  # 69.30 -> 62.30 C, paper_cup
-    - {name: hot_dry, solver: prescribed, schedule_s: [0.0, 1.0, 29.800, 89.800], schedule_k: [327.468, 327.468, 322.778, 322.778]}  # 54.32 -> 49.63 C, paper_cup
+    - {name: cold_wet, solver: prescribed, schedule_s: [0.0, 1.0, 29.800, 89.800], schedule_k: [280.500, 280.500, 280.500, 280.500]}  # 7.35 -> 7.35 C, paper_cup
+    - {name: cold_dry, solver: prescribed, schedule_s: [0.0, 1.0, 29.800, 89.800], schedule_k: [293.128, 293.128, 293.128, 293.128]}  # 19.98 -> 19.98 C, paper_cup
+    - {name: warm_wet, solver: prescribed, schedule_s: [0.0, 1.0, 29.800, 89.800], schedule_k: [308.600, 308.600, 308.600, 308.600]}  # 35.45 -> 35.45 C, paper_cup
+    - {name: warm_dry, solver: prescribed, schedule_s: [0.0, 1.0, 29.800, 89.800], schedule_k: [308.011, 308.011, 308.011, 308.011]}  # 34.86 -> 34.86 C, paper_cup
+    - {name: hot_wet, solver: prescribed, schedule_s: [0.0, 1.0, 29.800, 89.800], schedule_k: [338.950, 338.950, 338.950, 338.950]}  # 65.80 -> 65.80 C, paper_cup
+    - {name: hot_dry, solver: prescribed, schedule_s: [0.0, 1.0, 29.800, 89.800], schedule_k: [325.123, 325.123, 325.123, 325.123]}  # 51.97 -> 51.97 C, paper_cup

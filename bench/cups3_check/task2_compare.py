@@ -80,7 +80,7 @@ def main() -> None:
     rep = {"instants_s": [round(float(tr[i]), 3) for i in idx], "real_frame_index": idx.tolist(),
            "sim_regions": reg, "cups": rows,
            "sim_board_raw_minus_scene_k": round(float((board_raw - board_scn).mean()), 3),
-           "warm_uncertainty_from_task1_apparent_k_p16_50_84": t1["mc_A_linear_in_time"]["warm_err_apparent_k_p2.5_16_50_84_97.5"][1:4],
+           "warm_uncertainty_from_task1_apparent_k_p16_50_84": t1["mc_A_mean_of_readings"]["warm_err_apparent_k_p2.5_16_50_84_97.5"][1:4],
            "warm_uncertainty_from_task1_apparent_k_p16_50_84_scenario_B": t1["mc_B_anywhere_between_readings"]["warm_err_apparent_k_p2.5_16_50_84_97.5"][1:4]}
     (c3.OUT / "task2_comparison.json").write_text(json.dumps(rep, indent=1))
     for cup, r in rows.items():
@@ -102,7 +102,7 @@ def plot(tr, idx, pf, rows) -> None:
         ax.plot(tr, pf[f"app_{cup}"], ".", ms=3, color=col[cup], label="real, calibrated (every frame)")
         ax.plot(tr[idx], r["sim_board_referenced_c"], "ks", ms=5, mfc="none", label="simulated camera, board-referenced")
         ax.plot(tr[idx], r["sim_scene_apparent_t_c"], "k+", ms=7, label="simulated scene (no camera)")
-        ax.plot(tr, pf[f"tw_{cup}"], "-", color="0.6", lw=1, label="probe, linear in time (sim input)")
+        ax.plot(tr, pf[f"tw_{cup}"], "-", color="0.6", lw=1, label="probe, mean of the two readings (sim input)")
         tag = "independent" if r["independent"] else "used in the calibration"
         ax.set_title(f"{cup} ({tag}): real − sim {r['error_real_minus_sim_k_mean']:+.2f} K", fontsize=10)
         ax.set_xlabel("time since first frame [s]")

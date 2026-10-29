@@ -43,8 +43,11 @@ CUP_HEIGHT_M = 0.060
 CUPS = ("cold", "warm", "hot")  # left to right in the image
 CALIBRATION_CUPS = ("cold", "hot")  # task 1: the warm cup is the independent test
 T_AIR_C = 23.9
-# Probe readings, C, before -> after the recording; the reading times were not logged.
+# Probe readings, C, before -> after the recording. The reading times were NOT logged, and the data show the
+# cups moved far less during the 29 s than the readings differ (hot: -1.15 K, not -7 K), so the readings cannot
+# be placed at the first and last frame. Each cup is held at the mean of its two readings (bench/GUIA.md, 5).
 T_PROBE_C = {"hot": (69.3, 62.3), "warm": (36.1, 34.8), "cold": (6.8, 7.9)}
+T_MEAN_C = {cup: (a + b) / 2 for cup, (a, b) in T_PROBE_C.items()}  # hot 65.8, warm 35.45, cold 7.35
 # Column window of each cup in the thermal frame (a search window, not a measurement).
 CUP_WINDOW_COLS = {"cold": (40, 200), "warm": (210, 370), "hot": (390, 560)}
 
@@ -78,17 +81,10 @@ def load_thermal() -> tuple[np.ndarray, np.ndarray, list[str]]:
     return a.astype(np.float64), np.array([frame_time_s(f) for f in fs]), [os.path.basename(f) for f in fs]
 
 
-def probe_t_c(cup: str, t: np.ndarray, fraction: tuple[float, float] = (0.0, 1.0)) -> np.ndarray:
-    """Water temperature per frame, linear in time between the first frame and the last (the stated assumption).
-
-    `fraction` = where the first and last frame sit inside the before -> after interval of the readings
-    (default: the readings are exactly at the first and the last frame).
-    """
-    t = np.asarray(t, np.float64)
-    a, b = T_PROBE_C[cup]
-    s = (t - t[0]) / (t[-1] - t[0])
-    f = fraction[0] + (fraction[1] - fraction[0]) * s
-    return a + (b - a) * f
+def probe_t_c(cup: str, t: np.ndarray) -> np.ndarray:
+    """Water temperature per frame: constant, the mean of the 'before' and 'after' readings (the times of the
+    readings are unknown, see T_PROBE_C)."""
+    return np.full(np.shape(t), T_MEAN_C[cup], np.float64)
 
 
 # -- regions --------------------------------------------------------------------------------------------
