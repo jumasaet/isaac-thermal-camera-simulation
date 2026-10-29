@@ -711,3 +711,131 @@ tercera decimal se mueven algo entre corridas.
 - SSIM y LPIPS mejoran en la tercera o cuarta decimal; la mejora mayor es en la ventana 20–40 °C (fondo y mesa),
   donde se ve el cuenco de viñeteo que ya no está. Lo que falta hasta 1 sigue siendo el reflejo en la mesa, la sala y
   la textura del ruido.
+
+---
+
+# Ampliación 2026-10-29 (noche): tarea 8, el reflejo de los vasos en la mesa
+
+Prototipo **en el banco**, sin tocar `src/` ni escribir ADR: se quería ver primero si funciona. Scripts:
+`task8_gbuffer.py` (Kit, una vez), `refl_common.py`, `task8_reflection.py` (`step0`, `fit`, `final`, `ruler`, `figure`),
+`task8_similarity.py` (conda `vision`, como la tarea 3). Salidas: `out/task8_reflection.{json,png}`,
+`out/refl/{step0,raycast,raycast_ruler}/`.
+
+## Cómo se hace sin Kit y sin tocar `src/`
+
+- **Un solo G-buffer.** La cámara está quieta y las temperaturas son constantes, así que `task8_gbuffer.py` guarda
+  una vez los planos que recibe `run_frame` (2560 × 1920, supersample 4) y la cámara. `refl_common.replay` repite la
+  cadena de cámara de `task2_render.py` sobre ellos, en los mismos instantes: **reproduce los 8 frames de Kit bit a
+  bit** (máx. |Δ| = 0,0 K), a ~5,6 s por frame.
+- **Modelo de la mesa** (docs/physics-model.md §4.1–4.3): `L = ε L_B(T) + ρ L_env + ρ_s(θ) (L_espejo − L_env)`, con
+  `ρ_s(θ) = ⟨R_F(θ; n) · exp(−(4π σ_h cos θ / λ)²)⟩_banda`: Fresnel de un dieléctrico liso (n = 1,5) por la parte
+  coherente de una superficie de rugosidad σ_h (Davies; el criterio de Rayleigh que la §4.3 cita como σ ≪ λ/8, con
+  su cos θ), promediado en la banda con R(λ)·∂B/∂T a 300 K. En esta sala isoterma la parte difusa y la emisión de la
+  mesa valen L_B(T_aire), así que solo el término especular da contraste.
+- **Inyección:** cada píxel de mesa recibe la **temperatura equivalente** que da esa radiancia en la etapa 1
+  (exacta en radiancia de banda, por la inversa de la LUT). Todo lo que viene después (desenfoque, viñeteo, detector,
+  ruido, ISP) es la cadena de siempre: el reflejo pasa por la lente simulada como en la cámara real.
+- **Geometría verificada:** los rayos de cada píxel salen de la matriz de vista y de la calibración con distorsión.
+  Puntos de mesa a 0,12 mm de z = 0 (mediana; p99 0,75 mm), puntos de los vasos a 0,2 mm de sus conos, profundidad del
+  rayo primario a 0,4 mm.
+
+**Hallazgo aparte: `DistanceToCameraSD` llega 50 mm corta.** Kit la mide desde el plano de recorte cercano de la
+cámara (`nave_stage` pone `clippingRange` (0,05, 1e4)), no desde su centro: contra el plano del fondo falta 50,0 mm a
+cualquier ángulo (50,00 en el eje, 50,79 a cos 0,8–0,9; constante, no 0,05/cos). `refl_common` los suma para la
+geometría. La cadena de cámara del banco ha recibido siempre la distancia corta, lo que toca al desenfoque por capas
+(a 0,5 m, W020 ∝ 1/s cambia ~11 %) y a la atmósfera (despreciable a 1 m). **No se ha corregido**: cambiaría todos los
+renders anteriores y merece su propia comprobación.
+
+## Paso 0: prototipo en espacio de imagen (solo para estimar)
+
+La escena simulada volteada sobre la primera fila de mesa de cada columna, con σ_h = 5,3 µm (el ajuste sin lente de
+la propuesta). No es la solución: solo sirve para estimar la ganancia.
+
+| | sin reflejo | **paso 0** |
+|---|---|---|
+| **recorte del vaso caliente (par central): SSIM / LPIPS** | 0,925 / 0,159 | **0,952 / 0,095** |
+| recorte de los vasos (8 pares): SSIM / LPIPS | 0,970 / 0,100 | 0,980 / 0,057 |
+| ρ_near frío / templado / caliente (real 0,35 / 0,40 / 0,40) | 0 / 0 / 0 | 0,38 / 0,38 / 0,39 |
+
+## Paso 2: σ_h ajustada pasando el render por la cámara simulada
+
+Para cada σ_h de una rejilla de 3 a 7 µm (paso 0,25), el reflejo del trazado de rayos (paso 3) entra por la cadena ideal
+(sin ruido) y se mide con la definición de la tarea 4. Se compara con el perfil real en d ≤ 54 / 64 / 45 filas. El
+caliente se corta en 45 por el segundo lóbulo, y ese corte se fijó antes de ajustar nada. n = 1,5 fijo (no se puede
+identificar a 80–85°).
+
+| vaso de prueba | ajustado con | σ_h ajustada | rms del de prueba | su propio mejor σ_h (rms) | rms sin reflejo |
+|---|---|---|---|---|---|
+| frío | templado + caliente | 5,42 µm | **0,038** | 6,05 µm (0,013) | 0,263 |
+| templado | frío + caliente | 5,73 µm | **0,023** | 5,40 µm (0,015) | 0,270 |
+| caliente | frío + templado | 5,73 µm | **0,022** | 5,43 µm (0,014) | 0,326 |
+| **los tres** | | **5,62 µm** | 0,023 | | |
+
+- **La validación cruzada pasa**: cada vaso, predicho con σ_h ajustada en los otros dos, queda a 0,022–0,038 de su
+  perfil. Sin reflejo el rms es 0,26–0,33. El rango de σ_h entre combinaciones es 5,4–5,7 µm.
+- **El frío es el que peor encaja**: quiere 6,05 µm, porque su perfil real cae algo más deprisa. Su referencia de mesa
+  tiene el mayor desacuerdo entre franjas (−20 cuentas, ±0,015 en ρ, tarea 4).
+- **La lente se llevaba ~0,3 µm**: sin pasar por la cámara, el ajuste daba 5,1–5,5 µm, y a través de ella da 5,62.
+- ρ_s con 5,62 µm: 0,002 a 70°, 0,016 a 75°, **0,10 a 80°, 0,22 a 82,5°, 0,43 a 85°**, 0,71 a 87,5°. La mesa solo es
+  espejo a ángulos rasantes.
+
+## Paso 3: rayo especular en NumPy contra las primitivas de la escena
+
+Para cada píxel de mesa (2,26 M a supersample 4): punto en la mesa → rayo reflejado → primer impacto contra los conos
+de los vasos (parte mojada y franja seca), el fondo y la pared trasera (cajas). La mesa se excluye, porque es el espejo.
+`L_espejo` es la radiancia de etapa 1 del objeto alcanzado. Resultado: 1,56 M rayos al fondo, 0,44 M a la pared y
+0,26 M a los vasos. El trazado tarda 1,6 s; la reconstrucción de rayos (6 s) y ρ_s (5,7 s) se calculan una vez para
+una escena quieta. Se usa σ_h = 5,62 µm, y la cadena completa con ruido y semilla 0, como `task2_render`.
+
+| reflejo, definición de la tarea 4 | real | sin reflejo | **trazado de rayos** |
+|---|---|---|---|
+| ρ_near frío / templado / caliente | 0,35 / 0,40 / 0,40 | 0 / 0 / 0 | **0,37 / 0,36 / 0,37** |
+| ρ_mirror frío / templado / caliente | 0,23 / 0,23 / 0,29 | 0 / 0 / 0 | **0,27 / 0,22 / 0,27** |
+| rms del perfil frente a lo real | | 0,26 / 0,27 / 0,33 | **0,027 / 0,019 / 0,017** |
+
+| SSIM / LPIPS (ventana 5–70 °C salvo donde se dice) | sin reflejo | paso 0 | **trazado de rayos** |
+|---|---|---|---|
+| frame completo, 8 pares | 0,987 / 0,057 | 0,991 / 0,041 | **0,992 / 0,038** |
+| recorte de los vasos, 8 pares | 0,970 / 0,100 | 0,980 / 0,057 | **0,984 / 0,048** |
+| **recorte del vaso caliente**, par central | 0,925 / 0,159 | 0,952 / 0,095 | **0,965 / 0,079** |
+| recorte del frío / templado | 0,976 / 0,063 · 0,990 / 0,049 | 0,989 / 0,024 · 0,994 / 0,028 | **0,991 / 0,016 · 0,995 / 0,021** |
+| recorte de los vasos, ventana 20–40 °C | 0,876 / 0,239 | 0,927 / 0,129 | **0,940 / 0,107** |
+
+- **Funciona.** El LPIPS del recorte baja a menos de la mitad (0,100 → 0,048) y el del vaso caliente a la mitad
+  (0,159 → 0,079). Lo que la tarea 3 decía que faltaba era sobre todo esto.
+- Las temperaturas de los vasos no cambian: el reflejo solo toca píxeles de mesa.
+- **Lo que queda en el caliente es casi todo el segundo lóbulo** (`out/task8_reflection.png`, panel del residuo).
+
+## El segundo lóbulo bajo el vaso caliente: acotado, no explicado
+
+Lo que se ha podido establecer:
+1. **Es un reflejo del vaso caliente.** En los 29 s, su contraste dividido por el del vaso se queda en
+   0,285–0,287, y baja un 4,6 % cuando el vaso baja un 3,2 % (el reflejo cercano, −3,4 %). Una mancha caliente en la
+   mesa (por ejemplo agua derramada) se enfriaría a su propio ritmo.
+2. **No es la referencia de mesa.** Las dos franjas de la tarea 4 están planas (15 377 cuentas a izquierda y derecha,
+   a todas las alturas): la regla es invisible en una sala isoterma.
+3. **Está en una cuña concreta**, filas ~320–355 delante del caliente, a ~0,2 m de la cámara sobre la mesa. Tiene un
+   borde inferior izquierdo recto, paralelo a la regla de acero que se ve en la RGB. Su brillo pide ρ ≈ 0,8–0,9, el de
+   un metal, 4–5 veces el del barniz a ese ángulo.
+4. **La regla, donde la pone la calibración, no lo reproduce.** La regla se segmenta en la RGB y se lleva a la
+   térmica por el plano de la mesa, corregida en +11,6 / +1,3 px con los contactos de los vasos frío y templado (que
+   cuadran a ±4 px). Tratada como espejo de acero (ρ 0,9, modo `ruler`), no cambia nada el perfil del caliente: en las
+   filas del lóbulo no llega a sus columnas. **Borda la cuña, no la contiene.**
+5. Una regla de acero **desplazada** unos 25 px perpendicularmente a sí misma sí explica la cuña: el rms del residuo
+   en la zona baja de 4,17 a 2,56 W m⁻² sr⁻¹, con ρ efectivo de 0,79–0,91. Pero ese desplazamiento rígido sacaría su
+   arranque de la base del templado, y la proyección está comprobada a ±4 px en los vasos.
+
+**Conclusión:** lo más probable sigue teniendo que ver con la regla (borde recto paralelo, reflectancia de metal),
+por ejemplo un bisel, una tira mojada o una zona más pulida a lo largo de ella, o la regla algo levantada. Pero con
+estos datos no se puede demostrar. **Lo resolvería** grabar unos segundos con la regla retirada, o una foto cenital
+del montaje.
+
+## Limitaciones
+
+- σ_h es un parámetro efectivo de esta mesa a 80–85°. n = 1,5 se supone, y la forma exp(−(4πσ cos θ/λ)²) es la de una
+  superficie con alturas gaussianas, sin medir.
+- **El reparto especular contradice el ADR 0067**: su w_s = (1 − r)² no depende del ángulo. Hará falta un ADR antes de
+  llevar esto a `src/`.
+- Primitivas analíticas: sirven para esta escena (conos y cajas). Para una escena USD general hace falta el trazado en
+  Warp (`mesh_query_ray`).
+- El paso 0 y el paso 3 usan la temperatura equivalente: es un truco del banco, no la interfaz que tendría `src/`.

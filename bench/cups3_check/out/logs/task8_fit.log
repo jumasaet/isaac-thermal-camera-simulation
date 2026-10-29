@@ -1,0 +1,222 @@
+sigma_h 3.00 um: rms cold 0.1774 warm 0.1446 hot 0.1387  (36 s)
+sigma_h 3.25 um: rms cold 0.1640 warm 0.1303 hot 0.1259  (71 s)
+sigma_h 3.50 um: rms cold 0.1501 warm 0.1155 hot 0.1125  (106 s)
+sigma_h 3.75 um: rms cold 0.1358 warm 0.1005 hot 0.0988  (141 s)
+sigma_h 4.00 um: rms cold 0.1212 warm 0.0854 hot 0.0847  (177 s)
+sigma_h 4.25 um: rms cold 0.1065 warm 0.0703 hot 0.0704  (212 s)
+sigma_h 4.50 um: rms cold 0.0916 warm 0.0553 hot 0.0560  (247 s)
+sigma_h 4.75 um: rms cold 0.0768 warm 0.0407 hot 0.0417  (281 s)
+sigma_h 5.00 um: rms cold 0.0621 warm 0.0269 hot 0.0279  (316 s)
+sigma_h 5.25 um: rms cold 0.0476 warm 0.0159 hot 0.0161  (350 s)
+sigma_h 5.50 um: rms cold 0.0337 warm 0.0146 hot 0.0135  (385 s)
+sigma_h 5.75 um: rms cold 0.0209 warm 0.0241 hot 0.0230  (419 s)
+sigma_h 6.00 um: rms cold 0.0125 warm 0.0363 hot 0.0359  (454 s)
+sigma_h 6.25 um: rms cold 0.0163 warm 0.0489 hot 0.0494  (489 s)
+sigma_h 6.50 um: rms cold 0.0272 warm 0.0614 hot 0.0628  (524 s)
+sigma_h 6.75 um: rms cold 0.0393 warm 0.0734 hot 0.0761  (558 s)
+sigma_h 7.00 um: rms cold 0.0514 warm 0.0851 hot 0.0891  (593 s)
+{
+ "fit_sigma_h": {
+  "n": 1.5,
+  "grid_um": [
+   3.0,
+   3.25,
+   3.5,
+   3.75,
+   4.0,
+   4.25,
+   4.5,
+   4.75,
+   5.0,
+   5.25,
+   5.5,
+   5.75,
+   6.0,
+   6.25,
+   6.5,
+   6.75,
+   7.0
+  ],
+  "chain": "ideal (no noise), one instant",
+  "d_max_rows": {
+   "cold": 54,
+   "warm": 64,
+   "hot": 45
+  },
+  "rms_by_cup": {
+   "cold": [
+    0.1774,
+    0.164,
+    0.1501,
+    0.1358,
+    0.1212,
+    0.1065,
+    0.0916,
+    0.0768,
+    0.0621,
+    0.0476,
+    0.0337,
+    0.0209,
+    0.0125,
+    0.0163,
+    0.0272,
+    0.0393,
+    0.0514
+   ],
+   "warm": [
+    0.1446,
+    0.1303,
+    0.1155,
+    0.1005,
+    0.0854,
+    0.0703,
+    0.0553,
+    0.0407,
+    0.0269,
+    0.0159,
+    0.0146,
+    0.0241,
+    0.0363,
+    0.0489,
+    0.0614,
+    0.0734,
+    0.0851
+   ],
+   "hot": [
+    0.1387,
+    0.1259,
+    0.1125,
+    0.0988,
+    0.0847,
+    0.0704,
+    0.056,
+    0.0417,
+    0.0279,
+    0.0161,
+    0.0135,
+    0.023,
+    0.0359,
+    0.0494,
+    0.0628,
+    0.0761,
+    0.0891
+   ]
+  },
+  "rho_near_by_cup": {
+   "cold": [
+    0.503,
+    0.491,
+    0.48,
+    0.467,
+    0.454,
+    0.441,
+    0.427,
+    0.414,
+    0.4,
+    0.385,
+    0.371,
+    0.357,
+    0.343,
+    0.328,
+    0.314,
+    0.301,
+    0.287
+   ],
+   "warm": [
+    0.497,
+    0.486,
+    0.474,
+    0.461,
+    0.448,
+    0.434,
+    0.421,
+    0.407,
+    0.393,
+    0.378,
+    0.364,
+    0.35,
+    0.335,
+    0.321,
+    0.307,
+    0.293,
+    0.279
+   ],
+   "hot": [
+    0.507,
+    0.496,
+    0.484,
+    0.472,
+    0.459,
+    0.446,
+    0.432,
+    0.419,
+    0.405,
+    0.39,
+    0.376,
+    0.362,
+    0.348,
+    0.334,
+    0.32,
+    0.306,
+    0.292
+   ]
+  },
+  "leave_one_out": {
+   "cold": {
+    "train": [
+     "warm",
+     "hot"
+    ],
+    "sigma_h_fit_um": 5.42,
+    "test_rms_at_fit": 0.0383,
+    "test_own_best_sigma_h_um": 6.05,
+    "test_own_best_rms": 0.0125,
+    "test_rms_without_reflection": 0.2627
+   },
+   "warm": {
+    "train": [
+     "cold",
+     "hot"
+    ],
+    "sigma_h_fit_um": 5.73,
+    "test_rms_at_fit": 0.0234,
+    "test_own_best_sigma_h_um": 5.4,
+    "test_own_best_rms": 0.0146,
+    "test_rms_without_reflection": 0.2702
+   },
+   "hot": {
+    "train": [
+     "cold",
+     "warm"
+    ],
+    "sigma_h_fit_um": 5.73,
+    "test_rms_at_fit": 0.0223,
+    "test_own_best_sigma_h_um": 5.43,
+    "test_own_best_rms": 0.0135,
+    "test_rms_without_reflection": 0.3263
+   }
+  },
+  "all_cups": {
+   "sigma_h_um": 5.62,
+   "rms": 0.0226
+  },
+  "mirror_hits_table_pixels": {
+   "BackWall": 441641,
+   "Background": 1557985,
+   "ColdDry": 18172,
+   "ColdWet": 64807,
+   "HotDry": 18461,
+   "HotWet": 64933,
+   "WarmDry": 20469,
+   "WarmWet": 71677
+  },
+  "rho_s_by_incidence_deg_at_fit": {
+   "70": 0.0019,
+   "75": 0.0158,
+   "80": 0.1014,
+   "82.5": 0.2226,
+   "85": 0.4296,
+   "87.5": 0.7123
+  }
+ }
+}
