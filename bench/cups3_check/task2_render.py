@@ -42,7 +42,7 @@ import numpy as np  # noqa: E402
 import cups3_common as c3  # noqa: E402
 
 SENSOR = c3.SENSOR_YAML
-OUT = c3.OUT / "sim"
+OUT = c3.OUT / c3.SIM_DIR
 OUT.mkdir(parents=True, exist_ok=True)
 GEO = json.loads((c3.OUT / "scene_geometry.json").read_text())
 POSE = GEO["image_pose"]

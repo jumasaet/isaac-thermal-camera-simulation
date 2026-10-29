@@ -26,6 +26,11 @@ OUT = HERE / "out"
 FIG = HERE / "figures"
 DATA = REPO / "thermal_specs" / "three_cups_experiments" / "sync_cups"
 SENSOR_YAML = REPO / "bench" / "camera_check" / "cellplus_ctc006_lwir_cups.yaml"
+# A variant run (task 7: another sensor YAML) renders into out/<CUPS3_SIM_DIR> and task2_compare writes
+# task2_comparison_<CUPS3_SIM_DIR>.{json,png}; unset, everything is as before (out/sim, task2_comparison.*).
+SENSOR_YAML = pathlib.Path(os.environ.get("CUPS3_SENSOR_YAML", SENSOR_YAML))
+SIM_DIR = os.environ.get("CUPS3_SIM_DIR", "sim")
+COMPARISON = "task2_comparison" if SIM_DIR == "sim" else f"task2_comparison_{SIM_DIR}"
 sys.path.insert(0, str(REPO / "bench" / "cups_check"))
 import cups_common as cc  # noqa: E402
 

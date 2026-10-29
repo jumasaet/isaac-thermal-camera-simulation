@@ -1,0 +1,319 @@
+{
+ "instants_s": [
+  0.0,
+  1.292,
+  4.096,
+  8.498,
+  13.226,
+  22.314,
+  25.595,
+  28.8
+ ],
+ "real_frame_index": [
+  0,
+  13,
+  27,
+  40,
+  53,
+  66,
+  80,
+  93
+ ],
+ "sim_regions": {
+  "cold": {
+   "sign": -1,
+   "peak_rc": [
+    248,
+    117
+   ],
+   "peak_contrast_counts": 11.6,
+   "plateau_rows": [
+    225,
+    272
+   ],
+   "half_width_cols": [
+    83,
+    148
+   ],
+   "water": [
+    227,
+    272,
+    99,
+    133
+   ]
+  },
+  "warm": {
+   "sign": 1,
+   "peak_rc": [
+    225,
+    285
+   ],
+   "peak_contrast_counts": 9.2,
+   "plateau_rows": [
+    206,
+    269
+   ],
+   "half_width_cols": [
+    256,
+    329
+   ],
+   "water": [
+    208,
+    269,
+    274,
+    312
+   ]
+  },
+  "hot": {
+   "sign": 1,
+   "peak_rc": [
+    240,
+    469
+   ],
+   "peak_contrast_counts": 38.0,
+   "plateau_rows": [
+    215,
+    263
+   ],
+   "half_width_cols": [
+    437,
+    504
+   ],
+   "water": [
+    217,
+    263,
+    454,
+    488
+   ]
+  }
+ },
+ "cups": {
+  "cold": {
+   "independent": false,
+   "probe_c": [
+    7.35,
+    7.35,
+    7.35,
+    7.35,
+    7.35,
+    7.35,
+    7.35,
+    7.35
+   ],
+   "real_c": [
+    8.704,
+    8.943,
+    9.035,
+    9.042,
+    9.073,
+    9.136,
+    9.115,
+    9.138
+   ],
+   "sim_board_referenced_c": [
+    8.636,
+    8.638,
+    8.642,
+    8.636,
+    8.631,
+    8.638,
+    8.638,
+    8.62
+   ],
+   "sim_raw_apparent_t_c": [
+    8.647,
+    8.645,
+    8.64,
+    8.637,
+    8.632,
+    8.627,
+    8.641,
+    8.629
+   ],
+   "sim_scene_apparent_t_c": [
+    8.612,
+    8.612,
+    8.612,
+    8.612,
+    8.612,
+    8.612,
+    8.612,
+    8.612
+   ],
+   "expected_from_probe_c": [
+    8.604,
+    8.604,
+    8.604,
+    8.604,
+    8.604,
+    8.604,
+    8.604,
+    8.604
+   ],
+   "error_real_minus_sim_k_mean": 0.388,
+   "error_real_minus_sim_k_first_last": [
+    0.068,
+    0.517
+   ],
+   "error_real_minus_sim_raw_k_mean": 0.386,
+   "error_real_minus_sim_scene_k_mean": 0.411,
+   "sim_camera_minus_scene_k_mean": 0.023,
+   "sim_scene_minus_expected_k_max_abs": 0.008
+  },
+  "warm": {
+   "independent": true,
+   "probe_c": [
+    35.45,
+    35.45,
+    35.45,
+    35.45,
+    35.45,
+    35.45,
+    35.45,
+    35.45
+   ],
+   "real_c": [
+    34.323,
+    34.301,
+    34.25,
+    34.234,
+    34.218,
+    34.16,
+    34.139,
+    34.155
+   ],
+   "sim_board_referenced_c": [
+    34.639,
+    34.641,
+    34.639,
+    34.64,
+    34.642,
+    34.644,
+    34.636,
+    34.637
+   ],
+   "sim_raw_apparent_t_c": [
+    34.645,
+    34.644,
+    34.642,
+    34.642,
+    34.639,
+    34.639,
+    34.638,
+    34.636
+   ],
+   "sim_scene_apparent_t_c": [
+    34.674,
+    34.674,
+    34.674,
+    34.674,
+    34.674,
+    34.674,
+    34.674,
+    34.674
+   ],
+   "expected_from_probe_c": [
+    34.679,
+    34.679,
+    34.679,
+    34.679,
+    34.679,
+    34.679,
+    34.679,
+    34.679
+   ],
+   "error_real_minus_sim_k_mean": -0.417,
+   "error_real_minus_sim_k_first_last": [
+    -0.316,
+    -0.481
+   ],
+   "error_real_minus_sim_raw_k_mean": -0.418,
+   "error_real_minus_sim_scene_k_mean": -0.451,
+   "sim_camera_minus_scene_k_mean": -0.034,
+   "sim_scene_minus_expected_k_max_abs": 0.005
+  },
+  "hot": {
+   "independent": false,
+   "probe_c": [
+    65.8,
+    65.8,
+    65.8,
+    65.8,
+    65.8,
+    65.8,
+    65.8,
+    65.8
+   ],
+   "real_c": [
+    64.075,
+    63.884,
+    63.81,
+    63.616,
+    63.451,
+    63.121,
+    62.977,
+    62.975
+   ],
+   "sim_board_referenced_c": [
+    63.208,
+    63.216,
+    63.206,
+    63.211,
+    63.207,
+    63.218,
+    63.21,
+    63.212
+   ],
+   "sim_raw_apparent_t_c": [
+    63.213,
+    63.213,
+    63.211,
+    63.212,
+    63.205,
+    63.212,
+    63.212,
+    63.205
+   ],
+   "sim_scene_apparent_t_c": [
+    63.245,
+    63.245,
+    63.245,
+    63.245,
+    63.245,
+    63.245,
+    63.245,
+    63.245
+   ],
+   "expected_from_probe_c": [
+    63.262,
+    63.262,
+    63.262,
+    63.262,
+    63.262,
+    63.262,
+    63.262,
+    63.262
+   ],
+   "error_real_minus_sim_k_mean": 0.278,
+   "error_real_minus_sim_k_first_last": [
+    0.867,
+    -0.237
+   ],
+   "error_real_minus_sim_raw_k_mean": 0.278,
+   "error_real_minus_sim_scene_k_mean": 0.244,
+   "sim_camera_minus_scene_k_mean": -0.034,
+   "sim_scene_minus_expected_k_max_abs": 0.017
+  }
+ },
+ "sim_board_raw_minus_scene_k": -0.0,
+ "warm_uncertainty_from_task1_apparent_k_p16_50_84": [
+  -0.987,
+  -0.481,
+  0.019
+ ],
+ "warm_uncertainty_from_task1_apparent_k_p16_50_84_scenario_B": [
+  -1.219,
+  -0.472,
+  0.275
+ ]
+}

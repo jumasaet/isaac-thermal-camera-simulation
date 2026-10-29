@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# run_all.sh -- the three-cup experiment end to end: tasks 0 -> 5, in order, one log per task.
+# run_all.sh -- the three-cup experiment end to end: tasks 0 -> 7, in order, one log per task.
+# Tasks 6 (noise) and 7 (housing, engine-free half) read the data and task 1's output only; task 7's Kit
+# re-render with the new YAML is a separate command (RESULTADOS.md, task 7).
 #
 #     bash bench/cups3_check/run_all.sh            # everything (about 3 min)
 #     FROM=3 bash bench/cups3_check/run_all.sh     # start at task 3 (the earlier outputs must exist)
@@ -56,4 +58,6 @@ step 2 task2_compare     "${ISAAC[@]}" $D/task2_compare.py
 step 3 task3_similarity  env PYTHONPATH="$PYLIBS" "$VISION_PY" $D/task3_similarity.py
 step 4 task4_reflection  "${ISAAC[@]}" $D/task4_reflection.py
 step 5 task5_figures     "${ISAAC[@]}" $D/task5_figures.py
+step 6 task6_noise       "${ISAAC[@]}" $D/task6_noise.py
+step 7 task7_housing     "${ISAAC[@]}" $D/task7_housing.py
 echo "done: results in $D/out/ (json, png), presentation sheets in $D/figures/"

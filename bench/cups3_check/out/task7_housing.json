@@ -1,0 +1,77 @@
+{
+ "scene": "uniform eps = 1 at 23.9 C, 1 m, noiseless, factory flat field + M9 chain",
+ "t_air_k": 297.04999999999995,
+ "rows": [
+  {
+   "label": "as cellplus_ctc006_lwir_cups.yaml (Boson housing numbers)",
+   "yaml": "cellplus_ctc006_lwir_cups.yaml",
+   "t_housing_k": 301.05,
+   "t_housing_cal_k": 300.0,
+   "offset_median_k": 0.425,
+   "offset_centre_k": 0.096,
+   "offset_corner_k": 1.228,
+   "bowl_peak_to_peak_k": 1.226
+  },
+  {
+   "label": "housing_self_heating_k 0 (housing = air)",
+   "yaml": "cellplus_ctc006_lwir_cups.yaml",
+   "t_housing_k": 297.05,
+   "t_housing_cal_k": 300.0,
+   "offset_median_k": -1.182,
+   "offset_centre_k": -0.265,
+   "offset_corner_k": -3.463,
+   "bowl_peak_to_peak_k": 3.469
+  },
+  {
+   "label": "transmittance 1.0 (no lens emission)",
+   "yaml": "cellplus_ctc006_lwir_cups.yaml",
+   "t_housing_k": 301.05,
+   "t_housing_cal_k": 300.0,
+   "offset_median_k": 0.305,
+   "offset_centre_k": 0.002,
+   "offset_corner_k": 1.044,
+   "bowl_peak_to_peak_k": 1.129
+  },
+  {
+   "label": "calibration at the steady housing (T_air + 4 K)",
+   "yaml": "cellplus_ctc006_lwir_cups.yaml",
+   "t_housing_k": 301.05,
+   "t_housing_cal_k": 301.05,
+   "offset_median_k": -0.0,
+   "offset_centre_k": -0.0,
+   "offset_corner_k": -0.0,
+   "bowl_peak_to_peak_k": 0.016
+  },
+  {
+   "label": "self-heating 0 + calibration at T_air",
+   "yaml": "cellplus_ctc006_lwir_cups.yaml",
+   "t_housing_k": 297.05,
+   "t_housing_cal_k": 297.05,
+   "offset_median_k": -0.0,
+   "offset_centre_k": -0.0,
+   "offset_corner_k": -0.0,
+   "bowl_peak_to_peak_k": 0.0
+  },
+  {
+   "label": "fixed housing at 300 K",
+   "yaml": "cellplus_ctc006_lwir_cups.yaml",
+   "t_housing_k": 300.0,
+   "t_housing_cal_k": 300.0,
+   "offset_median_k": -0.0,
+   "offset_centre_k": -0.0,
+   "offset_corner_k": -0.0,
+   "bowl_peak_to_peak_k": 0.011
+  },
+  {
+   "label": "PROPOSED cellplus_ctc006_lwir_cups3.yaml (housing_temp_k 301.05)",
+   "yaml": "cellplus_ctc006_lwir_cups3.yaml",
+   "t_housing_k": 301.05,
+   "t_housing_cal_k": 301.05,
+   "offset_median_k": -0.0,
+   "offset_centre_k": -0.0,
+   "offset_corner_k": -0.0,
+   "bowl_peak_to_peak_k": 0.016
+  }
+ ],
+ "apparent_k_per_k_of_housing_mismatch": 0.4017
+}

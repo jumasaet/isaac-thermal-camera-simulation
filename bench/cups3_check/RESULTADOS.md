@@ -12,6 +12,8 @@ comentario corregido en `bench/camera_check/cellplus_ctc006_lwir_cups.yaml` (la 
 | 3 | `task3_similarity.py` | conda `vision` + lpips 0.1.4 y scikit-image 0.24 (`pip install --target`, ver docstring) | `task3_similarity.{json,png}` |
 | 4 | `task4_reflection.py` | Isaac | `task4_reflection.{json,png}` |
 | 5 | `task5_figures.py` | Isaac | `figures/cups3_sheet_{inferno,gray}.png`, `figures/cups3_results_table.png` |
+| 6 | `task6_noise.py` (29-oct.) | Isaac | `task6_noise.{json,png}`: ruido 3D a `denoise: 80` |
+| 7 | `task7_housing.py` (29-oct.; sin Kit) + 2a/2b con `CUPS3_SENSOR_YAML`, `CUPS3_SIM_DIR` | Isaac | `task7_housing.json`, `sim_cups3yaml/`, `task2_comparison_sim_cups3yaml.{json,png}` |
 
 `cups3_common.py` reúne lo compartido: lectura de los datos, horas, temperaturas por frame, regiones de los vasos,
 superficie de referencia del fondo y radiancia de banda. La radiometría y la geometría LiDAR→térmica vienen de
@@ -70,8 +72,8 @@ Los valores «antes» de las secciones de abajo se han sustituido por los nuevos
 
 | | |
 |---|---|
-| térmica | 94 frames `int16` (480, 640), cuentas crudas de 14 bits, más alto = más caliente, `invert_raw: true` |
-| RGB | 93 PNG 1280 × 960, ya con balance de blancos (falta la del set 000091) |
+| térmica | 94 frames `int16` (480, 640), cuentas crudas de 14 bits, más alto = más caliente, `invert_raw: true`. **Solo 92 son distintos**: los sets 80/81 y 88/89 son el mismo frame de cámara, y faltan los sets 59 y 71 (`bench/data_check/RESULTADOS.md`) |
+| RGB | 93 PNG 1280 × 960, ya con balance de blancos (faltan las de los sets 59, 71 y 91; 88 = 89) |
 | LiDAR | 96 nubes Livox |
 | duración | 28,80 s entre el primer y el último frame; intervalos de 0,014 a 5,59 s |
 | hora | 2026-10-27 07:46:59 UTC (16:46 en Corea) |
@@ -408,9 +410,12 @@ vaso, con `b` la fila de contacto con la mesa (su borde inferior medido) y las c
 2. **Fondo y aire.** Que el fondo esté a 23,9 °C pesa ±0,47 K por cada 0,5 K en el resultado del templado. No hay
    cuerpo negro de referencia.
 3. **ε del papel no medida.** No afecta a la temperatura de superficie, pero sí a la aparente.
-4. **`denoise: 80`.** El ruido del YAML es de denoise 40. No se ha vuelto a medir; no hacía falta para estas tareas.
-5. **El simulador no tiene** el reflejo en la mesa, la sala detrás del fondo, la columna de vapor ni la regla. Su
-   cámara tiene un offset de carcasa (+0,28 K) y un cuenco de viñeteo con parámetros PENDIENTES (del Boson).
+4. **`denoise: 80`.** El ruido del YAML es de denoise 40. **Medido el 29-oct. (tarea 6)**: cambia poco, y los valores
+   están en `bench/camera_check/cellplus_ctc006_lwir_cups3.yaml`. Las tareas 1–5 siguen con el YAML anterior.
+5. **El simulador no tiene** el reflejo en la mesa, la sala detrás del fondo, la columna de vapor ni la regla. Con el
+   YAML anterior, su cámara tiene un offset de carcasa (+0,28 K) y un cuenco de viñeteo. **Los dos salen de un mismo
+   desacuerdo de temperaturas de carcasa y desaparecen con el YAML nuevo (tarea 7)**; los valores de la Boson siguen
+   PENDIENTES.
 6. **Geometría.** El cabeceo de la cadena LiDAR→térmica falla ~2°, y se corrige con las siluetas. La altura de la
    cámara depende solo del LiDAR (3,29 cm). La guiñada de 6° del fondo no está en la escena.
 
@@ -536,3 +541,146 @@ tres vasos.
   cuerpos modelados) y renderiza una cámara exterior diagonal y elevada.
 - `make_world.py` dibuja con las funciones de `make_presentation.py` el campo de visión real (con distorsión) de
   cada cámara, en el plano de los vasos (0,51 m), y etiqueta cada vaso con sus lecturas de sonda.
+
+---
+
+# Ampliación 2026-10-29: ruido a `denoise: 80` y desfase de carcasa
+
+El YAML nuevo es **`bench/camera_check/cellplus_ctc006_lwir_cups3.yaml`**: la copia de `cellplus_ctc006_lwir_cups.yaml`
+con tres cambios, marcados `[DATA cups3]`. El anterior no se ha tocado, y las tareas 1 a 5 lo siguen usando.
+
+| campo | antes (`..._cups.yaml`) | **ahora (`..._cups3.yaml`)** | de dónde |
+|---|---|---|---|
+| `noise.ratios_3d` vh / v / h | 1,027 / 0,413 / 0,201 | **1,058 / 0,523 / 0,228** | tarea 6 |
+| `noise.ratios_3d` tv / th / t | 0,215 / 0,280 / 0,073 | **0,201 / 0,280 / 0,082** | tarea 6 |
+| `calibration.radiometric.netd_k` | 0,0263 K (denoise 40) | **0,0262 K** (denoise 80) | tarea 6 + SITF de la tarea 1 |
+| `calibration.radiometric.sitf_dn_per_k` | 52,91 (`bench/cups_check`) | **48,25** (tarea 1 de aquí) | tarea 1 |
+| `optics.housing_temp_k` | (sin poner → calibración a 300 K) | **301,05 K** | tarea 7 |
+| `extensions.capture_denoise` | 40 | **80** | `thermal_info.json` |
+
+## Tarea 6: ruido 3D a `denoise: 80` (`task6_noise.py`)
+
+**Datos y método.** Los mismos estimadores que `bench/cups_check/task4_noise.py` (importados de allí), para que los
+números se comparen uno a uno con los de denoise 40. Cambian tres cosas, por cómo es esta grabación:
+- **92 frames distintos**: se quitan los dos repetidos, porque un par idéntico daría ruido 0;
+- **región**: filas 10–150 × columnas 160–420, el fondo por encima de los vasos. Fuera quedan:
+  - el penacho del vaso caliente (columnas ≥ 440, donde la σ temporal sube a 4–7 cuentas);
+  - el borde izquierdo, donde ya se ve la sala tras el fondo;
+  - al menos 50 filas alrededor de cada borde de vaso;
+- **sin FFC** en los 29 s (ningún salto de nivel > 8 cuentas; el mayor es 2,4), así que hay un solo patrón fijo.
+
+**Dos correcciones al método de denoise 40**, porque esta grabación es continua y aquella eran sets sueltos:
+1. **El ruido temporal sale de pares de 1,5 a 5 s.** La σ de un par sigue creciendo con la separación:
+
+   | separación | 0–0,2 s | 0,2–0,5 | 0,5–1,5 | 1,5–3 | 3–5 | 5–8 | 8–12 | 12–18 | 18–24 | 24–30 s |
+   |---|---|---|---|---|---|---|---|---|---|---|
+   | σ_tvh del par (cuentas) | 0,95 | 1,12 | 1,21 | 1,25 | 1,27 | 1,30 | 1,33 | 1,36 | 1,40 | 1,41 |
+
+   - Hasta ~1,5 s es la memoria del denoise.
+   - Después, la σ crece igual al principio, en medio y al final de la grabación (1,27 / 1,25 / 1,29 en tramos de
+     10 s). Por tanto no es que el ruido cambie: **es el patrón fijo que deriva**. El simulador lo modela aparte
+     (`fpn_drift_tau_s`).
+   - Con todos los pares ≥ 1,5 s, como en denoise 40, sale 1,341: es el valor comparable uno a uno.
+2. **El residuo temporal de la imagen media se mide**, como la mitad de la diferencia entre las medias de las dos
+   mitades de la grabación. La regla de denoise 40 («grupos separados > 1,5 s») da aquí 3 grupos y restaría unas
+   6 veces de más: con ella, vh saldría 1,13 en lugar de 1,34.
+
+**Resultado** (cuentas):
+
+| | tvh | tv | th | t | vh | v | h | NETD |
+|---|---|---|---|---|---|---|---|---|
+| denoise 40 (`bench/cups_check`) | 1,391 | 0,299 | 0,390 | 0,101 | 1,429 | 0,575 | 0,280 | 26,3 mK |
+| **denoise 80 (aquí)** | **1,263** | 0,254 | 0,354 | 0,103 | **1,337** | 0,661 | 0,288 | **26,2 mK** |
+| cociente | 0,91 (0,96 con el estimador de denoise 40) | 0,85 | 0,91 | 1,02 | 0,94 | 1,15 | 1,03 | |
+
+- **Pasar de denoise 40 a 80 apenas cambia el ruido de salida.** El temporal baja un 4–9 %, y el patrón fijo queda
+  igual dentro de un ±15 %.
+- **La memoria y la correlación espacial son las mismas.** Correlación entre frames: r = 0,44 por debajo de 0,2 s y
+  0,22 entre 0,2 y 0,5 s (antes 0,485 y 0,28). Correlación con el vecino: 0,38 en horizontal y 0,30 en vertical
+  (antes 0,374 y 0,297). El filtro no se nota más fuerte.
+- **Las colas siguen igual de pesadas.** Más allá de 5 σ hay 3,2·10⁻⁴ de las muestras (una gaussiana daría
+  5,7·10⁻⁷); el exceso de curtosis es 2,0. El 0,44 % de los píxeles tiene más del doble de la σ temporal mediana.
+- **NETD 26,2 mK** con el SITF de esta calibración (48,25 cuentas/K). Con el SITF de la sesión anterior (52,91) serían
+  23,9 mK: la mayor parte de la diferencia de SITF es de calibración, no de ruido.
+- **Deriva del patrón.** La varianza de un par crece 0,0176 cuentas²/s hasta 30 s, y el patrón de las dos mitades
+  (separadas ~14 s) se correlaciona r = 0,887. Si derivase todo el vh, sería τ ≈ 100 s, compatible con los 120 s
+  del YAML. En 29 s no se puede fijar, así que `fpn_drift_tau_s` se queda como estaba.
+- **Control en el simulador** (`sim_control` en `task6_noise.py`, sin Kit, escena uniforme a 23,9 °C):
+  - con el YAML nuevo, la cámara simulada da σ temporal de 1,252 cuentas, frente a 1,263 en la real (−1 %);
+  - con el anterior daba 1,259, frente a 1,391 a denoise 40 (−9 %).
+  - El simulador convierte el NETD a cuentas con su propia ganancia (~47,8 cuentas/K), que se parece más al SITF de
+    los tres vasos.
+
+**No representable** (como en denoise 40, hueco del esquema): la memoria en el tiempo, la correlación espacial y las
+colas. El `tvh` simulado es blanco en el tiempo y en el espacio.
+
+**Datos con tapa.** `thermal_specs/three_cups_experiments/covered_thermal/` es una grabación con la cámara tapada:
+354 s a 30 Hz, `denoise: 80`, sin escena. No se ha usado, porque esta tarea pedía solo la grabación sincronizada. Con
+ella se separarían el patrón fijo y la textura del fondo, y se medirían la deriva y las FFC.
+
+## Tarea 7: el desfase de carcasa (`task7_housing.py`)
+
+**Lo primero que se pidió: ¿traen los datos temperaturas internas de la cámara?** No:
+- `sync_cups/thermal/thermal_info.json` solo tiene puerto, firmware, `t_list`, `denoise` y formato;
+- su `thermal_sync_events.csv` solo trae 19 avisos de frames perdidos.
+- La cabecera de cada frame lleva temperatura de placa y de obturador (la grabadora la lee para validar el frame),
+  pero no la guarda.
+- Los únicos valores «board / shutter» de los logs (en `lab`, `cups` y `covered_thermal`) salen de cabeceras
+  desalineadas y son cuentas de píxel / 100. La prueba está en `bench/data_check/RESULTADOS.md`, §3.
+
+**No hay telemetría con la que corregir los parámetros de la Boson**, y no se ha inventado ninguna.
+
+**De dónde sale el +0,28 K.** Escena uniforme de ε = 1 a 23,9 °C, a 1 m, sin ruido, por la misma cadena de cámara
+que `task2_render.py`. Una cámara perfecta leería 0 K. Cada fila cambia una sola cosa:
+
+| variante | T carcasa | T calibración | desfase mediano | centro | esquina | cuenco (pico a pico) |
+|---|---|---|---|---|---|---|
+| YAML anterior (Boson) | 301,05 K | 300 K | **+0,425 K** | +0,096 | +1,228 | 1,226 K |
+| sin autocalentamiento (carcasa = aire) | 297,05 | 300 | −1,182 | −0,265 | −3,463 | 3,469 |
+| lente sin emisión (τ = 1) | 301,05 | 300 | +0,305 | +0,002 | +1,044 | 1,129 |
+| calibración a la carcasa estable | 301,05 | 301,05 | **0,000** | 0,000 | 0,000 | 0,016 |
+| sin autocalentamiento y calibración al aire | 297,05 | 297,05 | 0,000 | 0,000 | 0,000 | 0,000 |
+| carcasa fija a 300 K | 300 | 300 | 0,000 | 0,000 | 0,000 | 0,011 |
+| **YAML nuevo** (`housing_temp_k: 301.05`) | 301,05 | 301,05 | **0,000** | 0,000 | 0,000 | 0,016 |
+
+- **El desfase no es ningún número de la Boson por sí solo.** Es el desacuerdo entre la temperatura a la que trabaja
+  la carcasa y la que supone la inversión radiométrica:
+  - en modo `coupled` la carcasa se asienta en T_aire + `housing_self_heating_k` = 23,9 + 4,0 °C = 301,05 K;
+  - sin `housing_temp_k`, `PipelineConfig` calibra a 300 K;
+  - esos 1,05 K dan +0,40 K de desfase mediano por kelvin de desacuerdo.
+- **El mismo desacuerdo es el cuenco de viñeteo** (0,1–0,8 W m⁻² sr⁻¹, tarea 2): el término de carcasa crece hacia
+  las esquinas más deprisa que el cos⁴ de la escena.
+- Cuando las dos temperaturas coinciden, el desfase es 0 con cualquier autocalentamiento y cualquier transmitancia.
+- **Por qué 301,05 K y no otro número.** La tarea 1 calibró la cámara real en su sitio, en esta sala y a la
+  temperatura que tuviera su carcasa. `housing_temp_k: 301.05` le dice lo mismo a la simulada.
+  - En modo `coupled` ese campo solo fija la temperatura de calibración (`PipelineConfig.from_sensor`); la carcasa
+    sigue el nodo acoplado.
+  - Está **ligado a los 23,9 °C de esta sala**. Otra sala necesita su valor, o mejor, las temperaturas de cabecera
+    registradas.
+  - `housing_self_heating_k`, `housing_tau_s` y `transmittance` siguen PENDIENTES (Boson). Con la calibración en su
+    sitio, solo afectarían a la deriva, que en 29 s y en una sala isoterma es nula.
+
+**Comprobación en Kit**: tareas 2a y 2b re-renderizadas con el YAML nuevo, en `out/sim_cups3yaml/` (no pisa
+`out/sim/`). El YAML nuevo también lleva el ruido de la tarea 6, que se re-muestrea en cada corrida.
+
+```bash
+CUPS3_SENSOR_YAML=$PWD/bench/camera_check/cellplus_ctc006_lwir_cups3.yaml CUPS3_SIM_DIR=sim_cups3yaml \
+  env -u LD_LIBRARY_PATH -u PYTHONPATH -u AMENT_PREFIX_PATH -u ROS_DISTRO -u ROS_VERSION -u ROS_PYTHON_VERSION \
+  CUPS_MIN_DISTANCE_M=0.3 /home/jumasaet/isaac_sim/python.sh bench/cups3_check/task2_render.py
+# y lo mismo con task2_compare.py
+```
+
+| | YAML anterior | **YAML nuevo** |
+|---|---|---|
+| fondo: cámara simulada − escena | **+0,282 K** | **−0,000 K** (−0,006 a +0,006 en los 8 instantes) |
+| **error real − sim del templado** (independiente), referido al fondo | −0,428 K | **−0,417 K** |
+| ídem, sin referir al fondo | −0,513 K | −0,418 K |
+| ídem, primer / último instante | −0,326 / −0,491 | −0,316 / −0,481 |
+| error del frío / del caliente (residuos de calibración) | +0,398 / +0,282 K | +0,388 / +0,278 K |
+| cámara − escena en el templado (desenfoque) | −0,024 K | −0,034 K |
+
+- **El desfase desaparece y el error del templado no empeora**: mejora 0,011 K, muy por debajo de su incertidumbre
+  de ±0,5 K.
+- **Referir al fondo deja de hacer falta.** Sin referir, el error del templado pasa de −0,513 a −0,418 K y coincide
+  con el referido: ya no hay cuenco que quitar.
+- El −0,42 K que queda es el de la prueba de la tarea 1 (−0,46 K en aparente), no de la cámara simulada.

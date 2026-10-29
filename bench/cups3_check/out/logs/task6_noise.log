@@ -1,0 +1,177 @@
+{
+ "data": "/home/jumasaet/isaac-thermal-camera-simulation/thermal_specs/three_cups_experiments/sync_cups/thermal",
+ "denoise": 80,
+ "region_rows_cols": [
+  10,
+  150,
+  160,
+  420
+ ],
+ "region_pixels": 36400,
+ "frames_in_folder": 94,
+ "duplicate_frames_dropped": [
+  "000081_1793087245.022462969.npy",
+  "000089_1793087246.515039064.npy"
+ ],
+ "frames_used": 92,
+ "span_s": 28.8,
+ "max_level_step_counts": 2.43,
+ "pairs_1p5_to_5s": 857,
+ "pairs_le_0p35s": 155,
+ "sigma_tvh_every_pair_ge_1p5s_like_task4": 1.341,
+ "pattern_drift": {
+  "pair_variance_slope_counts2_per_s": 0.0176,
+  "pair_variance_intercept_counts2": 1.568,
+  "vh_map_correlation_between_halves": 0.887,
+  "tau_s_if_the_whole_vh_drifts": 101.0
+ },
+ "sigma_counts": {
+  "tvh": 1.263,
+  "tv": 0.254,
+  "th": 0.354,
+  "t": 0.103,
+  "vh": 1.337,
+  "v": 0.661,
+  "h": 0.288
+ },
+ "sigma_counts_denoise40": {
+  "tvh": 1.391,
+  "tv": 0.299,
+  "th": 0.39,
+  "t": 0.101,
+  "vh": 1.429,
+  "v": 0.575,
+  "h": 0.28
+ },
+ "new_over_old": {
+  "tvh": 0.908,
+  "tv": 0.849,
+  "th": 0.908,
+  "t": 1.023,
+  "vh": 0.936,
+  "v": 1.15,
+  "h": 1.028
+ },
+ "ratios_3d_proposed": {
+  "tvh": 1.0,
+  "tv": 0.201,
+  "th": 0.28,
+  "t": 0.082,
+  "vh": 1.058,
+  "v": 0.523,
+  "h": 0.228
+ },
+ "ratios_3d_denoise40": {
+  "tvh": 1.0,
+  "tv": 0.215,
+  "th": 0.28,
+  "t": 0.073,
+  "vh": 1.027,
+  "v": 0.413,
+  "h": 0.201
+ },
+ "denoise_memory_sigma_vs_dt": {
+  "0-0.2s": {
+   "pairs": 94,
+   "sigma_counts": 0.949,
+   "frame_correlation": 0.436
+  },
+  "0.2-0.5s": {
+   "pairs": 64,
+   "sigma_counts": 1.115,
+   "frame_correlation": 0.221
+  },
+  "0.5-1.5s": {
+   "pairs": 13,
+   "sigma_counts": 1.211,
+   "frame_correlation": 0.082
+  },
+  "1.5-3s": {
+   "pairs": 392,
+   "sigma_counts": 1.247,
+   "frame_correlation": 0.025
+  },
+  "3-5s": {
+   "pairs": 465,
+   "sigma_counts": 1.273,
+   "frame_correlation": -0.016
+  },
+  "5-8s": {
+   "pairs": 450,
+   "sigma_counts": 1.301,
+   "frame_correlation": -0.06
+  },
+  "8-12s": {
+   "pairs": 567,
+   "sigma_counts": 1.33,
+   "frame_correlation": -0.109
+  },
+  "12-18s": {
+   "pairs": 689,
+   "sigma_counts": 1.36,
+   "frame_correlation": -0.158
+  },
+  "18-24s": {
+   "pairs": 770,
+   "sigma_counts": 1.396,
+   "frame_correlation": -0.22
+  },
+  "24-30s": {
+   "pairs": 356,
+   "sigma_counts": 1.406,
+   "frame_correlation": -0.239
+  }
+ },
+ "denoise40_memory_r": {
+  "0-0.2s": 0.485,
+  "0.2-0.5s": 0.28
+ },
+ "temporal_residual_neighbour_correlation": {
+  "horizontal_1px": 0.382,
+  "vertical_1px": 0.295
+ },
+ "denoise40_neighbour_r": {
+  "horizontal_1px": 0.374,
+  "vertical_1px": 0.297
+ },
+ "tails": {
+  "robust_sigma": 1.166,
+  "plain_std": 1.246,
+  "excess_kurtosis": 2.039,
+  "frac_beyond_3sigma": 0.010242662574333396,
+  "gaussian_beyond_3sigma": 0.0026997960632601913,
+  "frac_beyond_4sigma": 0.0017695459154312022,
+  "gaussian_beyond_4sigma": 6.334248366623993e-05,
+  "frac_beyond_5sigma": 0.00031747554191444464,
+  "gaussian_beyond_5sigma": 5.733031437583892e-07,
+  "frac_beyond_6sigma": 6.309775013016908e-05,
+  "gaussian_beyond_6sigma": 1.9731752900754024e-09,
+  "fraction_pixels_temporal_sigma_gt_2x_median": 0.00437
+ },
+ "estimator_bias_on_white_noise": {
+  "v": 0.855,
+  "h": 0.854,
+  "vh": 0.95
+ },
+ "raw_spatial_counts": {
+  "v": 0.567,
+  "h": 0.25,
+  "vh": 1.3
+ },
+ "temporal_residue_in_mean_counts": {
+  "v": 0.058,
+  "h": 0.055,
+  "vh": 0.294
+ },
+ "sitf_counts_per_k_300k": 48.25,
+ "netd_mk_output": 26.2,
+ "denoise40_sitf_and_netd_mk": [
+  52.91,
+  26.3
+ ],
+ "netd_mk_output_at_denoise40_sitf": 23.9,
+ "sim_control_temporal_sigma_counts": {
+  "cellplus_ctc006_lwir_cups.yaml": 1.259,
+  "cellplus_ctc006_lwir_cups3.yaml": 1.252
+ }
+}

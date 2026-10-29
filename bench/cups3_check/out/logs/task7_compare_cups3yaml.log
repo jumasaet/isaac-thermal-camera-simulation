@@ -1,0 +1,4 @@
+cold calib {'error_real_minus_sim_k_mean': 0.388, 'error_real_minus_sim_k_first_last': [0.068, 0.517], 'error_real_minus_sim_raw_k_mean': 0.386, 'error_real_minus_sim_scene_k_mean': 0.411, 'sim_camera_minus_scene_k_mean': 0.023, 'sim_scene_minus_expected_k_max_abs': 0.008}
+warm indep {'error_real_minus_sim_k_mean': -0.417, 'error_real_minus_sim_k_first_last': [-0.316, -0.481], 'error_real_minus_sim_raw_k_mean': -0.418, 'error_real_minus_sim_scene_k_mean': -0.451, 'sim_camera_minus_scene_k_mean': -0.034, 'sim_scene_minus_expected_k_max_abs': 0.005}
+hot calib {'error_real_minus_sim_k_mean': 0.278, 'error_real_minus_sim_k_first_last': [0.867, -0.237], 'error_real_minus_sim_raw_k_mean': 0.278, 'error_real_minus_sim_scene_k_mean': 0.244, 'sim_camera_minus_scene_k_mean': -0.034, 'sim_scene_minus_expected_k_max_abs': 0.017}
+board raw - scene -0.0

@@ -31,13 +31,13 @@ import cups3_common as c3
 
 
 def main() -> None:
-    simrep = json.loads((c3.OUT / "sim" / "report.json").read_text())
+    simrep = json.loads((c3.OUT / c3.SIM_DIR / "report.json").read_text())
     t1 = json.loads((c3.OUT / "task1_calibration.json").read_text())
     pf = np.load(c3.OUT / "task1_per_frame.npz")
     tr = pf["t_unix"] - pf["t_unix"][0]
     n = len(simrep["renders"])
-    app = np.stack([np.load(c3.OUT / "sim" / f"apparent_t_{j}.npy").astype(np.float64) for j in range(n)])
-    scn = np.stack([np.load(c3.OUT / "sim" / f"scene_apparent_t_{j}.npy").astype(np.float64) for j in range(n)])
+    app = np.stack([np.load(c3.OUT / c3.SIM_DIR / f"apparent_t_{j}.npy").astype(np.float64) for j in range(n)])
+    scn = np.stack([np.load(c3.OUT / c3.SIM_DIR / f"scene_apparent_t_{j}.npy").astype(np.float64) for j in range(n)])
     l_app = c3.band_l(app)
     reg = c3.find_cups(l_app.mean(0))
     mask = c3.board_mask(reg)
@@ -74,7 +74,7 @@ def main() -> None:
         off = float(np.mean(l_app[j][mask])) - l_air
         t_ref = c3.band_l_inv(l_app[j] - off).astype(np.float32)
         assert t_ref.dtype == np.float32
-        np.save(c3.OUT / "sim" / f"apparent_t_ref_{j}.npy", t_ref)
+        np.save(c3.OUT / c3.SIM_DIR / f"apparent_t_ref_{j}.npy", t_ref)
     board_raw = np.array([np.median(app[j][mask]) for j in range(n)]) - 273.15
     board_scn = np.array([np.median(scn[j][mask]) for j in range(n)]) - 273.15
     rep = {"instants_s": [round(float(tr[i]), 3) for i in idx], "real_frame_index": idx.tolist(),
@@ -82,7 +82,7 @@ def main() -> None:
            "sim_board_raw_minus_scene_k": round(float((board_raw - board_scn).mean()), 3),
            "warm_uncertainty_from_task1_apparent_k_p16_50_84": t1["mc_A_mean_of_readings"]["warm_err_apparent_k_p2.5_16_50_84_97.5"][1:4],
            "warm_uncertainty_from_task1_apparent_k_p16_50_84_scenario_B": t1["mc_B_anywhere_between_readings"]["warm_err_apparent_k_p2.5_16_50_84_97.5"][1:4]}
-    (c3.OUT / "task2_comparison.json").write_text(json.dumps(rep, indent=1))
+    (c3.OUT / f"{c3.COMPARISON}.json").write_text(json.dumps(rep, indent=1))
     for cup, r in rows.items():
         print(cup, "indep" if r["independent"] else "calib", {k: v for k, v in r.items() if k.startswith(("error", "sim_camera", "sim_scene_minus"))})
     print("board raw - scene", rep["sim_board_raw_minus_scene_k"])
@@ -109,7 +109,7 @@ def plot(tr, idx, pf, rows) -> None:
         ax.set_ylabel("°C")
         ax.legend(fontsize=7)
     fig.tight_layout()
-    fig.savefig(c3.OUT / "task2_comparison.png", dpi=110)
+    fig.savefig(c3.OUT / f"{c3.COMPARISON}.png", dpi=110)
 
 
 if __name__ == "__main__":
